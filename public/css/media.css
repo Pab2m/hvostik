@@ -1,0 +1,117 @@
+/*==========  Desktop First Method  ==========*/
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+#rukidobra span{
+            display: inherit;
+            text-align: center;
+            line-height: 31px;
+    }
+    #rukidobra span img{
+        display: none;
+    }
+    #registrazij{
+        margin: 0 auto;
+    }
+    #search div#button-search span.naiti_text{
+        display: none;
+    }
+    #header-1 .col-md-3{
+     padding-top: 0;
+    }
+    #add_obivlenij{
+    margin-left: 0;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+
+    
+}
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+   
+.foto_priv img{
+        width: 180px;
+    }
+ h3{
+    font-size: 1em;}   
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+.foto_priv img{
+        width: 120px;
+    }
+
+  h3{
+	font-size:1em;}  
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px) {
+    #date{
+        width: 200px;
+    }
+    #date br {
+        display: none;
+    }
+    .foto_priv img{
+        width: 110px;
+    }
+    h3{
+	font-size: 1em;}
+}
+
+
+/*==========  Mobile First Method  ==========*/
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width : 320px) {
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 480px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+.foto_priv img{
+        width: 160px;
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+   #registrazij {
+         float: right;
+         text-align: center
+    }
+    #nav{
+            margin-top: 45px;
+    }
+    #search div#button-search span.naiti_img{
+        display: none;
+        line-height: 35px;
+    }
+    #nav .col-md-2{
+    width: 20%;
+       }
+   .foto_priv img{
+        width: 100%;
+    }
+}
+
+ /* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+.foto_priv img{
+        width: 100%;
+    }
+}
