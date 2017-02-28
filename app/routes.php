@@ -10,7 +10,6 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-
 Route::get('/',array('as'=>'home','uses'=> 'HomeController@index'));
 Route::get('/registration',  function(){return View::make('registration');});
 Route::get('/vhod',  function(){return View::make('vhod');});
@@ -66,12 +65,9 @@ Route::get('/page/{url}',  'PostController@StaticPage');
 
 Route::get('/search','SearchController@search');
 Route::get('/search/data/{ajax}','SearchController@searchData');
-
-
-
-//Тест
-Route::get('/test/sesion/',function(){
-   dd(Session::all());
+//Тест 
+Route::get('/test/',function(){
+return View::make('password.reset');
 });
 Route::get('/test/form/' ,function(){ return View::make('form');});
 
