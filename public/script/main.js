@@ -607,7 +607,7 @@ var inputPasswordRegist = function(ObjectP){
     
     this.InputPassword.Password.QjObject.on("input",function(){
         if(zhis.InputPassword.Password.value.length < 6 ){
-            glyphiconNo(zhis.InputPassword.Password.glyphiconJq,glyphiconNoJqP, glyphiconYesJqP, zhis.InputPassword.Password.InputValidate);    
+            glyphiconNo(zhis.InputPassword.Password.glyphiconJq,glyphiconNoJqP, glyphiconYesJqP, zhis.InputPassword.Password.InputValidate); 
         } else {glyphiconYes(zhis.InputPassword.Password.glyphiconJq, glyphiconNoJqP, glyphiconYesJqP, zhis.InputPassword.Password.InputValidate);}
         if(zhis.InputPassword.PasswordRepeat.InputValidate.Yes === true){
            glyphiconNo(zhis.InputPassword.PasswordRepeat.glyphiconJq,glyphiconNoJqR, glyphiconYesJqR, zhis.InputPassword.PasswordRepeat.InputValidate); 
@@ -642,6 +642,7 @@ var inputPasswordRegist = function(ObjectP){
                 }
             }
     });
+
 };
 
 
@@ -705,10 +706,10 @@ if($("form").is("#form-registr")){
                } 
        });
    
-   var password = new inputUl({teg:"input", id:"#inputPassword3", name:""});
+   var password = new inputUl({teg:"input", id:"#inputPassword3", name:""}); 
    var passwordRegist =  new inputUl({teg:"input", id:"#repeat_inputPassword3", name:""});
    var inputPassword = new inputPasswordRegist({Password:password, PasswordRepeat:passwordRegist, ObjectForm:registracionForm});
-
+    
 } 
 var SpanUtch=$('#post_podr span.utch');
 var MaxWidthSpanUtch=$(SpanUtch[0]).width();    

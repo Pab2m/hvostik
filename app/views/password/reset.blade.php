@@ -13,35 +13,42 @@
         @endif
  
         <h3>Сброс пароля</h3>
-        {{ Form::open(array('url' => action('RemindersController@postReset'), 'method' => 'post', 'role' => 'form', 'class' => 'form-horizontal')) }}
+        {{ Form::open(array('url' => action('RemindersController@postReset'), 'method' => 'post', 'role' => 'form', 'class' => 'form-horizontal',"id"=>"form-registr")) }}
         <div class="form-group">
        <div class="col-sm-3">    
         <label for="inputEmail3" class="ccontrol-label">E-Mail</label>
        </div> 
        <div class="col-sm-8">
-          {{ Form::email('email', null, array('class' => 'form-control')) }}
+          {{ Form::email('email', null, ['placeholder'=>'Email',"type"=>"email", "class"=>"form-control", "id"=>"inputEmail3"]) }}
        </div>
+
       </div>
         <div class="form-group">
        <div class="col-sm-3">    
         <label for="inputEmail3" class="ccontrol-label">Новый пароль</label>
        </div> 
        <div class="col-sm-8">
-          {{ Form::password('password', array('class' => 'form-control')) }}
+          {{ Form::password('password', ['placeholder'=>'Пароль',"type"=>"password", "class"=>"form-control", "id"=>"inputPassword3"]) }}
        </div>
+      <div class="col-sm-1 padding0">
+      
+      </div>     
       </div>
           <div class="form-group">
        <div class="col-sm-3">    
         <label for="inputEmail3" class="ccontrol-label">Повторите</label>
        </div> 
        <div class="col-sm-8">
-          {{ Form::password('password_confirmation', array('class' => 'form-control')) }}
-          <input type="hidden" name="token" value="{{$token}}" />
+          {{ Form::password('password_confirmation', ['placeholder'=>'Повторите пароль',"type"=>"password", "class"=>"form-control", "id"=>"repeat_inputPassword3"]) }}
+          <input type="hidden" name="token" value="" />
        </div>
+       <div class="col-sm-1 padding0">
+      
+       </div>    
       </div>
     <div class="form-group">
     <div class="col-sm-offset-3 col-sm-10">
-       <button type="submit" class="btn btn-primary">Сбросить пароль</button>
+       <button id="registracion" class="btn btn-primary">Сбросить пароль</button>
     </div>
   </div>
         {{ Form::close() }}
