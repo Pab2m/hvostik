@@ -19,7 +19,7 @@
 	<link rel="stylesheet" href="/libs/fancybox/jquery.fancybox.css" />
 	<link rel="stylesheet" href="/libs/owl-carousel/owl.carousel.css" />
 	<link rel="stylesheet" href="/libs/countdown/jquery.countdown.css" />
-        <script src="https://raw.githubusercontent.com/LeaVerou/prefixfree/gh-pages/prefixfree.min.js"></script>
+        <script src="/script/prefixfree.min.js"></script>
         <link rel="stylesheet" href="/libs/chosen.css" />
 	<link rel="stylesheet" href="/css/fonts.css" />
          <link rel="stylesheet" href="/css/bootstrap.css" />
