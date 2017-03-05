@@ -234,7 +234,7 @@ Catalog.ObjectChange(
  }); 
  if($("ul#img-list-server li").length !== 0){
      
- var DeleteImgNone = function(elem){
+ var DeleteImgNone = function(Parameter,elem){
  var ImgDeletNone = elem.parent();
      ImgDeletNone.find('img').attr("src", elem.data("imgNone"));
      $("input[value='"+ImgDeletNone.data("imgNone")+"']").remove();
@@ -242,7 +242,7 @@ Catalog.ObjectChange(
    
      }    
      
- var DeleteImg = function(elem){//form#postEdit
+ var DeleteImg = function(Parameter,elem){//form#postEdit
      var imgDeletLi = elem.parent('li');
      FormEdit.QjObject.append("<input type='hidden' name='deletImg[]' value='"+imgDeletLi.find('img').attr("src").substring(1)+"'/>");
      elem.text("Отменить").attr("class","img_delet_none  btn botton_btn").attr("data-img-none",imgDeletLi.find('img').attr("src")); 
