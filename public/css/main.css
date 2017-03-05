@@ -228,7 +228,7 @@ padding: 0;
 
 #footer{
     height:250px;
-    background-image: url(/img/doc_kot1.png);
+    background-image: url(../img/doc_kot1.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     margin: auto; 
