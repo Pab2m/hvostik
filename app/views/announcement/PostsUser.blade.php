@@ -59,7 +59,7 @@ $('#myTab a').click(function (e) {
 
 
 
-<script>
+<!--<script>
     $(function () {
         $('#button_post_right a').on('click',function(){
           $('#post_lk').css('display','none');  
@@ -92,7 +92,7 @@ $('#myTab a').click(function (e) {
       }else{alert('Выберити объявления!');}
     });
 });
-</script>
+</script>-->
 
 @else
 Вы не авторизированы!!!

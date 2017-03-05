@@ -711,6 +711,7 @@ if($("form").is("#form-registr")){
    var inputPassword = new inputPasswordRegist({Password:password, PasswordRepeat:passwordRegist, ObjectForm:registracionForm});
     
 } 
+// Слайдор в полном объевлении
 var SpanUtch=$('#post_podr span.utch');
 var MaxWidthSpanUtch=$(SpanUtch[0]).width();    
    
@@ -721,52 +722,8 @@ var MaxWidthSpanUtch=$(SpanUtch[0]).width();
      } 
     var str="'"+MaxWidthSpanUtch+"px'";
      $('#post_podr span.utch').css('width',str);
-         
-    
-     $('#button_div div#button').on('click',function(){
-        // var url=document.location+'?';
-        var url='/search/data?';
-      console.log(url);
-         var get=Array();
-         if($('#text_div input#text').val()){
-          get['textsearch']=$('#text_div input#text').val();  
-           }
-        if($('#sity_select_search').val()){
-          get['sity_select_add']=$('#sity_select_search').val(); 
-        }else if($('#region_select_search').val()){
-           get['region_select_add']=$('#region_select_search').val();  
-        }
-        
-    if($('#category_select_search').val()){
-     get['category_select_add']=$('#category_select_search').val();
-            if((get['category_select_add']==1)||(get['category_select_add']==3)){
-                if($('#category_select_search').val() ){
-                 get['category_select_add']=$('#category_select_search').val();  
-                 if($('#tip_select_serch').val()){
-                   get['tip_select_add']=$('#tip_select_serch').val();   
-                 }
-                }
-            }else if(get['category_select_add']==11){
-                if($('form#search select[name="uslugi_select_add"]').val()){
-                  get['uslugi_select_add']=$('form#search select[name="uslugi_select_add"]').val(); 
-                }
-            }else if(get['category_select_add']==14){
-                 if($('form#search select[name="tovari_select_add"]').val()){
-                  get['tovari_select_add']=$('form#search select[name="tovari_select_add"]').val(); 
-                }
-            }else if(get['category_select_add']==16){
-                
-            }
-        }
-    for (var key in get) {
-    var val = get [key];
-    url+=key+'='+val+'&';
-    //console.log(key+' = '+val);
-                         }   
-url=url.substring(0, url.length-1);
- //console.log(url);
-  window.location.href=url;
-     });   
+//         
+      
       
 //Редактирование         
    $('li.li_delet').on('click','div.deletImg_ser',function(){
