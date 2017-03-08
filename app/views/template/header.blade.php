@@ -46,8 +46,8 @@
                  </div>
           <div class="col-md-4 bbb">
         {{Form::open(array('action' => 'PostController@DeletPosts','id'=>'delete-posts','class'=>"form-horizontal dropdown-toggle", 'role'=>"form"))}}
-            <button type="button" class="btn btn-default  allDelet">Удалить</button>
-            <button type="button" class="btn btn-default allNone">Отменить</button>
+            <button id = "panel-annoucement-action" type="button" class="btn btn-default allDelet">Удалить</button>
+            <button id = "panel-annoucement-cancellation" type="button" class="btn btn-default allNone">Отменить</button>
         {{Form::close()}}
           </div>
       </div>

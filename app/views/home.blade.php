@@ -7,10 +7,12 @@
          <h1>{{$title_content}}</h1>
      </div> 
       <div id='content-left' class='col-md-12'>
-     @foreach($post_all as $post) 
-              @include('announcement.annoucement-short')  
+      <div id="announcement">     
+     @foreach($post_all as $post)   
+              @include('announcement.annoucement-short') 
      @endforeach
      {{$post_all->links();}}
+     </div>
       </div>
 
 @stop

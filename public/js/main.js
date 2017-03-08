@@ -710,7 +710,7 @@ url=url.substring(0, url.length-1);
    
         }); 
         
-
+// Выбираем для удаления 
   $('span.post-delete').on('click',function(){ 
   var postDelSize = $('form#delete-posts input[name="delet[]"]').length;
   var postId=$(this).data('postId');
