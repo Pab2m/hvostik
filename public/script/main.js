@@ -421,16 +421,6 @@ function Button(ObjectP){
     });
 }
 
-//    Object.defineProperty(Button, "Fn", {
-//           set: function(value) {
-//               this.Fn = function(){
-//                   this.QjObject.on("click",function(){
-//                    value();   
-//                   });    
-//               };
-//               this.Fn();
-//           }
-//       });
  
  function Fails(FormJq,Fn){
     // Обаботка события нажатия на кнопку "Загрузить". Проходим по всем миниатюрам из списка,
@@ -708,30 +698,13 @@ var MaxWidthSpanUtch=$(SpanUtch[0]).width();
 
    });  
    
-if($("div").is("#announcement")){
+if($("div").is("#announcement")){ ; 
     var panelAnnoucement = function(ObjectP){ 
         this.QjObject = $("#panel-annoucement");
         var show = false;
         var postDel = this.QjObject.find('span#post-del-size');
         var DeletPostLength = 0;
-        
-        var actionButtonFn = {}, cancellationButtonFn = {};
-        if(ObjectP.actionButtonFn != undefined){
-           actionButtonFn = ObjectP.actionButtonFn;
-           actionButtonFn.Parameter.zhis = this;
-        } else {actionButtonFn.Parameter = {}; actionButtonFn.Fn = function(){};}
-        if(ObjectP.cancellationButtonFn != undefined){
-           cancellationButtonFn = ObjectP.cancellationButtonFn;
-        } else {cancellationButtonFn.Parameter = {}; cancellationButtonFn.Fn = function(){
-            this.Hide();    
-        };}
-        this.actionButton = new Button({QjObject:this.QjObject.find("#panel-annoucement-action"),Fn:actionButtonFn});
-        this.cancellationButton = new Button({QjObject:this.QjObject.find("#panel-annoucement-cancellation"), Fn:cancellationButtonFn});
-        this.PanelFrom = new Form({id:"#delete-posts"});
-        this.AddInput = function(value){ 
-             this.PanelFrom.QjObject.append('<input name="delet[]" type="hidden" value="'+value+'">');
-             DeletPostLength++; 
-        };  
+          
         this.DeletInput = function(value){
              if(value === undefined){
                 this.PanelFrom.QjObject.find("input").remove(); 
@@ -747,39 +720,98 @@ if($("div").is("#announcement")){
         this.Show = function(){
             if(!show){
              this.QjObject.show(300);
-             this.postDelSize();}
+             this.postDelSize();
+             show = true;}
         };
         this.Hide = function(){
            if(show){ 
              this.QjObject.hide(300);
-             show = false;
+             show = false; 
+             } 
+        };
+         var actionButtonFn = {}, cancellationButtonFn = {};
+        if(ObjectP.actionButtonFn != undefined){
+           actionButtonFn = ObjectP.actionButtonFn;
+           actionButtonFn.Parameter.zhis = this;
+        } else {actionButtonFn.Parameter = {}; actionButtonFn.Fn = function(){};}
+        if(ObjectP.cancellationButtonFn != undefined){
+           cancellationButtonFn = ObjectP.cancellationButtonFn;
+           cancellationButtonFn.Parameter.zhis = this;
+        } else {cancellationButtonFn.Parameter = {zhis:this}; cancellationButtonFn.Fn = function(Parameter){ 
+            Parameter.zhis.Hide();  
+        };}
+        this.actionButton = new Button({QjObject:this.QjObject.find("#panel-annoucement-action"),Fn:actionButtonFn});
+        this.cancellationButton = new Button({QjObject:this.QjObject.find("#panel-annoucement-cancellation"), Fn:cancellationButtonFn});
+        this.PanelFrom = new Form({id:"#delete-posts"});
+        this.AddInput = function(value, name){ 
+             this.PanelFrom.QjObject.append('<input name="'+name+'" type="hidden" value="'+value+'">');
+             DeletPostLength++; 
+        };
+        this.deletInput = function(option){//"input[value="88"]"
+             var InputDelet = this.PanelFrom.QjObject.find(option);
+             InputDelet.remove();
+             DeletPostLength -= InputDelet.length;
+             if(DeletPostLength <= 0){
+                this.Hide(); 
              }
+             this.postDelSize();
+             
         };
         };
          var actionButtonFn = {};
          actionButtonFn.Parameter = {};
          actionButtonFn.Fn = function(Parameter,elem,zhis){
-                                      //console.log(Parameter.zhis.PanelFrom.QjObject);
+                             var OptionAnnouncementDeletMyModal = new myModal({
+                                 title: "Вы действительно хотите удалить "+Parameter.zhis.PanelFrom.QjObject.length+" объявления(ий)!!!",
+                                 bodyHtml:'',
+                                 ButtonOk:{text:"Удалить",
+                                           Parameter:{},
+                                           Fn:function(){
+                                           Parameter.zhis.PanelFrom.submit();
+                                           }}
+                             });
+                             OptionAnnouncementDeletMyModal.Show();
                                      };
-    var AnnoucementPanel = new panelAnnoucement({actionButtonFn:actionButtonFn});    
+        var cancellationButtonFn = {};
+        cancellationButtonFn.Parameter = {};
+        cancellationButtonFn.Fn= function(Parameter,elem,zhis){
+                for (var key in Parameter.Announcement) {
+                         Parameter.Announcement[key].delete.hide(300).remove();
+                         Parameter.Announcement[key].post.find('.row').show(300);
+                }
+                Parameter.zhis.deletInput("input[name='delet[]']");
+                Parameter.zhis.Hide()
+        };
+    var AnnoucementPanel = new panelAnnoucement({actionButtonFn:actionButtonFn, cancellationButtonFn:cancellationButtonFn});  
+
+    var ArrayButtonPost = {}, Announcement = {}; 
     var FspanPostDelete = {};
-        FspanPostDelete.Parameter = {};
+        FspanPostDelete.Parameter = {ArrayButtonPost:ArrayButtonPost, Announcement:Announcement};
         FspanPostDelete.Fn = function(Parameter,elem,zhis){
-           //  var postDelSize = $('form#delete-posts input[name="delet[]"]').length;
              var postId = elem.data('postId');
-             var Announcement = {};
-             Announcement[postId]=$('div.post'+postId);
-             var title=Announcement[postId].find('.title_zag');
-             Announcement[postId].css('padding-bottom','8px');
-             $('div.post'+postId).find('.row').hide(300);
-             $('div.post'+postId).append('<div class="row row-2"><div class="delete-post col-md-9">'+title.html()+'</div><div class="col-md-1"> <button type="button" value="'+postId+'" class="button-delet-post btn btn-default">Отмена</button></div></div></div>');
-             AnnoucementPanel.AddInput(postId);
+             Parameter.Announcement[postId] = {};
+             Parameter.Announcement[postId].post = $('div.post'+postId);
+             var title=Announcement[postId].post.find('.title_zag');
+            // Parameter.Announcement[postId].post.css('padding-bottom','8px');
+             Parameter.Announcement[postId].post.find('.row').hide(300);
+             Parameter.Announcement[postId].post.append('<div class="row row-2"><div class="delete-post col-md-9">'+title.html()+'</div><div class="col-md-1"> <button type="button" value="'+postId+'" class="button-delet-post btn btn-default">Отмена</button></div></div></div>');
+             Parameter.Announcement[postId].delete = Parameter.Announcement[postId].post.find(".delete-post").parent("div.row");
+             var ArrayButtonPost = {};
+             var ArrayButtonPostFn = {};
+             ArrayButtonPostFn.Parameter = FspanPostDelete.Parameter;
+             $.extend(actionButtonFn.Parameter, ArrayButtonPostFn.Parameter);
+             $.extend(cancellationButtonFn.Parameter, ArrayButtonPostFn.Parameter);
+             ArrayButtonPostFn.Fn = function(Parameter,elem,zhis){ 
+                AnnoucementPanel.deletInput("input[value='"+elem.val()+"']");   
+                Parameter.Announcement[postId].delete.hide(300);
+                Parameter.Announcement[postId].delete.remove();
+                Parameter.Announcement[postId].post.find('.row').show(300);
+                
+             };
+ 
+             FspanPostDelete.Parameter.ArrayButtonPost[postId] = new Button({QjObject:Parameter.Announcement[postId].post.find("button"), Fn:ArrayButtonPostFn});
+             AnnoucementPanel.AddInput(postId, "delet[]");
              AnnoucementPanel.Show();
-             
-//             var panelAnnoucement=$('#panel-annoucement');
-//             panelAnnoucement.css('display','block');
-//              panelAnnoucement.find('span#post-del-size').text(postDelSize+1);
-            //  panelAnnoucement.find('form#delete-posts').append('<input name="delet[]" type="hidden" value="'+postId+'">');
         };
     var spanPostDelete = new Button({QjObject:$("span.post-delete"),Fn:FspanPostDelete});
    
