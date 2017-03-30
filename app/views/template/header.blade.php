@@ -40,7 +40,7 @@
         <div class="col-md-4">
           <ul class="nav navbar-nav">
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Обьявления выбранные для удаления <span id="post-del-size"></span> <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Обьявления выбранные для удаления <span id="post-del-size"></span></a>
             </li>
           </ul>
                  </div>
@@ -88,7 +88,7 @@
                 <div class="col-md-6">
                 @if(Auth::check())    
                     <div id="user">
-                        Вы зашли как <span>{{Auth::user()->email}}</span>
+                        Вы авторизированы как <span>{{Auth::user()->email}}</span>
                     </div>
                 @else
                     <div id="users-vhod">

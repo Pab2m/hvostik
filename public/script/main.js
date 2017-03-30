@@ -746,6 +746,7 @@ if($("div").is("#announcement")){ ;
         this.AddInput = function(value, name){ 
              this.PanelFrom.QjObject.append('<input name="'+name+'" type="hidden" value="'+value+'">');
              DeletPostLength++; 
+             this.postDelSize(DeletPostLength);
         };
         this.deletInput = function(option){//"input[value="88"]"
              var InputDelet = this.PanelFrom.QjObject.find(option);
@@ -791,10 +792,12 @@ if($("div").is("#announcement")){ ;
              var postId = elem.data('postId');
              Parameter.Announcement[postId] = {};
              Parameter.Announcement[postId].post = $('div.post'+postId);
-             var title=Announcement[postId].post.find('.title_zag');
+             var title = Announcement[postId].post.find('.title-annoucement div.post-a-h3');
+             var textPost = Announcement[postId].post.find('.title_zag');
+             console.log(title);
             // Parameter.Announcement[postId].post.css('padding-bottom','8px');
              Parameter.Announcement[postId].post.find('.row').hide(300);
-             Parameter.Announcement[postId].post.append('<div class="row row-2"><div class="delete-post col-md-9">'+title.html()+'</div><div class="col-md-1"> <button type="button" value="'+postId+'" class="button-delet-post btn btn-default">Отмена</button></div></div></div>');
+             Parameter.Announcement[postId].post.append('<div class="row row-2 post-dell"><div class="delete-post col-md-10">'+title.html()+textPost.html()+'</div><div class="col-md-2"><button type="button" value="'+postId+'" class="button-delet-post btn btn-default">Отменить</button></div></div></div>');
              Parameter.Announcement[postId].delete = Parameter.Announcement[postId].post.find(".delete-post").parent("div.row");
              var ArrayButtonPost = {};
              var ArrayButtonPostFn = {};

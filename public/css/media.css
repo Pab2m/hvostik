@@ -51,6 +51,13 @@
 
   h3{
 	font-size:1em;}  
+  .text_priv {
+  clear: both ;}
+  .foto_priv{
+      width: 300px;
+      padding-left: 15px;
+  }
+  
 }
 
 /* Custom, iPhone Retina */
@@ -66,6 +73,7 @@
     }
     h3{
 	font-size: 1em;}
+    
 }
 
 
