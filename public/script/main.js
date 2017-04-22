@@ -5,8 +5,7 @@ function Cshtora(){
    var JqHtora = null;  
    this.GethtmlHtora = function(){
         return htmlHtora;
-   }
-   
+   }  
    this.False = function(){
       this.JqHtora.show().hide(300);
    }
@@ -377,8 +376,8 @@ function Button(ObjectP){
       var Function = ObjectP.Fn.Fn || ObjectP.Fn || null; 
       
       if((Function !== undefined) ||(Function !== null)){  
+          
            var zhis = this;
-      
        if((this.delegirovanie) && (this.parentDiv !== false)){
         $("#"+this.parentDiv).on("click","."+this.class, function(){ 
             var elem = $(this); 
@@ -422,16 +421,6 @@ function Button(ObjectP){
     });
 }
 
-//    Object.defineProperty(Button, "Fn", {
-//           set: function(value) {
-//               this.Fn = function(){
-//                   this.QjObject.on("click",function(){
-//                    value();   
-//                   });    
-//               };
-//               this.Fn();
-//           }
-//       });
  
  function Fails(FormJq,Fn){
     // Обаботка события нажатия на кнопку "Загрузить". Проходим по всем миниатюрам из списка,
@@ -657,42 +646,7 @@ if($("div").is("#edit_post")){
     yepnope("/script/editPost.js");
 }
 
-    yepnope("/script/search.js");  
-   
-           
-$("button#registracion").on("click",function(){
-	var email = $("#inputEmail3");
-	var passw0rd = $("#inputPassword3");
-	var repeatInputPassw0rd = $("#repeat_inputPassword3");
-	var inputTrue = true;
-	if(email.val() == ''){
-	 inputTrue = false;
-	 email.css("border","1px solid red");
-	}
-	if(passw0rd.val() == ''){
-	 inputTrue = false;
-	 passw0rd.css("border","1px solid red");	
-	}
-	if(repeatInputPassw0rd.val() == ''){
-	 inputTrue = false;
-	 repeatInputPassw0rd.css("border","1px solid red");	
-	}
-
-	if(inputTrue){
-		$("form#form-registr").submit();
-	}
-    
-	email.on("click",function(){
-		email.css("border","1px solid #CCC");
-	});
-	passw0rd.on("click",function(){
-		passw0rd.css("border","1px solid #CCC");
-	});
-  	repeatInputPassw0rd.on("click",function(){
-		repeatInputPassw0rd.css("border","1px solid #CCC");
-	});
-	
-});
+yepnope("/script/search.js");  
 
 if($("form").is("#form-registr")){
    var registracionButton = new Button({id:"registracion"});
@@ -711,6 +665,7 @@ if($("form").is("#form-registr")){
    var inputPassword = new inputPasswordRegist({Password:password, PasswordRepeat:passwordRegist, ObjectForm:registracionForm});
     
 } 
+// Слайдор в полном объевлении
 var SpanUtch=$('#post_podr span.utch');
 var MaxWidthSpanUtch=$(SpanUtch[0]).width();    
    
@@ -721,52 +676,8 @@ var MaxWidthSpanUtch=$(SpanUtch[0]).width();
      } 
     var str="'"+MaxWidthSpanUtch+"px'";
      $('#post_podr span.utch').css('width',str);
-         
-    
-     $('#button_div div#button').on('click',function(){
-        // var url=document.location+'?';
-        var url='/search/data?';
-      console.log(url);
-         var get=Array();
-         if($('#text_div input#text').val()){
-          get['textsearch']=$('#text_div input#text').val();  
-           }
-        if($('#sity_select_search').val()){
-          get['sity_select_add']=$('#sity_select_search').val(); 
-        }else if($('#region_select_search').val()){
-           get['region_select_add']=$('#region_select_search').val();  
-        }
-        
-    if($('#category_select_search').val()){
-     get['category_select_add']=$('#category_select_search').val();
-            if((get['category_select_add']==1)||(get['category_select_add']==3)){
-                if($('#category_select_search').val() ){
-                 get['category_select_add']=$('#category_select_search').val();  
-                 if($('#tip_select_serch').val()){
-                   get['tip_select_add']=$('#tip_select_serch').val();   
-                 }
-                }
-            }else if(get['category_select_add']==11){
-                if($('form#search select[name="uslugi_select_add"]').val()){
-                  get['uslugi_select_add']=$('form#search select[name="uslugi_select_add"]').val(); 
-                }
-            }else if(get['category_select_add']==14){
-                 if($('form#search select[name="tovari_select_add"]').val()){
-                  get['tovari_select_add']=$('form#search select[name="tovari_select_add"]').val(); 
-                }
-            }else if(get['category_select_add']==16){
-                
-            }
-        }
-    for (var key in get) {
-    var val = get [key];
-    url+=key+'='+val+'&';
-    //console.log(key+' = '+val);
-                         }   
-url=url.substring(0, url.length-1);
- //console.log(url);
-  window.location.href=url;
-     });   
+//         
+      
       
 //Редактирование         
    $('li.li_delet').on('click','div.deletImg_ser',function(){
@@ -787,68 +698,171 @@ url=url.substring(0, url.length-1);
 
    });  
    
-        
-
-  $('span.post-delete').on('click',function(){ 
-  var postDelSize = $('form#delete-posts input[name="delet[]"]').length;
-  var postId=$(this).data('postId');
-
-   post[postId]=$('div.post'+postId);
-  var title=post[postId].find('.title_zag');
-   post[postId].css('padding-bottom','8px');
-  $('div.post'+postId).find('.row').css('display','none');
-  $('div.post'+postId).append('<div class="row row-2"><div class="delete-post col-md-9">'+title.html()+'</div><div class="col-md-1"> <button type="button" value="'+postId+'" class="button-delet-post btn btn-default">Отмена</button></div></div></div>');
-  var panelAnnoucement=$('#panel-annoucement');
-  panelAnnoucement.css('display','block');
-  panelAnnoucement.find('span#post-del-size').text(postDelSize+1);
-  panelAnnoucement.find('form#delete-posts').append('<input name="delet[]" type="hidden" value="'+postId+'">');
-  
-});
-
-  $('.post_lk').on('click','.button-delet-post', function(){
-      var valuePostId=$(this).val();  
-      var panelAnnoucement=$('#panel-annoucement');
-      var postDelSize = $('form#delete-posts input[name="delet[]"').length;
-      postDelSize--;
+if($("div").is("#announcement")){ 
+    var panelAnnoucement = function(ObjectP){ 
+        this.QjObject = $("#panel-annoucement");
+        var show = false;
+        var postDel = this.QjObject.find('span#post-del-size');
+        var DeletPostLength = 0;
           
-    $('form#delete-posts input[value="'+valuePostId+'"]').remove();   
-    delete post[valuePostId];
-    $('div.post'+valuePostId).find('.row-1').css('display','block'); 
-    $('div.post'+valuePostId).find('.row-2').remove();
+        this.DeletInput = function(value){
+             if(value === undefined){
+                this.PanelFrom.QjObject.find("input").remove(); 
+                DeletPostLength = 0;
+             } else {
+                this.PanelFrom.QjObject.find("input[value='"+value+"']").remove();
+               if(DeletPostLength !== 0) DeletPostLength--;
+             }            
+        };  
+        this.postDelSize = function(){
+             postDel.text(DeletPostLength);
+        };
+        this.Show = function(){
+            if(!show){
+             this.QjObject.show(300);
+             this.postDelSize();
+             show = true;}
+        };
+        this.Hide = function(){
+           if(show){ 
+             this.QjObject.hide(300);
+             show = false; 
+             } 
+        };
+         var actionButtonFn = {}, cancellationButtonFn = {};
+        if(ObjectP.actionButtonFn != undefined){
+           actionButtonFn = ObjectP.actionButtonFn;
+           actionButtonFn.Parameter.zhis = this;
+        } else {actionButtonFn.Parameter = {}; actionButtonFn.Fn = function(){};}
+        if(ObjectP.cancellationButtonFn != undefined){
+           cancellationButtonFn = ObjectP.cancellationButtonFn;
+           cancellationButtonFn.Parameter.zhis = this;
+        } else {cancellationButtonFn.Parameter = {zhis:this}; cancellationButtonFn.Fn = function(Parameter){ 
+            Parameter.zhis.Hide();  
+        };}
+        this.actionButton = new Button({QjObject:this.QjObject.find("#panel-annoucement-action"),Fn:actionButtonFn});
+        this.cancellationButton = new Button({QjObject:this.QjObject.find("#panel-annoucement-cancellation"), Fn:cancellationButtonFn});
+        this.PanelFrom = new Form({id:"#delete-posts"});
+        this.AddInput = function(value, name){ 
+             this.PanelFrom.QjObject.append('<input name="'+name+'" type="hidden" value="'+value+'">');
+             DeletPostLength++; 
+             this.postDelSize(DeletPostLength);
+        };
+        this.deletInput = function(option){//"input[value="88"]"
+             var InputDelet = this.PanelFrom.QjObject.find(option);
+             InputDelet.remove();
+             DeletPostLength -= InputDelet.length;
+             if(DeletPostLength <= 0){
+                this.Hide(); 
+             }
+             this.postDelSize();
+             
+        };
+        };
+         var actionButtonFn = {};
+         actionButtonFn.Parameter = {};
+         actionButtonFn.Fn = function(Parameter,elem,zhis){
+                             var OptionAnnouncementDeletMyModal = new myModal({
+                                 title: "Вы действительно хотите удалить "+Parameter.zhis.PanelFrom.QjObject.length+" объявления(ий)!!!",
+                                 bodyHtml:'',
+                                 ButtonOk:{text:"Удалить",
+                                           Parameter:{},
+                                           Fn:function(){
+                                           Parameter.zhis.PanelFrom.submit();
+                                           }}
+                             });
+                             OptionAnnouncementDeletMyModal.Show();
+                                     };
+        var cancellationButtonFn = {};
+        cancellationButtonFn.Parameter = {};
+        cancellationButtonFn.Fn= function(Parameter,elem,zhis){
+                for (var key in Parameter.Announcement) {
+                         Parameter.Announcement[key].delete.hide(300).remove();
+                         Parameter.Announcement[key].post.find('.row').show(300);
+                }
+                Parameter.zhis.deletInput("input[name='delet[]']");
+                Parameter.zhis.Hide()
+        };
+    var AnnoucementPanel = new panelAnnoucement({actionButtonFn:actionButtonFn, cancellationButtonFn:cancellationButtonFn});  
+
+    var ArrayButtonPost = {}, Announcement = {}; 
+    var FspanPostDelete = {};
+        FspanPostDelete.Parameter = {ArrayButtonPost:ArrayButtonPost, Announcement:Announcement};
+        FspanPostDelete.Fn = function(Parameter,elem,zhis){
+             var postId = elem.data('postId');
+             Parameter.Announcement[postId] = {};
+             Parameter.Announcement[postId].post = $('div.post'+postId);
+             var title = Announcement[postId].post.find('.title-annoucement div.post-a-h3');
+             var textPost = Announcement[postId].post.find('.title_zag');
+             console.log(title);
+            // Parameter.Announcement[postId].post.css('padding-bottom','8px');
+             Parameter.Announcement[postId].post.find('.row').hide(300);
+             Parameter.Announcement[postId].post.append('<div class="row row-2 post-dell"><div class="delete-post col-md-10">'+title.html()+textPost.html()+'</div><div class="col-md-2"><button type="button" value="'+postId+'" class="button-delet-post btn btn-default">Отменить</button></div></div></div>');
+             Parameter.Announcement[postId].delete = Parameter.Announcement[postId].post.find(".delete-post").parent("div.row");
+             var ArrayButtonPost = {};
+             var ArrayButtonPostFn = {};
+             ArrayButtonPostFn.Parameter = FspanPostDelete.Parameter;
+             $.extend(actionButtonFn.Parameter, ArrayButtonPostFn.Parameter);
+             $.extend(cancellationButtonFn.Parameter, ArrayButtonPostFn.Parameter);
+             ArrayButtonPostFn.Fn = function(Parameter,elem,zhis){ 
+                AnnoucementPanel.deletInput("input[value='"+elem.val()+"']");   
+                Parameter.Announcement[postId].delete.hide(300);
+                Parameter.Announcement[postId].delete.remove();
+                Parameter.Announcement[postId].post.find('.row').show(300);
+                
+             };
  
-   if(postDelSize<=0){  
-   panelAnnoucement.css('display','none');
-   panelAnnoucement.find('span#post-del-size').text(postDelSize);
-   postDelSize=0;
-   }else{
-       panelAnnoucement.find('span#post-del-size').text(postDelSize);
-   }
-    });
+             FspanPostDelete.Parameter.ArrayButtonPost[postId] = new Button({QjObject:Parameter.Announcement[postId].post.find("button"), Fn:ArrayButtonPostFn});
+             AnnoucementPanel.AddInput(postId, "delet[]");
+             AnnoucementPanel.Show();
+        };
+    var spanPostDelete = new Button({QjObject:$("span.post-delete"),Fn:FspanPostDelete});
+   
+}      
+        
+//Формирует списак для удаления 
+//  $('span.post-delete').on('click',function(){ 
+//  var postDelSize = $('form#delete-posts input[name="delet[]"]').length;
+//  var postId=$(this).data('postId');
+//
+//   post[postId]=$('div.post'+postId);
+//  var title=post[postId].find('.title_zag');
+//   post[postId].css('padding-bottom','8px');
+//  $('div.post'+postId).find('.row').css('display','none');
+//  $('div.post'+postId).append('<div class="row row-2"><div class="delete-post col-md-9">'+title.html()+'</div><div class="col-md-1"> <button type="button" value="'+postId+'" class="button-delet-post btn btn-default">Отмена</button></div></div></div>');
+//  var panelAnnoucement=$('#panel-annoucement');
+//  panelAnnoucement.css('display','block');
+//  panelAnnoucement.find('span#post-del-size').text(postDelSize+1);
+//  panelAnnoucement.find('form#delete-posts').append('<input name="delet[]" type="hidden" value="'+postId+'">');
+//  
+//});
 
-$('button.allNone').on('click',function(){
-    $('form#delete-posts input[name="delet[]"]').remove();
-    $('div.post_lk').find('.row-1').css('display','block');
-    $('div.post_lk').find('.row-2').remove();
-   var panelAnnoucement=$('#panel-annoucement');
-   panelAnnoucement.css('display','none');
-   panelAnnoucement.find('span#post-del-size').text(postDelSize);
-   postDelSize=0;
-});
+//
 
- $('button.allDelet').on('click', function(){ 
-var myModal = $('#myModal');  
-    myModal.find('h4').text('Удалить данные объявления?');
-    myModal.find('div.modal-body').html('');
-    myModal.find('button.btn-primary').text("Удалить все выбранные");
-    myModal.find('button.btn-default').text("Отменить");    
-    var deletePosts='';
-    for (var post_S in post) {   
-    deletePosts+='<div class="row row-'+post_S+'"><div class="col-md-11 col-sm-11">'+post[post_S].find('.title_zag a').text()+'</div><div class="col-md-1 col-sm-1"><span class="glyphicon glyphicon-remove del-none color-red" data-post-id="'+post_S+'" title="Отменить"></span></div></div>';    
-     }
-    myModal.find('div.modal-body').html(deletePosts);
-    myModal.modal('show');
-    
-});
+//$('button.allNone').on('click',function(){
+//    $('form#delete-posts input[name="delet[]"]').remove();
+//    $('div.post_lk').find('.row-1').css('display','block');
+//    $('div.post_lk').find('.row-2').remove();
+//   var panelAnnoucement=$('#panel-annoucement');
+//   panelAnnoucement.css('display','none');
+//   panelAnnoucement.find('span#post-del-size').text(postDelSize);
+//   postDelSize=0;
+//});
+
+// $('button.allDelet').on('click', function(){ 
+//var myModal = $('#myModal');  
+//    myModal.find('h4').text('Удалить данные объявления?');
+//    myModal.find('div.modal-body').html('');
+//    myModal.find('button.btn-primary').text("Удалить все выбранные");
+//    myModal.find('button.btn-default').text("Отменить");    
+//    var deletePosts='';
+//    for (var post_S in post) {   
+//    deletePosts+='<div class="row row-'+post_S+'"><div class="col-md-11 col-sm-11">'+post[post_S].find('.title_zag a').text()+'</div><div class="col-md-1 col-sm-1"><span class="glyphicon glyphicon-remove del-none color-red" data-post-id="'+post_S+'" title="Отменить"></span></div></div>';    
+//     }
+//    myModal.find('div.modal-body').html(deletePosts);
+//    myModal.modal('show');
+//    
+//});
 $('#myModal').on("click","button.btn-primary",function(){;
     var formDeletePost=$("#delete-posts");
     if(formDeletePost.find("input[name='delet[]']").length>0){

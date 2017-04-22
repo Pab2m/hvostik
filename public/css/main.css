@@ -192,7 +192,7 @@ width: 100%;
 }
 .foto_priv {
 padding: 0;
- 
+ float: left;
 }
 #content{
     height: auto;
@@ -201,7 +201,7 @@ padding: 0;
  
 }
 #content-left,#content-right{
-     height: auto;
+    /* height: auto;*/
     }
 #content-left{
     padding-left: 2px;
@@ -213,12 +213,14 @@ padding: 0;
 #content-right{
  
 }
-
+#content .col-md-12 {
+    padding: 0;
+}
 .title_zag{
     margin-bottom: 10px;
 }
 .text_post{
-    height: 90px;
+    height-max: 90px;
     text-overflow: ellipsis;
 }
 
@@ -335,16 +337,39 @@ div.tex{
 #min_foto img{
    margin-bottom: 5px; 
 }
+
+.post-a-h3{
+     float: left; 
+     width: 90%; 
+}
+
+.moder-user-post{
+    white-space:nowrap;
+}
+
 .post_lk{
+    display: table;
     margin-bottom: 10px;
+    width: 100%;
+}
+.post_lk .row {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.title-annoucement{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+#user{height: auto;}
+#header-1 .col-md-3{
+    padding-left: 15px !important;
+    padding-right: 15px !important; 
 }
 #user, #users-vhod{
     margin-top: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     text-align: center;
-    height: 1em;
-    
-        
+    height: 1em;      
 }
 .phone{
     margin-top: 15px;
@@ -412,4 +437,13 @@ height: 16px;
 }
 #categorij_select{
     clear: both;
+}
+#announcement{
+    padding: 0;
+}
+.post-dell{
+    border-bottom: 1px solid #ccc;
+}
+#myTab{
+    margin-bottom: 10px;
 }

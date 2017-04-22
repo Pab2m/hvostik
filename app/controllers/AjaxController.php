@@ -104,7 +104,7 @@ class AjaxController extends AdminController {
             '<div class="border">'.
              '<h4>Пол животного</h4>'.    
                  '<div class="padding_pol_8">'.
-                 '<span>Кабель</span> <input type="radio" value="1" name="pol">'.
+                 '<span>Кобель</span> <input type="radio" value="1" name="pol">'.
                  '<div><span>Сука</span> <input type="radio" value="2" name="pol">'.
                  '</div>'.
             '</div>'.     

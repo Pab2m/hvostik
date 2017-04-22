@@ -19,11 +19,12 @@
 
   <div class="bs-example bs-example-tabs">
     <ul id="myTab" class="nav nav-tabs">
-      <li class="active"><a href="#home" data-toggle="tab">Обубликованные объявления ({{count($posts_true);}})</a></li>
-      <li><a href="#profile" data-toggle="tab">На модерации ({{count($posts_false);}})</a></li>
+        
+      <li class=" {{ (count($posts_true) != 0) || (count($posts_false) == 0) ? "active" : '' }}"><a href="#home" data-toggle="tab">Обубликованные объявления ({{count($posts_true);}})</a></li>
+      <li class=" {{ count($posts_false) != 0 ? "active" : '' }}"><a href="#profile" data-toggle="tab">На модерации ({{count($posts_false);}})</a></li>
     </ul>
-    <div id="myTabContent" class="tab-content">
-      <div class="tab-pane fade in active" id="home">
+    <div id="announcement" class="tab-content">
+      <div class="tab-pane fade  {{ (count($posts_true) != 0) || (count($posts_false) == 0) ? "in active" : '' }}" id="home">
   @if($posts_true instanceof Illuminate\Pagination\Paginator)   
     @foreach($posts_true as $post) 
          @include('announcement.annoucement-short')      
@@ -33,7 +34,7 @@
     У вас нет обубликованных обьявлений! 
     @endif
      </div>
-      <div class="tab-pane fade" id="profile">
+      <div class="tab-pane fade {{ count($posts_false) != 0 ? "in active" : '' }}" id="profile">
  @if($posts_false instanceof Illuminate\Pagination\Paginator)          
    @foreach($posts_false as $post) 
          @include('announcement.annoucement-short')      
@@ -54,45 +55,6 @@ $('#myTab a').click(function (e) {
 })
 </script>
 @stop
-
-
-
-
-
-<script>
-    $(function () {
-        $('#button_post_right a').on('click',function(){
-          $('#post_lk').css('display','none');  
-          $('#second').css('display','block'); 
-          $('input.delet:checked').prop('checked',false);
-          $('input.delet_post').remove();
-        });
-
-       $('#button_post_left a').on('click',function(){
-           $('#second').css('display','none'); 
-          $('#post_lk').css('display','block');  
-           $('input.delet:checked').prop('checked',false);
-           $('input.delet_post').remove();
-        });
-    
-    $('#delet_button').click(function(){
-    var trueCheckbox=$("input.delet:checked");
-
-    trueCheckbox.each(function(index,element){
-     $("form#rivate_office").append("<input class='delet_post' type='hidden' name='delet[]' value='"+$(element).val()+"'>");
-   
-    });
-    
-    var trueCheckboxSize=trueCheckbox.length;
-      if(trueCheckboxSize!=0){
-        var deletTrue=confirm('Удалить ('+trueCheckbox.length+') объявлений(я)'); 
-        if(deletTrue){ 
-      $('form#rivate_office').submit();
-     }
-      }else{alert('Выберити объявления!');}
-    });
-});
-</script>
 
 @else
 Вы не авторизированы!!!

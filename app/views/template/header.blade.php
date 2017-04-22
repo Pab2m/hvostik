@@ -40,14 +40,14 @@
         <div class="col-md-4">
           <ul class="nav navbar-nav">
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Обьявления выбранные для удаления <span id="post-del-size"></span> <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Обьявления выбранные для удаления <span id="post-del-size"></span></a>
             </li>
           </ul>
                  </div>
           <div class="col-md-4 bbb">
         {{Form::open(array('action' => 'PostController@DeletPosts','id'=>'delete-posts','class'=>"form-horizontal dropdown-toggle", 'role'=>"form"))}}
-            <button type="button" class="btn btn-default  allDelet">Удалить</button>
-            <button type="button" class="btn btn-default allNone">Отменить</button>
+            <button id = "panel-annoucement-action" type="button" class="btn btn-default allDelet">Удалить</button>
+            <button id = "panel-annoucement-cancellation" type="button" class="btn btn-default allNone">Отменить</button>
         {{Form::close()}}
           </div>
       </div>
@@ -88,7 +88,7 @@
                 <div class="col-md-6">
                 @if(Auth::check())    
                     <div id="user">
-                        Вы зашли как <span>{{Auth::user()->email}}</span>
+                        Вы авторизированы как <span>{{Auth::user()->email}}</span>
                     </div>
                 @else
                     <div id="users-vhod">
