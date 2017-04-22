@@ -698,7 +698,7 @@ var MaxWidthSpanUtch=$(SpanUtch[0]).width();
 
    });  
    
-if($("div").is("#announcement")){ ; 
+if($("div").is("#announcement")){ 
     var panelAnnoucement = function(ObjectP){ 
         this.QjObject = $("#panel-annoucement");
         var show = false;
