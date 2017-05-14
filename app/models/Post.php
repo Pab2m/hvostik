@@ -49,6 +49,9 @@ return $post;}
 public static function PostsUser($id){
     return Post::where('id_user', '=', Auth::user()->id)->where('sostoynia','=',$id)->orderBy("created_at","DESC")->paginate(10);
 }
+public static function GeoPost($geo){
+    
+}
 
 public static function deletePost($id){
     if(gettype($id)==='array'){
@@ -425,40 +428,21 @@ public function EdetSostPost($sost=0){
      $this->chtaem_at = NULL;
      $this->save();
      return 1;}      
-     
- public static function OtchetPostSostajnijCount(){
-  if((Auth::check())&& (Auth::user()->pravo===88)){ 
-    $snjt_post = Post::where('sostoynia','=',1)->where('chtaem_at','<',date("y.m.d"))->get();
-   
-    $i = 0;
-    if($snjt_post->count()!=0){
-    foreach ($snjt_post as $post){
-    $snjt_array[$i]["id"] = $post->id;
-    $snjt_array[$i]["title"] = $post->title;
-    $snjt_array[$i]["email"] = $post->email;
-    $i++; 
-    }} else { $snjt_array = 0; }
-    $snjt_post = Post::where('sostoynia','=',2)->where('deletetaem_at','<',date("y.m.d"))->get();
-     $value[0] = $snjt_array;
-      unset($snjt_array);       
-    if($snjt_post->count()!=0){
-    $i = 0;
+public static  function listChtaem_at(){
+    return Post::where('sostoynia','=',1)->where('chtaem_at','<',date("y.m.d"))->get();
+}
 
-    foreach ($snjt_post as $post){
-    $snjt_array[$i]["id"] = $post->id;
-    $snjt_array[$i]["title"] = $post->title;
-    $snjt_array[$i]["email"] = $post->email;
-    $i++; 
-    }} else { $snjt_array = 0; }
-    
-     $value[1] = $snjt_array;
-      
-    return  $value; 
- }else{return ;}
- 
+public static function listDeletetaem_at(){
+    return Post::where('sostoynia','=',2)->where('deletetaem_at','<',date("y.m.d"))->get();
+}
+
+    public function PostNaDelet(){
+       if((Auth::check())&& (Auth::user()->pravo===88)){ 
+           return dd($this -> created_at);
+       }  
     }
-     
-public static function adminAbdeitPostSost(){
+
+        public static function adminAbdeitPostSost(){
  if((Auth::check())&& (Auth::user()->pravo===88)){ 
         $data = Post::OtchetPostSostajnijCount();
   if($data[0]!==0){  

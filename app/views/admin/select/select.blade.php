@@ -1,6 +1,6 @@
 @extends('admin.template.main')
 @section('title')
-Обубликованные обьявления
+Настройки системы
 @stop      
 @section('content')
 @if((Auth::check())&& (Auth::user()->pravo===88))

@@ -341,8 +341,8 @@ function Button(ObjectP){
        this.html = ObjectP.html || null,
        this.ObjectForm = ObjectP.ObjectForm,
        this.Fn = ObjectP.Fn || null; 
-       this.delegirovanie = ObjectP.delegirovanie || false; 
-        
+       this.delegirovanie = ObjectP.delegirovanie || false;
+
        this.QjObjectUpdating = function(){
            if(this.id !== null){
               this.QjObject = $("#"+this.id);
@@ -794,8 +794,6 @@ if($("div").is("#announcement")){
              Parameter.Announcement[postId].post = $('div.post'+postId);
              var title = Announcement[postId].post.find('.title-annoucement div.post-a-h3');
              var textPost = Announcement[postId].post.find('.title_zag');
-             console.log(title);
-            // Parameter.Announcement[postId].post.css('padding-bottom','8px');
              Parameter.Announcement[postId].post.find('.row').hide(300);
              Parameter.Announcement[postId].post.append('<div class="row row-2 post-dell"><div class="delete-post col-md-10">'+title.html()+textPost.html()+'</div><div class="col-md-2"><button type="button" value="'+postId+'" class="button-delet-post btn btn-default">Отменить</button></div></div></div>');
              Parameter.Announcement[postId].delete = Parameter.Announcement[postId].post.find(".delete-post").parent("div.row");
@@ -809,9 +807,7 @@ if($("div").is("#announcement")){
                 Parameter.Announcement[postId].delete.hide(300);
                 Parameter.Announcement[postId].delete.remove();
                 Parameter.Announcement[postId].post.find('.row').show(300);
-                
              };
- 
              FspanPostDelete.Parameter.ArrayButtonPost[postId] = new Button({QjObject:Parameter.Announcement[postId].post.find("button"), Fn:ArrayButtonPostFn});
              AnnoucementPanel.AddInput(postId, "delet[]");
              AnnoucementPanel.Show();

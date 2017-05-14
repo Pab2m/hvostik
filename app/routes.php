@@ -39,6 +39,7 @@ Route::post('/fyurer/select/detail/addnotdubal',  'AdminController@selectDetailA
 Route::post('/fyurer/select/delete',  'AdminController@selectDelete');
 Route::post('/fyurer/select/delete/site/table','AdminController@adminSelectSity');
 Route::post('/fyurer/select/site/edit',  'AdminController@adminSelectSityEdit');
+Route::get('/fyurer/config',  'AdminController@ConfigSistem');
 
 Route::post('/registration','UserController@register');
 Route::get('/registration/{id}/{activation_code}','UserController@getActivate');
@@ -69,6 +70,8 @@ Route::get('/search/data/{ajax}','SearchController@searchData');
 Route::get('/test/',function(){
 return View::make('password.reset');
 });
+
+
 Route::get('/test/form/' ,function(){ return View::make('form');});
 
 //----------------------------------------
@@ -85,7 +88,7 @@ Route::post('/ajax/user/message','AjaxController@UserMessage');
 Route::post('/ajax/admin/postsost','AjaxController@AdminPostSost');
 Route::get('/ajax/admin/schetpost','AjaxController@AdminPostCount');
 Route::post('/ajax/admin/datepost','AjaxController@AdminPostEditDate');
-Route::get('/ajax/admin/postsost/control','AdminController@adminControlPost');
+Route::get('/ajax/admin/annoucement/number','AdminController@adminControlPost');
 Route::post('/ajax/admin/apdeitpost','AdminController@adminControlAbdeitPostSost');
 Route::post('/ajax/admin/json/update','AdminController@JsonUpdate');
 Route::get('/ajax/json/update','AdminController@JsonUpdate');

@@ -1,6 +1,4 @@
 
-
-
 function translit(text){
         text = text.toLowerCase();
 	var space = '-'; 	
@@ -36,7 +34,13 @@ function translit(text){
 	
 return	result;	
 }
-
+function DateParsePrint(DateStr){
+      var today = new Date(DateStr);
+      var dd = String(today.getDate());  
+      var mm = String(today.getMonth()+1); //Январь это  0!
+      var yyyy = today.getFullYear();
+      return (dd.length < 2 ? ('0'+dd):dd)+'.'+(mm.length < 2 ? ('0'+mm):mm)+'.'+yyyy;
+}
 
 var ButtonActive = false;  
 function SchetPost(){
@@ -758,10 +762,137 @@ $("form#postEdit").on("click", "button#date-save", function(){
       
   }
          ); 
-
 });
 
-$("button#postControl").on("click",function(){
+// Таблица с настройками
+if($("div").is("#AllConfig-admin")){
+    
+function TableConfigUpdata(Object){
+var ObjectP = Object || {};  
+var Fn = {};
+Fn.Parameter = ButtonActive;
+Fn.Fn = function(Parameter,elem, zhis){}; 
+this.ButtonOtion = new Button({class:"ButtonUpdataConfig",QjObject:ObjectP.ButtonOtionJq || $("span.ButtonUpdataConfig"), parentDiv:"table", delegirovanie:true});
+
+var ButtonActive = {active:false};
+this.ButtonOtion.QjObject.on("click", function(){
+   ButtonActive = new TrTableActive({jQ:$(this), TrTableActive:ButtonActive, ButtonsFn:ObjectP.ButtonsFn});
+});    
+
+}
+    
+   var ButtonUpdataConfigFn = {};
+   ButtonUpdataConfigFn.Fn = function(){
+      
+   }; 
+   
+   var ButtonUpdataConfig = new Button({QjObject:$(".ButtonUpdataConfig"), Fn:ButtonUpdataConfigFn}); 
+   
+    }
+
+var AnnoucementPostAdmin = function(){
+    this.AnnoucementActiv = 0;
+    this.AnnoucementPasiv = 0;
+    this.AnnoucementDelet = 0;
+
+        this.AnnoucementRequest = function(){
+            var snjtPostCount = 0, deletPostCount = 0, snjtPost, deletPost, i; 
+             $.get("/ajax/admin/annoucement/number",
+              function(data){    
+                data = JSON.parse(data);
+                snjtPost = JSON.parse(data[0]);
+                deletPost = JSON.parse(data[1]);
+                if(data[0]!="0"){snjtPostCount = snjtPost.length;} 
+                if(data[1]!="0"){deletPostCount = deletPost.length;}    
+                var postAdmin = $("#postAdmin #div-sost-posts").show(300); 
+                postAdmin.find("#snjtPostCount").text(snjtPostCount);          
+                postAdmin.find("#deletPostCount").text(deletPostCount); 
+
+            var AnnoucementPostOtcet = new Button({id:"otchet-sostpost",
+            Fn:{Parameter:{snjtPostCount:snjtPostCount, deletPostCount:deletPostCount,snjtPost:snjtPost,deletPost:deletPost}, 
+            Fn:function(Parameter,elem,zhis){ 
+            var ButtonOk = {};
+                ButtonOk.Parameter = {};
+                ButtonOk.Fn = function(Parameter){
+                            alert(88);
+               }; 
+               ButtonOk.text = "Снять/Удалить";
+ 
+               var str1 ="<h3>Объявленния подляжат снятию</h3>"
+                        +'<table class="table table-bordered">'
+                        +'<tr><td>#</td><td>title</td><td>автор</td><td>Дата создания</td></tr>'; 
+                        for(i = 0; i < Parameter.snjtPostCount; i++){
+                         str1+="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+Parameter.snjtPost[i]['id']+"'>"+Parameter.snjtPost[i]['title']+"</a></td><td>"+Parameter.snjtPost[i]['email']+"</td><td>"+DateParsePrint(Parameter.snjtPost[i]['created_at'].date)+"</td></tr>";
+                        }
+                        if(i == Parameter.deletPostCount){
+                          str2 += "<tr><td colspan='4' align='center'>Объявлений Нет!!!</td></tr>";
+                          }
+                        str1+="</table>";
+                var str2 ="<h3>Объявленния подляжат удаления</h3>"
+                           +'<table class="table table-bordered">'
+                           +'<tr><td>#</td><td>title</td><td>автор</td><td>Дата создания</td></tr>';
+                    for(i = 0; i < Parameter.deletPostCount; i++){
+                       str2+="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+Parameter.deletPost[i]['id']+"'>"+Parameter.deletPost[i]['title']+"</a></td><td>"+Parameter.deletPost[i]['email']+"</td><td>"+Parameter.deletPost[i]['created_at']+"</td><td>"+DateParsePrint(Parameter.snjtPost[i]['created_at'].date)+"</td></tr>";
+                    }
+                    if(i == Parameter.deletPostCount){
+                        str2 += "<tr><td colspan='4' align='center'>Объявлений Нет!!!</td></tr>";
+                    }
+                        str2+="</table>";
+            var AnnoucementPostOtcetBodyHtml = str1 + str2;
+                delete str1,str2; 
+                    
+               var myModalAnnoucementPostOtcet = new myModal({
+                   title:'Объявленния на снятия|удаления',
+                   bodyHtml:AnnoucementPostOtcetBodyHtml,
+                   ButtonOk:ButtonOk
+                });
+                myModalAnnoucementPostOtcet.Show();
+            }
+           }});
+             }
+            );     
+
+// $("#postAdmin").on("click","#otchet-sostpost",function(){
+//  
+//    var myModal = $('#myModal');  
+//    myModal.find('h4').text('Объявленния на снятия|удаления');
+//    myModal.find('button.btn-primary').attr("class","btn-primary btn").attr("id","abteitPostOk").text("Снять/Удалить");
+//    myModal.find('button.btn-default').attr("class","btn-default btn").text("Отменить"); 
+//    var str1 ="<h3>Эте объявленния подляжат снятию</h3>"
+//            +'<table class="table table-bordered">'
+//            +'<tr><td>#</td><td>title</td><td>автор</td></tr>';
+//    for(var i=0;i<snjtPostCount;i++){
+//        str1+="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+snjtPost[i]['id']+"'>"+snjtPost[i]['title']+"</a></td><td>"+snjtPost[i]['email']+"</td></tr>";
+//    }
+//    str1+="</table>";
+//    var str2 ="<h3>Эте объявленния подляжат удаления</h3>"
+//            +'<table class="table table-bordered">'
+//            +'<tr><td>#</td><td>title</td><td>автор</td></tr>';
+//    for(var i=0;i<deletPostCount;i++){
+//        str2+="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+deletPost[i]['id']+"'>"+deletPost[i]['title']+"</a></td><td>"+deletPost[i]['email']+"</td></tr>";
+//    }
+//    str2+="</table>";
+//     myModal.find('div.modal-body').html('<div class="row" id="table"><div class="col-md-11 col-sm-11">'+(str1+str2)+'</div></div>');           
+//     myModal.modal('show');
+//});
+         
+
+        }
+    this.AnnoucementRequest();
+    };
+if($("div").is("#postAdmin")){    
+       var AnnoucementPostAdminButton = new Button({id:"postControl",
+        Fn:{Parameter:{}, 
+            Fn:function(Parameter,elem,zhis){ 
+             AnnoucementPostAdmin();
+            }
+           }
+        });
+
+}
+
+
+$("button#postControl88").on("click",function(){
     var snjtPostCount,deletPostCount,snjtPost;
          $.get("/ajax/admin/postsost/control",
   function(data){
@@ -827,18 +958,6 @@ $("button#postControl").on("click",function(){
  
 });
 
-$("#postAdmin").on("click","#apdeitSostPost",function(){
-var myModal = $('#myModal');  
-    myModal.find('h4').text('Вы действительно хотите снять/удалить текущии объявленния?');
-    myModal.find('button.btn-primary').attr("class","btn-primary btn").attr("id","abteitPostOk").text("Снять/Удалить");
-    myModal.find('button.btn-default').attr("class","btn-default btn").text("Отменить");
-    
-    myModal.modal('show');
-    
-
-    
-    
-});
 
  $("#myModal").on("click","#abteitPostOk",function(){
 

@@ -120,12 +120,45 @@ public function adminUsers(){
     } 
     
 }
+public static function OtchetPostSostajnijCount(){
+  if((Auth::check())&& (Auth::user()->pravo===88)){  
+    $snjt_post = Post::listChtaem_at();
+    $i = 0;
+    if($snjt_post->count()!=0){
+    foreach ($snjt_post as $post){
+        $snjt_array[$i]["id"] = $post->id;
+        $snjt_array[$i]["title"] = $post->title;
+        $snjt_array[$i]["email"] = $post->email;
+        $snjt_array[$i]["created_at"] = $post->created_at; 
+        $i++; 
+    }} else { $snjt_array = 0; }
+    $snjt_post = Post::listDeletetaem_at();
+     $value[0] = $snjt_array;
+      unset($snjt_array);       
+    if($snjt_post->count()!=0){
+    $i = 0;
+
+    foreach ($snjt_post as $post){
+        $snjt_array[$i]["id"] = $post->id;
+        $snjt_array[$i]["title"] = $post->title;
+        $snjt_array[$i]["email"] = $post->email;
+        $snjt_array[$i]["created_at"] = $post->created_at;
+    $i++; 
+    }} else { $snjt_array = 0; }
+    
+     $value[1] = $snjt_array;
+      
+    return  $value; 
+ }else{return ;}
+ 
+    }
+
+
 public function adminControlPost(){
-    $data = Post::OtchetPostSostajnijCount();
+    $data = AdminController::OtchetPostSostajnijCount();
     $value[0] = json_encode($data[0]);
     $value[1] = json_encode($data[1]);
     return json_encode($value);   
-    
 }
 
 public function adminControlAbdeitPostSost() {
@@ -475,4 +508,11 @@ public function adminSelectSityEdit(){
                   )); 
   
     }
+    public function ConfigSistem(){
+    if((Auth::check())&& (Auth::user()->pravo===88)){ 
+       $confiBd = TableBd::TableAll("config");
+    return View::make('admin.config.index', array('confiBd'=> $confiBd));   
+      } else {
+     return View::make('errors.message', array('message'=>'Страница не найдина','redirect'=>false));
+    } }
     }

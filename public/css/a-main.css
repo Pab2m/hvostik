@@ -117,7 +117,7 @@ button#button-json-updat{
     margin-top:9px; 
 }
 
-span.edit-pole{
+span.edit-pole, span.ButtonUpdataConfig{
     display: inline-block;
     height: 25px;
     width: 25px;
@@ -127,6 +127,9 @@ span.edit-pole{
     cursor: pointer;
 }
 span.edit-pole:hover{
+    color:#3399FF;
+}
+span.ButtonUpdataConfig:hover{
     color:#3399FF;
 }
 #table-noregion  td div.name div,#table-noregion  td div.value div,#table-noregion  td div.N div,
@@ -153,4 +156,7 @@ span.addition{
 }
 tr.add td{
     background:#DEECF9;
+}
+.table-responsive{
+    padding-top: 20px;
 }
