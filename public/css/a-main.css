@@ -160,3 +160,6 @@ tr.add td{
 .table-responsive{
     padding-top: 20px;
 }
+#ButtonsWrap button{
+    margin: 0 5px 0 5px; 
+}

@@ -105,6 +105,7 @@ function InputDate(){
      }
 
  var TrTableActive = function(ObjectP){   
+    var ButtonHide = ObjectP.ButtonHide || false; 
     var SpanJq = ObjectP.jQ;
     var ButtonsWrapJq = $("<div id='ButtonsWrap'></div>");
     var tdClick = SpanJq.parent("td");
@@ -119,10 +120,21 @@ function InputDate(){
     Buttons.Delete = new Button({
             html:"<button id='delete' class='btn btn-default optionButton'>Удалить</button>"
         });  
+        
+    Buttons.Save.QjObject.on("click", function(){ 
+         ObjectP.ButtonsFn.Save({InputEditName:InputEditName, name:name, value:value, zhis:zhis,tdName:tdName})}
+     );
+     
+    Buttons.Delete.QjObject.on("click",function(){
+         ObjectP.ButtonsFn.Delete({InputEditName:InputEditName, value:value, htmlThis:this})
+    });     
     var InputEditName = new inputUl({
         id:"InputEdit",
         QjObject:$("<input id='InputEditName' class='form-control' value=''/>")}
     );          
+   if(ObjectP.ButtonHide != false){
+        delete Buttons[ButtonHide];    
+    }
     for(var key in Buttons){
            Buttons[key].QjObject.hide();
            Buttons[key].QjObject.val(value);
@@ -137,9 +149,9 @@ function InputDate(){
          var additionBool = true; 
         }
          for(var key in Buttons){
-         Buttons[key].QjObject.hide(300).remove();
-         delete  Buttons[key];
+         Buttons[key].QjObject.hide(300);
          }
+        Buttons.Save.QjObject.parent("div").remove();
          delete Buttons;
          this.active = false;
          SpanJq.fadeIn(250);
@@ -155,7 +167,6 @@ function InputDate(){
          tdName.fadeIn(300);
          delete InputEditName;
      };
-     
     if(ObjectP.TrTableActive.active){
        ObjectP.TrTableActive.CancellingInput();  
        ObjectP.TrTableActive.active = false;
@@ -175,14 +186,8 @@ function InputDate(){
     tdName.fadeOut(250);
     InputEditName.val(SpanJq.attr('data-name'));
     tdName.parent("td").append(InputEditName.QjObject);
-    InputEditName.QjObject.fadeIn(300);  
-     Buttons.Save.QjObject.on("click", function(){ 
-         ObjectP.ButtonsFn.Save({InputEditName:InputEditName, name:name, value:value, zhis:zhis,tdName:tdName})});
-     
-    Buttons.Delete.QjObject.on("click",function(){
-         ObjectP.ButtonsFn.Delete({InputEditName:InputEditName, value:value, htmlThis:this})
-    }); 
-     
+    InputEditName.QjObject.fadeIn(300); 
+      
     var inputName = tdClick.find("div.name");
 
     var inputNameContent =  inputName.find(".content");
@@ -190,8 +195,7 @@ function InputDate(){
     this.TrClick = function(){
         return trClick;
     };
-    
-    
+   
  return this;
     }
 
@@ -203,7 +207,7 @@ function InputDate(){
     }
      }
      
-function TableTdWidthMax(Object){
+function TableTdWidthMax(Object){   
 var ObjectP = Object || {};  
 var Fn = {};
 Fn.Parameter = ButtonActive;
@@ -212,7 +216,7 @@ this.ButtonOtion = new Button({class:"edit-pole",QjObject:ObjectP.ButtonOtionJq 
 
 var ButtonActive = {active:false};
 this.ButtonOtion.QjObject.on("click", function(){
-   ButtonActive = new TrTableActive({jQ:$(this), TrTableActive:ButtonActive, ButtonsFn:ObjectP.ButtonsFn});
+   ButtonActive = new TrTableActive({jQ:$(this), TrTableActive:ButtonActive, ButtonsFn:ObjectP.ButtonsFn, ButtonHide:ObjectP.ButtonHide});
 });    
 
 }
@@ -721,7 +725,80 @@ var ButtonAddSelect = new Button({QjObject:$("button#button-create-element"), Fn
   } 
   }
 
- 
+   if($("div").is("#table_config_updata")){
+    //  TrTableActive({jQ:$(this), TrTableActive:ButtonActive, ButtonsFn:ObjectP.ButtonsFn, ButtonHide:"Delete"});
+        
+      var ButtonsFn = {};
+      ButtonsFn.Save = function(Object){  
+            var ButtonOk = {};
+            var SavemyModal = undefined;
+             ButtonOk.Parameter = {select:$("#table_select_updata table").attr("data-select"), value:Object.InputEditName.value, id:Object.value};
+             ButtonOk.Fn = function(Parameter){
+                $.post("/fyurer/select/detail",
+                     { 
+                       id: Parameter.id, 
+                       select: Parameter.select,
+                       name: Parameter.value,
+                       name_en: translit(Parameter.value)
+                     },
+                 function(Data){
+                  Parameter.myModal.Hide();   
+                  Data = JSON.parse(Data);
+                   var ButtonOk = {}; 
+                      ButtonOk.Parameter = {TrTableActive:Object.zhis};
+                      ButtonOk.Fn = function(Parameter){
+                                    Parameter.myModal.ButtonNone.QjObject.show(200);
+                                    Parameter.myModal.ButtonOk.textEdit = "Сохранить изменения";
+                                    Parameter.TrTableActive.CancellingInput();
+                                    Parameter.myModal.Hide();
+                                    };
+                 if(Data.reply === 1){
+                      
+                      var Modal = new myModal({title:"Все хорошо!!!", bodyHtml: Data.html,ButtonOk:ButtonOk});
+                          Modal.ButtonNone.textEdit = "Ок";
+                          Modal.ButtonOk.QjObject.hide();
+                      var ObjectP = {}; 
+                      ObjectP.Parameter = {TrTableActive:Object.zhis};
+                      ObjectP.Fn = {Fn:function(Parameter){
+                                    Object.tdName.text(Data.data);
+                                    Parameter.TrTableActive.CancellingInput("изменен"); 
+                                    Modal.ButtonOk.QjObject.show();
+                                    Modal.ButtonNone.textEdit = "Отмена";
+                                    }
+                      };
+                      Modal.ButtonNone.FunctionEdit = ObjectP;
+                      Modal.Show();                                          
+                 } else {
+                  if(Data.reply === 0){
+                      var Modal = new myModal({title:"Упс!!! Ошибочка!!!", bodyHtml: "<b>Во время выполнения запроса произошла ошибка!</b>",ButtonOk:ButtonOk});
+                      Modal.ButtonOk.textEdit = "ОК";
+                      Modal.ButtonNone.QjObject.hide();
+                      Modal.Show();
+                  } else {
+                     if(Data.reply === 2){
+                      var ButtonOk = {}; 
+                      ButtonOk.Parameter = {TrTableActive:Object.zhis};
+                                   ButtonOk.Fn = function(Parameter){
+                                   Parameter.myModal.Hide();
+                                    };                         
+                      var Modal = new myModal({title:"Сообщаем!!!", bodyHtml: Data.html,ButtonOk:ButtonOk});
+                      Modal.ButtonOk.textEdit = "ОК";
+                      Modal.ButtonNone.QjObject.hide();
+                      Modal.Show();  
+                     } 
+                  } 
+                 }
+             }
+             );
+ };
+             var SavemyModal = new myModal({title:"Сохранить внесеные изменения?", bodyHtml:"<p>Внести в изменения в Базу Данных?</p><p>"+Object.name+" на <b>"+Object.InputEditName.value+"</b></p>",ButtonOk:ButtonOk});
+             SavemyModal.Show();
+      };
+ButtonsFn.Cancelling = function(Object){
+          Object.zhis.CancellingInput()();
+      };
+TableTdWidthMax({ButtonsFn:ButtonsFn, ButtonHide:"Delete"}); 
+   }
  $("#panelInput").on("click","input.sost", function(){
      var idSo = $(this).data("idSo");
       $("#sostPost").html("<img width='34' height='34' src='/img/loading-spinning-bubbles.svg'/>");       

@@ -13,22 +13,22 @@
     @if(count($confiBd) === 0)
         Настроек системы нет!!!
     @else
- <div class="table-responsive">
-  <table class="table">
+ <div id="table_config_updata" class="table-responsive">
+  <table  class="table" data-select="config">
       <tr>
           <td>№</td>
           <td>Имя</td>
           <td>Значения</td>
           <td>Комментарий</td>
-          <td><span class="glyphicon glyphicon-cog"></span></td>
+          <td class="option">Опции</td>
       </tr>
       @foreach($confiBd as $value)
        <tr>
           <td>{{$value->id}}</td>
-          <td>{{$value->name}}</td>
+          <td class="name"><div class="content">{{$value->name}}</div></td>
           <td>{{$value->config}}</td>
           <td>{{$value->comment}}</td>
-          <td><span class="ButtonUpdataConfig glyphicon glyphicon-cog" data-value="{{$value->id}}" data-name="{{$value->name}}"></span></td>
+          <td td class="option"><span class="edit-pole ButtonUpdataConfig glyphicon glyphicon-cog" data-value="{{$value->id}}" data-name="{{$value->name}}"></span></td>
       </tr>
       @endforeach
   </table>
