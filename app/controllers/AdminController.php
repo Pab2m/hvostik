@@ -384,9 +384,13 @@ public function JsonUpdate($value_p = 'regions'){
             } 
 }
 
-public static function SelectFiltor($value){
+public static function SelectFiltor($value, $pravo = false){
          $bre = 0;
          $selects = array("countrys","regions","citys","poroda_koshek", "poroda_sobak","tip","tovari_select","uslugi_select","category");    
+         if($pravo && (Auth::user()->pravo===88)){
+            $table_furer = array("config");
+            $selects = array_merge($table_furer, $selects);
+         }
          foreach($selects as $select){
             if($select == $value){
                 $bre = 1;
@@ -400,13 +404,21 @@ public static function SelectFiltor($value){
     //2 - ошибка с коментарием
 public function selectDetailEdit(){ 
          if((Auth::check())&& (Auth::user()->pravo===88)){ 
-             $data=Input::all(); 
-             if(AdminController::SelectFiltor($data["select"])==1){
+             $data=Input::all(); $pravo = false;
+             if((isset($data["pravo"])) && ($data["pravo"] == true)){
+                $pravo = true; 
+             }
+             if(AdminController::SelectFiltor($data["select"], $pravo)==1){
+                 if(!isset($data["column_edit"])){
+                    $column_edit  = "name"; 
+                 } else {
+                    $column_edit = strip_tags($data["column_edit"]);
+                 }
                  $select = strip_tags($data["select"]);
                  $id = (int)strip_tags($data["id"]);
-                 $name = strip_tags($data["name"]);
-                 $ArrayData = array("name"=>$name);
-                 if($data["name_en"]){
+                 $name = strip_tags($data[$column_edit]);
+                 $ArrayData = array($column_edit => $name); 
+                 if(isset($data["name_en"])){
                      $ArrayData["name_en"] = strip_tags($data["name_en"]);
                  }
                  $OldValue = TableBd::TableId($select,$id);

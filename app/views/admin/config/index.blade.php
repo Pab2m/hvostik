@@ -25,10 +25,10 @@
       @foreach($confiBd as $value)
        <tr>
           <td>{{$value->id}}</td>
-          <td class="name"><div class="content">{{$value->name}}</div></td>
-          <td>{{$value->config}}</td>
+          <td class=""><div class="content ">{{$value->name}}</div></td>
+          <td><div class="content name">{{$value->config}}</div></td>
           <td>{{$value->comment}}</td>
-          <td td class="option"><span class="edit-pole ButtonUpdataConfig glyphicon glyphicon-cog" data-value="{{$value->id}}" data-name="{{$value->name}}"></span></td>
+          <td td class="option"><span class="edit-pole ButtonUpdataConfig glyphicon glyphicon-cog" data-value="{{$value->id}}" data-name="{{$value->config}}"></span></td>
       </tr>
       @endforeach
   </table>

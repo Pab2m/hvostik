@@ -110,6 +110,12 @@ function InputDate(){
     var ButtonsWrapJq = $("<div id='ButtonsWrap'></div>");
     var tdClick = SpanJq.parent("td");
     tdClick.append(ButtonsWrapJq); 
+    var name = SpanJq.attr('data-name'); 
+    var value = SpanJq.attr('data-value'); 
+    var trClick = tdClick.parent("tr");
+    var tdName = trClick.find("div.name"); 
+    SpanJq.fadeOut(250);  
+    this.active = true;
     var Buttons = {};  
     Buttons.Save = new Button({
             html: "<button id='save' class='btn btn-default optionButton'>Сохранить</button>"
@@ -175,16 +181,10 @@ function InputDate(){
     Buttons.Cancelling.QjObject.on("click", function(){
       ObjectP.ButtonsFn.Cancelling({zhis:zhis});
     });
-    var name = SpanJq.attr('data-name'); 
-    var value = SpanJq.attr('data-value'); 
-    var trClick = tdClick.parent("tr");
-    var tdName = trClick.find("div.name"); 
-    SpanJq.fadeOut(250);  
-    this.active = true;
-    
+
     InputEditName.QjObject.hide();
     tdName.fadeOut(250);
-    InputEditName.val(SpanJq.attr('data-name'));
+    InputEditName.val(SpanJq.attr('data-name')); 
     tdName.parent("td").append(InputEditName.QjObject);
     InputEditName.QjObject.fadeIn(300); 
       
@@ -375,7 +375,7 @@ var NewJsonButton = new Button({id:"button-json-updat", oberka:"#json-panel", Fn
              SavemyModal.Show();
       };
       ButtonsFn.Cancelling = function(Object){
-          Object.zhis.CancellingInput()();
+          Object.zhis.CancellingInput();
       };
       ButtonsFn.Delete = function(Object){
            var ButtonOk = {};
@@ -732,16 +732,17 @@ var ButtonAddSelect = new Button({QjObject:$("button#button-create-element"), Fn
       ButtonsFn.Save = function(Object){  
             var ButtonOk = {};
             var SavemyModal = undefined;
-             ButtonOk.Parameter = {select:$("#table_select_updata table").attr("data-select"), value:Object.InputEditName.value, id:Object.value};
+             ButtonOk.Parameter = {select:$("#table_config_updata table").attr("data-select"), value:Object.InputEditName.value, id:Object.value, pravo:true}; console.log(ButtonOk.Parameter);
              ButtonOk.Fn = function(Parameter){
                 $.post("/fyurer/select/detail",
                      { 
                        id: Parameter.id, 
                        select: Parameter.select,
-                       name: Parameter.value,
-                       name_en: translit(Parameter.value)
+                       config: Parameter.value,
+                       column_edit: "config",
+                       pravo: Parameter.pravo
                      },
-                 function(Data){
+                 function(Data){ console.log(Data);
                   Parameter.myModal.Hide();   
                   Data = JSON.parse(Data);
                    var ButtonOk = {}; 
@@ -795,7 +796,7 @@ var ButtonAddSelect = new Button({QjObject:$("button#button-create-element"), Fn
              SavemyModal.Show();
       };
 ButtonsFn.Cancelling = function(Object){
-          Object.zhis.CancellingInput()();
+          Object.zhis.CancellingInput();
       };
 TableTdWidthMax({ButtonsFn:ButtonsFn, ButtonHide:"Delete"}); 
    }
@@ -816,7 +817,6 @@ TableTdWidthMax({ButtonsFn:ButtonsFn, ButtonHide:"Delete"});
             $("#aktiv-input-post input").attr("class","btn btn-default");
   }
          ); 
-   
    });
 $("form#postEdit").on("change", "#aktiv-input-post input", function(){
     $(this).attr("class","btn btn-default red");
