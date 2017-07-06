@@ -93,6 +93,7 @@ Route::post('/ajax/admin/apdeitpost','AdminController@adminControlAbdeitPostSost
 Route::post('/ajax/admin/json/update','AdminController@JsonUpdate');
 Route::get('/ajax/json/update','AdminController@JsonUpdate');
 Route::get('/ajax/json/bd/{bd}','AjaxController@TableBdJsonTab');
+Route::post("/ajax/admin/annoucement/shoot","AdminController@AnnoucementShoot");
 
 
-Route::get('/bd', "AdminController@adminSelectSity2");
+//Route::get('/test', "PostController@AnnoucementShoot");

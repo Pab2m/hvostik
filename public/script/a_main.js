@@ -44,11 +44,10 @@ function DateParsePrint(DateStr){
 
 var ButtonActive = false;  
 function SchetPost(){
-    
          $.ajax({
           url: "/ajax/admin/schetpost",
           success: function(data) {
-           var dataCount = JSON.parse(data); 
+          var dataCount = JSON.parse(data); 
            $("span#sost0").text(dataCount[0]);
            $("span#sost1").text(dataCount[1]);
            $("span#sost2").text(dataCount[2]);
@@ -148,7 +147,7 @@ function InputDate(){
            Buttons[key].QjObject.show(300);
     }  
     
-    this.CancellingInput = function(addition){
+    this.CancellingInput = function(addition){ 
         if(addition === undefined){
          var additionBool = false; 
         } else {
@@ -160,17 +159,18 @@ function InputDate(){
         Buttons.Save.QjObject.parent("div").remove();
          delete Buttons;
          this.active = false;
-         SpanJq.fadeIn(250);
-         InputEditName.QjObject.hide(200).remove();
+         SpanJq.fadeIn(250); 
+         InputEditName.QjObject.hide(200).remove(); 
          if(additionBool){
             if(tdName.is("span.addition")){
-            tdName.find("span.addition").fadeOut(200).remove();     
+            tdName.find("span.addition").fadeOut(200).remove(); 
             }
             tdName.append("<span class='addition'><sup>"+addition+"</sup></apan>"); 
          }
          name = InputEditName.value;
          SpanJq.attr({"data-name": name});
          tdName.fadeIn(300);
+         tdName.text(InputEditName.value);
          delete InputEditName;
      };
     if(ObjectP.TrTableActive.active){
@@ -288,7 +288,7 @@ $(document).ready(function(){
 }
 }   
   if($("div").is("#table_select_updata")){ 
-      if($("button").is("#button-json-updat")){
+     if($("button").is("#button-json-updat")){
         var NewJsonButtonFn = {};
         NewJsonButtonFn.Fn = function(Parameter,elem,zhis){ 
          $.ajax({
@@ -309,7 +309,7 @@ var NewJsonButton = new Button({id:"button-json-updat", oberka:"#json-panel", Fn
     NewJsonButton.value = NewJsonButton.QjObject.val();
 }
       var ButtonsFn = {};
-      ButtonsFn.Save = function(Object){  
+      ButtonsFn.Save = function(Object){
             var ButtonOk = {};
             var SavemyModal = undefined;
              ButtonOk.Parameter = {select:$("#table_select_updata table").attr("data-select"), value:Object.InputEditName.value, id:Object.value};
@@ -332,7 +332,7 @@ var NewJsonButton = new Button({id:"button-json-updat", oberka:"#json-panel", Fn
                                     Parameter.TrTableActive.CancellingInput();
                                     Parameter.myModal.Hide();
                                     };
-                 if(Data.reply === 1){
+                 if(Data.reply === 1){ 
                       
                       var Modal = new myModal({title:"Все хорошо!!!", bodyHtml: Data.html,ButtonOk:ButtonOk});
                           Modal.ButtonNone.textEdit = "Ок";
@@ -340,7 +340,7 @@ var NewJsonButton = new Button({id:"button-json-updat", oberka:"#json-panel", Fn
                       var ObjectP = {}; 
                       ObjectP.Parameter = {TrTableActive:Object.zhis};
                       ObjectP.Fn = {Fn:function(Parameter){
-                                    Object.tdName.text(Data.data);
+                                    Object.tdName.text(Data.data); 
                                     Parameter.TrTableActive.CancellingInput("изменен"); 
                                     Modal.ButtonOk.QjObject.show();
                                     Modal.ButtonNone.textEdit = "Отмена";
@@ -564,11 +564,11 @@ var ButtonAddSelect = new Button({QjObject:$("button#button-create-element"), Fn
                         var SavemyModalOkButton = {};
                         if(Data.reply == 1){
                             SavemyModalOkButton.Parameter = {};
-                            SavemyModalOkButton.Fn = function(ParameterOk){
-                            var region = RegionSelectJq.find("option[value='"+Parameter.option+"']").text();     
-                            ObjectP.zhis.CancellingInputSite();
-                            TrJq.find("div.td-region").text(region).attr({data:Parameter.option});
-                            ParameterOk.myModal.Hide();    
+                            SavemyModalOkButton.Fn = function(ParameterOk){ 
+                              var region = RegionSelectJq.find("option[value='"+Parameter.option+"']").text();     
+                              ObjectP.zhis.CancellingInputSite();
+                              TrJq.find("div.td-region").text(region).attr({data:Parameter.option});
+                              ParameterOk.myModal.Hide();    
                             };
                             var SavemyModalOk = new myModal({title:"Приказ выпалнин!", bodyHtml:Data.html,ButtonOk:SavemyModalOkButton});
                             SavemyModalOk.ButtonOk.textEdit = "Ок";
@@ -593,7 +593,7 @@ var ButtonAddSelect = new Button({QjObject:$("button#button-create-element"), Fn
        
         $("table#site").remove();       
         var RegionNameValue = objetThis.NameValue(); 
-        var divTb =$("div#table");
+        var divTb = $("div#table");
         divTb.html("<img width='34' height='34' src='/img/loading-spinning-bubbles.svg'/>");
         var tabHtml =  '<table class="table" id="site" data-select="citys">\n'
                       +'<thead>\n'
@@ -613,7 +613,7 @@ var ButtonAddSelect = new Button({QjObject:$("button#button-create-element"), Fn
                            +'<td><div class="td-region" data="'+objetThis.value+'">'+RegionNameValue+'</div></td>\n'
                            +'<td><div class="value id"><div class="content">'+item.id+'</div></div></td>\n'
                            +'<td><div class="name"><div class="content">'+ item.name +'</div></div></td>\n'
-                           +'<td class="option"><span class="edit-pole glyphicon glyphicon-cog" data-value="'+item.id+'" data-name="'+item.name+'"></span></td>\n'
+                           +'<td  class="option option-site"><span class="edit-pole glyphicon glyphicon-cog" data-value="'+item.id+'" data-name="'+item.name+'"></span></td>\n'
                            +'</tr>\n';
                     });
                     tr = tabHtml + tr +'</table>\n';
@@ -885,13 +885,30 @@ var AnnoucementPostAdmin = function(){
                 postAdmin.find("#snjtPostCount").text(snjtPostCount);          
                 postAdmin.find("#deletPostCount").text(deletPostCount); 
 
-            var AnnoucementPostOtcet = new Button({id:"otchet-sostpost",
+          var AnnoucementPostOtcet = new Button({id:"otchet-sostpost",
             Fn:{Parameter:{snjtPostCount:snjtPostCount, deletPostCount:deletPostCount,snjtPost:snjtPost,deletPost:deletPost}, 
             Fn:function(Parameter,elem,zhis){ 
-            var ButtonOk = {};
-                ButtonOk.Parameter = {};
+                var ButtonOk = {};
+                ButtonOk.Parameter = {snjtPost:Parameter.snjtPost};
                 ButtonOk.Fn = function(Parameter){
-                            alert(88);
+                        var IdArray = [];
+                        Parameter.snjtPost.forEach(function(item, i){
+                           IdArray.push(item.id)     
+                        });
+                    $.post("/ajax/admin/annoucement/shoot",
+                            {IdArray: JSON.stringify(IdArray)},
+                            function(data){
+                                 data = JSON.parse(data);
+                                 Parameter.myModal.Hide();
+                                 var myModalOtcet = new myModal({
+                                 title:"Внимание!",
+                                 bodyHtml:data["success"]+" объявления было снято, "+data["defeat"]+" - было помечена на удаление!"
+                                 });
+                                 myModalOtcet.ButtonOk.QjObject.hide();
+                                 myModalOtcet.ButtonNone.QjObject.text("Ok");
+                                 myModalOtcet.ButtonCloseHide();
+                                 myModalOtcet.Show();
+                            })
                }; 
                ButtonOk.text = "Снять/Удалить";
  
@@ -928,32 +945,6 @@ var AnnoucementPostAdmin = function(){
            }});
              }
             );     
-
-// $("#postAdmin").on("click","#otchet-sostpost",function(){
-//  
-//    var myModal = $('#myModal');  
-//    myModal.find('h4').text('Объявленния на снятия|удаления');
-//    myModal.find('button.btn-primary').attr("class","btn-primary btn").attr("id","abteitPostOk").text("Снять/Удалить");
-//    myModal.find('button.btn-default').attr("class","btn-default btn").text("Отменить"); 
-//    var str1 ="<h3>Эте объявленния подляжат снятию</h3>"
-//            +'<table class="table table-bordered">'
-//            +'<tr><td>#</td><td>title</td><td>автор</td></tr>';
-//    for(var i=0;i<snjtPostCount;i++){
-//        str1+="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+snjtPost[i]['id']+"'>"+snjtPost[i]['title']+"</a></td><td>"+snjtPost[i]['email']+"</td></tr>";
-//    }
-//    str1+="</table>";
-//    var str2 ="<h3>Эте объявленния подляжат удаления</h3>"
-//            +'<table class="table table-bordered">'
-//            +'<tr><td>#</td><td>title</td><td>автор</td></tr>';
-//    for(var i=0;i<deletPostCount;i++){
-//        str2+="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+deletPost[i]['id']+"'>"+deletPost[i]['title']+"</a></td><td>"+deletPost[i]['email']+"</td></tr>";
-//    }
-//    str2+="</table>";
-//     myModal.find('div.modal-body').html('<div class="row" id="table"><div class="col-md-11 col-sm-11">'+(str1+str2)+'</div></div>');           
-//     myModal.modal('show');
-//});
-         
-
         }
     this.AnnoucementRequest();
     };
@@ -965,75 +956,8 @@ if($("div").is("#postAdmin")){
             }
            }
         });
-
 }
 
-
-$("button#postControl88").on("click",function(){
-    var snjtPostCount,deletPostCount,snjtPost;
-         $.get("/ajax/admin/postsost/control",
-  function(data){
-      data = JSON.parse(data);
-      var snjtPost = JSON.parse(data[0]);
-      var deletPost = JSON.parse(data[1]);
-      if(data[0]!="0"){  snjtPostCount = snjtPost.length;} else {snjtPostCount = 0;}
-      if(data[1]!="0"){ deletPostCount = deletPost.length;} else { deletPostCount = 0;}     
-        var str = "<div class='row'>"
-                  +"<div class='col-mg-12'>Объявлений на снятия: <b>"+snjtPostCount+"</b> шт<br>"
-                 +"Объявлений на удаление: <b>"+deletPostCount+"</b> шт<br></div>"
-                 +"</div>"
-                 +"<div class='row'>"
-                 +"<div class='col-md-12'>"
-                 +"<button id='otchet-sostpost' class='btn btn-default'>Посмотреть отчет по объявленниям</button>"
-                 +"</div></div>"
-                 +"<div class='row'>"
-                 +"<div class='col-md-12'>"
-                 +"<button id='apdeitSostPost' class='btn btn-default'>Удалить/Снять объявленния</button>"
-                 +"</div></div>" 
-                
-      $("#div-sost-posts").html(str);  
-      
- $("#postAdmin").on("click","#otchet-sostpost",function(){
-  
-    var myModal = $('#myModal');  
-    myModal.find('h4').text('Объявленния на снятия|удаления');
-    myModal.find('button.btn-primary').attr("class","btn-primary btn").attr("id","abteitPostOk").text("Снять/Удалить");
-    myModal.find('button.btn-default').attr("class","btn-default btn").text("Отменить"); 
-    var str1 ="<h3>Эте объявленния подляжат снятию</h3>"
-            +'<table class="table table-bordered">'
-            +'<tr><td>#</td><td>title</td><td>автор</td></tr>';
-    for(var i=0;i<snjtPostCount;i++){
-        str1+="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+snjtPost[i]['id']+"'>"+snjtPost[i]['title']+"</a></td><td>"+snjtPost[i]['email']+"</td></tr>";
-    }
-    str1+="</table>";
-    var str2 ="<h3>Эте объявленния подляжат удаления</h3>"
-            +'<table class="table table-bordered">'
-            +'<tr><td>#</td><td>title</td><td>автор</td></tr>';
-    for(var i=0;i<deletPostCount;i++){
-        str2+="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+deletPost[i]['id']+"'>"+deletPost[i]['title']+"</a></td><td>"+deletPost[i]['email']+"</td></tr>";
-    }
-    str2+="</table>";
-     myModal.find('div.modal-body').html('<div class="row" id="table"><div class="col-md-11 col-sm-11">'+(str1+str2)+'</div></div>');           
-     myModal.modal('show');
-});
-         
-  }
-         ); 
- 
- $("#myModal").on("click","a.windOpen",function(event){
-     event.preventDefault();
-    var url = $(this).attr('href');
-    var name = $(this).text();
-   //  window.open(url, name);
-  var newWin = window.open(url, 'example', 'width=auto,height=auto');
-  newWin.onload = function() {
-  div.style.fontSize = '30px'
-  body.insertBefore();
-  newWin.document.write("<script>window.opener.document.getElementById('navebar_id').style.display = 'none';</script>");
-} 
- });
- 
-});
 
 
  $("#myModal").on("click","#abteitPostOk",function(){

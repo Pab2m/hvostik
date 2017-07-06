@@ -43,16 +43,11 @@ public static function AllPost($sostoynia=1){
 public static function IdPost($id){
     $id=(int)$id;
     $post=Post::where('id', '=', $id)->get()->first(); 
-    //print_r($post);
 return $post;}
 
 public static function PostsUser($id){
     return Post::where('id_user', '=', Auth::user()->id)->where('sostoynia','=',$id)->orderBy("created_at","DESC")->paginate(10);
 }
-public static function GeoPost($geo){
-    
-}
-
 public static function deletePost($id){
     if(gettype($id)==='array'){
         $i=0;
@@ -436,13 +431,20 @@ public static function listDeletetaem_at(){
     return Post::where('sostoynia','=',2)->where('deletetaem_at','<',date("y.m.d"))->get();
 }
 
-    public function PostNaDelet(){
-       if((Auth::check())&& (Auth::user()->pravo===88)){ 
-           return dd($this -> created_at);
-       }  
+public function PostNaDelet(){
+       if(!Cache::has('deletetaem_at')) {
+          $deletetaem_at = TableBd::TableId("config", 2, "config"); 
+       } else{
+          $deletetaem_at = Cache::get('deletetaem_at');
+       }
+        $this -> sostoynia = 2;
+        $Date = new DateTime($this -> deletetaem_at);
+        $Date->sub(new DateInterval('P'.$deletetaem_at.'D'));
+        $this -> deletetaem_at = $Date->format('Y-m-d H:i:s');
+        return $this->save();
     }
 
-        public static function adminAbdeitPostSost(){
+public static function adminAbdeitPostSost(){
  if((Auth::check())&& (Auth::user()->pravo===88)){ 
         $data = Post::OtchetPostSostajnijCount();
   if($data[0]!==0){  

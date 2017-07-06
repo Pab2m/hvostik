@@ -1,9 +1,9 @@
 <?php
 class AdminController  extends BaseController{
         
-    public function UserControlAdmin(){
-           if((Auth::check())&& (Auth::user()->pravo===88)){ 
-               return;   
+    public static function UserControlAdmin(){
+        if((Auth::check())&& (Auth::user()->pravo===88)){ 
+               return true;   
        }else{
       return View::make('errors.message', array('message'=>'Страница не найдина','redirect'=>false));    
       }
@@ -285,7 +285,7 @@ public function adminSelect() {
 
 
 public function adminSelectSity(){
-    $this->UserControlAdmin(); 
+    AdminController::UserControlAdmin(); 
     $data=Input::all();
     $sity = TableBd::Sity((int)$data["region"]);
     return json_encode($sity);
@@ -362,7 +362,7 @@ case 'uslugi':
 
 
 public function JsonUpdate($value_p = 'regions'){
-    $this -> UserControlAdmin();
+   AdminController::UserControlAdmin();
      switch ($value_p) {
          case 'regions':
             $tableBd = TableBd::TableAll("regions");
@@ -490,8 +490,8 @@ public function selectDelete(){
         }
 }
 public function adminSelectSityEdit(){
-    $this->UserControlAdmin();
-    $data = Input::all();
+    AdminController::UserControlAdmin();
+    $data = Input::all(); 
     $table = $data["select"];
     $id = (int)$data["id"];
     $name = strip_tags($data["name"]);
@@ -500,8 +500,8 @@ public function adminSelectSityEdit(){
                              'region_id' => (int)strip_tags($data["region_id"])
                             );
     if(($table == "citys") && ($id !='') && ($name != '')){
-        //$tb = TableBd::TableUpdate($table, $id, $arrayPoleUpdate);
-        $tb  = 1;
+       $tb = TableBd::TableUpdate($table, $id, $arrayPoleUpdate);
+      //$tb  = 1;
         if($tb){
             return json_encode(array(
                      "reply" => 1,
@@ -527,4 +527,20 @@ public function adminSelectSityEdit(){
       } else {
      return View::make('errors.message', array('message'=>'Страница не найдина','redirect'=>false));
     } }
+    
+    public function AnnoucementShoot(){
+     AdminController::UserControlAdmin();
+     $date_shoot = TableBd::TableId("config", 1, "config"); 
+     $Annoucement_shoot = Post::listChtaem_at();
+     $MainSuccess = 0; $Maindefeat = 0; 
+     $Annoucement_shoot -> each(function($item) use (&$MainSuccess, &$Maindefeat) {
+        if(true){//$item -> PostNaDelet()
+            $MainSuccess++;
+        } else {
+            $Maindefeat++;
+        } 
+     });
+     return json_encode(array("success"=> $MainSuccess, "defeat"=>$Maindefeat));
+}
+  
     }

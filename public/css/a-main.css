@@ -141,6 +141,9 @@ span.ButtonUpdataConfig:hover{
 #table-noregion td.option, #table-region td.option{
    width: 320px;    
 }
+.option-site{
+    width: 150px;
+}
 #table-noregion td.option button, #table-region td.option button{
     margin-right:5px; 
 }
@@ -160,6 +163,9 @@ tr.add td{
 .table-responsive{
     padding-top: 20px;
 }
+#ButtonsWrap{
+    width: 100%;
+}
 #ButtonsWrap button{
-    margin: 0 5px 0 5px; 
+    margin: 0 3px 0 3px; 
 }

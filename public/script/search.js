@@ -123,13 +123,12 @@ function TipSelect(bd, TipDataArg){ var SeletUlTrue = deleteSelekt(Catalog);
   }
     
 
-var SearchForm = new Form({id:"form#formSearch",button: new Button({id:"button-search", Fn:Sumbit})}); 
-
+ var SearchForm = new Form({id:"form#formSearch",button: new Button({id:"button-search", Fn:Sumbit})}); 
  var TextSerch = inputUl.inputUlSet({id:"#text", name:"post" ,metka:["TextSerch"], teg:"input",maxSize:100,ObjectForm:SearchForm,surely:true});  
- 
+         //Переделать под jquery deferred www.youtube.com/ watch?v= i8QQSJaBQdY
  var Region = new SeletUl({ObjectForm:SearchForm,id:"#region_select_search", name:"region_select" ,metka:["Region"] ,oberka:"div#searc_region",oberkaClass:"col-md-3",divContener:"form#searc-form"}),Site,Catalog;
-Region.HtmlGet();
-Region.JsonOptionSet("/json/regions.json", function(){
+ Region.HtmlGet();
+ Region.JsonOptionSet("/json/regions.json", function(){
         if((searchData != undefined) && ((searchData.region_select != undefined) || (searchData.region_select != undefined))){
           Region.Set(searchData.region_select);     
            var SeletUlTrue = deleteSelekt(Region);
@@ -175,8 +174,7 @@ var Catalog = new SeletUl({ObjectForm:SearchForm,id:"#category_select_search", n
           Catalog.Set(searchData.category_select);     
           
            if((searchData != undefined) && (searchData.category_select != undefined)){
-                      
-               
+                                   
         var PorodaShort = function(){ 
                          var fidOberka = $(Poroda.oberka).find(Poroda.id+"_chosen");
                          fidOberka.hide().css({"float":"left"}); 
@@ -238,7 +236,7 @@ var Catalog = new SeletUl({ObjectForm:SearchForm,id:"#category_select_search", n
 
    
    Catalog.OptionSet({option:"Все"});
-  Catalog.ObjectChange(
+   Catalog.ObjectChange(
         function(){ var bd = Catalog.valueArray[Catalog.value]; 
     var PorodaShort = function(){ 
                          var fidOberka = $(Poroda.oberka).find(Poroda.id+"_chosen");

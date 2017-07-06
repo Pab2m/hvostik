@@ -370,26 +370,59 @@ function Button(ObjectP){
             this.QjObject = null; 
          }  
        }; 
-       
+        /**
+         * Проверить есть ли событие eventname на элементе element
+         * @param object element jQuery-элемент
+         * @param string eventname название события
+         * @returns bool
+         */
+        var checkEvent = function(zhis) {
+            /**
+            * Получить список событий, которые висят на элементе
+            * @param object element jQuery элемент
+            * @returns object|false
+            */
+        var eventsList = function(zhis) {
+            //В разных версиях jQuery список событий получается по-разному
+           var events = $._data(zhis.QjObject.get(0), 'events');
+            if (events !== undefined) return events;
+              return events;
+        }
+            var events, ret = false;
+            events = eventsList(zhis);
+            if (events!==false) {
+                for (var key in events) {
+                    if (key == 'click') {
+                        ret = true;
+                    }
+                }
+            }
+            return ret;
+        }
+
+          
      if(this.Fn != null){
       var Parameter = ObjectP.Fn.Parameter || {};
       var Function = ObjectP.Fn.Fn || ObjectP.Fn || null; 
       
       if((Function !== undefined) ||(Function !== null)){  
           
-           var zhis = this;
+       var zhis = this;
+       if(!checkEvent(zhis)){
        if((this.delegirovanie) && (this.parentDiv !== false)){
         $("#"+this.parentDiv).on("click","."+this.class, function(){ 
             var elem = $(this); 
-            Function(Parameter,elem,zhis);   
+            Function(Parameter,elem,zhis);  
           });    
        } else {
            this.QjObject.on("click", function(){
                var elem = $(this);
                Function(Parameter,elem, zhis); 
+
            });
        }  
-   }
+   }}
+
     }
    Object.defineProperty(this, "textEdit", {
         set: function(value) {
@@ -479,7 +512,7 @@ var myModal = function(ObjectP){
     this.myModal.appendTo("body")
     this.title = ObjectP.title || '',
     this.bodyHtml ='<div class="row"><div class="col-md-11 col-sm-11">' + ObjectP.bodyHtml || '' + '</div></div>',
-    
+
     this.Hide = function(){  
        myModalActive = false; 
        this.ButtonOk.QjObject.unbind('click'); 
@@ -498,7 +531,11 @@ var myModal = function(ObjectP){
     this.TitleEdit = function(title){
          this.title = title;
          this.myModal.find('h4').text(this.title);
-    };
+    },
+            
+    this.ButtonCloseHide = function(){
+        this.myModal.find("button.close").hide();
+    };        
     var myModalActive = false;       
     var htmlModal = this.myModal.html();
     if(ObjectP.btnDefault == undefined){
@@ -515,9 +552,11 @@ var myModal = function(ObjectP){
 //    if(ObjectP.ButtonOk.Parameter == undefined){
 //      ObjectP.ButtonOk.Parameter = {};  
 //    }
+    ObjectP.ButtonOk =  ObjectP.ButtonOk || {};
+    ObjectP.ButtonOk.Parameter = ObjectP.ButtonOk.Parameter || {};
     ObjectP.ButtonOk.Parameter.myModal = this;
 
-     ObjectP.ButtonOk =  ObjectP.ButtonOk || {}; 
+     
      
     this.ButtonNone = new Button({QjObject:this.myModal.find("button.btn-default"),Fn:btnDefault, id:ObjectP.ButtonNone.id || null, class:"btn-default btn "+ObjectP.ButtonNone.class, text:ObjectP.ButtonNone.text || "Отмена"});
     this.ButtonOk = new Button({QjObject:this.myModal.find("button.btn-primary"), Fn:ObjectP.ButtonOk || null, id:ObjectP.ButtonOk.id || null, class:"btn-default btn "+ObjectP.ButtonOk.class, text:ObjectP.ButtonOk.text || "Ок"});
@@ -645,9 +684,9 @@ if($("div").is("#add_post")){
 if($("div").is("#edit_post")){
     yepnope("/script/editPost.js");
 }
-
-yepnope("/script/search.js");  
-
+if($("form").is("#formSearch")){
+    yepnope("/script/search.js");  
+}
 if($("form").is("#form-registr")){
    var registracionButton = new Button({id:"registracion"});
    var registracionForm = new Form({id:"#form-registr",button:registracionButton});

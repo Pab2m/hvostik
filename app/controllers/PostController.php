@@ -243,7 +243,6 @@ public function StaticPage($url){
         return $this->getMessage('Страница ненайдина!!!');;
     }
 }
-
-    
+  
 }
 
