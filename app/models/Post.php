@@ -48,12 +48,25 @@ return $post;}
 public static function PostsUser($id){
     return Post::where('id_user', '=', Auth::user()->id)->where('sostoynia','=',$id)->orderBy("created_at","DESC")->paginate(10);
 }
+public function announcementDelet(){
+        UserController::UserAccess($this->id);
+            if($this->img_url!==''){
+                   $this->DeletImg(unserialize($this->img_url));     
+            }
+            if(file_exists($this->phone)){
+               unlink($this->phone);   
+            }
+            if(($this->priv_img!=='images_post/hvostuk240x200.png')&&(file_exists($this->priv_img))){
+                    unlink($this->priv_img);   
+            }
+           return $this->delete();
+}
 public static function deletePost($id){
     if(gettype($id)==='array'){
         $i=0;
         foreach($id as $ids){
             $post=Post::IdPost((int)$ids);
-            if(($post->id_user===Auth::user()->id)||(Auth::user()->pravo===88)){
+            if(($post->id_user === Auth::user()->id)||(Auth::user()->pravo===88)){
                 if($post->img_url!==''){
                    $post->DeletImg(unserialize($post->img_url));     
                 }
@@ -370,7 +383,6 @@ public function CoutImgUrl(){
 public static function PostCount($sost=0){
     $query=Post::where('sostoynia','=',(int)$sost)->count(); 
     return $query;
-    
 }
 public function MailPostAdd(){
    Mail::send('emails.post.postAdd',
@@ -389,25 +401,40 @@ public function MailPostAdd(){
   
  return ;}
 
-public function EdetSostPost($sost=0){
+public function EdetSostPost($sost = 0){
     if($sost==0){ // на модерации
-     $this->chtaem_at = NULL; 
-     $this->deletetaem_at = NULL; 
-     $date=false;
+       $this->deletetaem_at = NULL; 
+       $this->chtaem_at = NULL; 
+       $date = null;
     } elseif($sost==1) {// обубликованно
-        $this->chtaem_at = date('Y-m-d', strtotime(date('Y-m-d').'+7 day'));
-        $date=$this->chtaem_at;
-        $this->deletetaem_at = NULL;          
+    if(!Cache::has('chtaem_at')) {
+          $chtaem_at = TableBd::TableId("config", 1, "config"); 
+       } else{
+          $chtaem_at = Cache::get('chtaem_at');
+       }
+    $Date = new DateTime();
+    $Date -> add(new DateInterval('P'.$chtaem_at.'D'));
+    $this -> chtaem_at = $Date->format('Y-m-d H:i:s');  
+    $this -> deletetaem_at = NULL;  
+    $date = $this -> chtaem_at;
+    
     }elseif($sost==2){ //снятое 
-     $this->chtaem_at = NULL; 
-     $this->deletetaem_at = date('Y-m-d', strtotime(date('Y-m-d').'+7 day')); 
-     $date = $this->deletetaem_at;
+      if(!Cache::has('deletetaem_at')) {
+        $deletetaem_at= TableBd::TableId("config", 2, "config"); 
+      } else{
+          $deletetaem_at = Cache::get('deletetaem_at');
+       }
+    $Date = new DateTime();
+    $Date -> add(new DateInterval('P'.$deletetaem_at.'D'));
+    $this -> deletetaem_at = $Date->format('Y-m-d H:i:s');  
+    $date = $this -> deletetaem_at;
+    $this->chtaem_at = NULL; 
     }
     $this->sostoynia=(int)$sost;
     $this->save();
-    return json_encode(array("sost"=>$this->sostoynia,"date"=>$date)); 
+    return array("sost"=>$this->sostoynia,"date"=>$date); 
     
-    }
+}
   // Обубликованое до   
  public function EditChtaem_at($date){
       $date=str_replace('.','-',$date);
@@ -438,15 +465,15 @@ public function PostNaDelet(){
           $deletetaem_at = Cache::get('deletetaem_at');
        }
         $this -> sostoynia = 2;
-        $Date = new DateTime($this -> deletetaem_at);
-        $Date->sub(new DateInterval('P'.$deletetaem_at.'D'));
+        $Date = new DateTime($this -> chtaem_at);
+        $Date -> add(new DateInterval('P'.$deletetaem_at.'D'));
         $this -> deletetaem_at = $Date->format('Y-m-d H:i:s');
         return $this->save();
     }
 
 public static function adminAbdeitPostSost(){
  if((Auth::check())&& (Auth::user()->pravo===88)){ 
-        $data = Post::OtchetPostSostajnijCount();
+     $data = Post::OtchetPostSostajnijCount();
   if($data[0]!==0){  
     foreach ($data[0] as $value){
      $post = Post::find($value['id']);

@@ -57,52 +57,6 @@ function SchetPost(){
 }
 
 
-function Sost0(date){ //на модерации
-    $("#sostPost").attr("class","postModer col-md-12").html("На модерации");
-    $("#panelInput").html('<input id="" class="PostTrue sost btn btn-default" data-id-so="1" type="button" value="Обубликовать объявлении"/>'
-                          +'<input id="" class="PostDelete sost btn btn-default" data-id-so="2" type="button" value="Снять обьявление"/>'); 
-      $("#aktiv-input-post").html('');             
-                
-}
-function Sost1(date){ //обубликованное
-    $("#sostPost").attr("class","postPublik col-md-12").html("Обубликованно");
-    $("#panelInput").html('<input id="" class="PostFalse sost btn btn-default" data-id-so="0" type="button" value="На модерацию"/>'
-                           +'<input id="" class="PostDelete sost btn btn-default" data-id-so="2" type="button" value="Снять обьявление"/>');
-     $("#aktiv-input-post").html('Активно до:<br>'+
-                                 '<input type="date" id="datepicker" class="input-time" placeholder="dd-mm-yyyy"  value="'+date+'"/>'+
-                                 '<button id="date-save" class="btn btn-default" type="button">Сохранить</button>');  
-}
-
-function Sost2(date){// Снятое 
-    $("#sostPost").attr("class","DeletPublik col-md-12").html("Снятое обьявление");
-    $("#panelInput").html('<input id="" class="PostFalse sost btn btn-default" type="button" value="На модерацию"/>'
-                          +'<input id="" class="PostTrue sost btn btn-default" type="button" value="Обубликовать объявлении"/>');
-    $("#aktiv-input-post").html('Удалится после:<br>'+
-                           '<input type="date" id="delet_post_time" class="input-time" placeholder="dd-mm-yyyy"  value="'+date+'"  />'+
-                           '<button id="date-save" class="btn btn-default" type="button">Сохранить</button>');              
-}
-
-function SostPost(sost){ 
-    switch (sost.sost) {
-    case 0: 
-        Sost0(sost.date);
-        break;
-    case 1:
-         Sost1(sost.date);
-         break;
-    case 2:
-         Sost2(sost.date);
-         break;
-    }
-}
-function InputDate(){      
-  var input1=$("#aktiv-input-post input");
-    var picker1 = new Pikaday({
-        field: input1[0],
-        format: 'YYYY.MM.DD',     
-    });
-     }
-
  var TrTableActive = function(ObjectP){   
     var ButtonHide = ObjectP.ButtonHide || false; 
     var SpanJq = ObjectP.jQ;
@@ -800,24 +754,89 @@ ButtonsFn.Cancelling = function(Object){
       };
 TableTdWidthMax({ButtonsFn:ButtonsFn, ButtonHide:"Delete"}); 
    }
- $("#panelInput").on("click","input.sost", function(){
-     var idSo = $(this).data("idSo");
-      $("#sostPost").html("<img width='34' height='34' src='/img/loading-spinning-bubbles.svg'/>");       
-      $.post("/ajax/admin/postsost",
-     {
-    idPost:  $("input#PostId").val(),
-    sost:   idSo
-  },
-  function(data){
-      data = JSON.parse(data);
+if($("form").is("#postEditModerazij")){
+    
+    
+    function Sost0(date){ //на модерации
+    $("#sostPost").attr("class","postModer col-md-12").html("На модерации");
+    $("input[data-id-so='0']").attr({"data-id-so":1,value:"Обубликовать"});
+    $("input[data-id-so='2']").hide(300); 
+    $("#aktiv-input-post").hide(300);             
+                
+}
+function Sost1(data){ //обубликованное
+    $("#sostPost").attr("class","postPublik col-md-12").html("Обубликованно");
+//    $("#panelInput").html('<input id="" class="PostFalse sostEdit btn btn-default" data-id-so="0" type="button" value="На модерацию"/>'
+//                           +'<input id="" class="PostDelete sostEdit btn btn-default" data-id-so="2" type="button" value="Снять обьявление"/>');
+//     $("#aktiv-input-post").html('Активно до:<br>'+
+//                                 '<input type="date" id="datepicker" class="input-time" placeholder="dd-mm-yyyy"  value="'+date+'"/>'+
+//                                 '<button id="date-save" class="btn btn-default" type="button">Сохранить</button>'); 
+    $("input[data-id-so='1']").attr({"data-id-so":0,value:"На модерацию"});
+    $("input[data-id-so='2']").show(300) 
+    $("#aktiv-input-post").show(300); 
+    var inputDate = $("#delet_post_time");
+    inputDate.val(data.date);
+    InputDate();
+}
+
+function Sost2(date){// Снятое 
+    $("#sostPost").attr("class","DeletPublik col-md-12").html("Снятое обьявление");
+    $("#panelInput").html('<input id="" class="PostFalse sostEdit btn btn-default" type="button" value="На модерацию"/>'
+                          +'<input id="" class="PostTrue sostEdit btn btn-default" type="button" value="Обубликовать"/>');
+    $("#aktiv-input-post").html('Удалится после:<br>'+
+                           '<input type="date" id="delet_post_time" class="input-time" placeholder="dd-mm-yyyy"  value="'+date+'"  />'+
+                           '<button id="date-save" class="btn btn-default" type="button">Сохранить</button>');              
+}
+
+function SostPost(date){ 
+    switch (date.sost) {
+    case 0: 
+        Sost0(date);
+        break;
+    case 1:
+         Sost1(date);
+         break;
+    case 2:
+         Sost2(date);
+         break;
+    }
+}
+function InputDate(){
+   
+  var input1=$("#aktiv-input-post  input");
+    var picker1 = new Pikaday({
+        field: input1[0],
+        format: 'YYYY.MM.DD',     
+    });
+    
+     }
+    
+    var FnSostEdit = {};
+    FnSostEdit.Parameter = {};
+    FnSostEdit.Fn = function(Parameter,elem,zhis){
+      var sostoynia = elem.attr("data-id-so");
+     $.post("/ajax/admin/postsost",
+        {
+         idPost: $("input#PostId").val(),
+         sost:   sostoynia
+        },
+     function(data){
+     data = JSON.parse(data);
+      console.log(data);
             SostPost(data);
-            SchetPost();
-            InputDate();
-            $("#date-save").hide();
-            $("#aktiv-input-post input").attr("class","btn btn-default");
+        //    SchetPost();
+       if(data.date !== null){ 
+          InputDate();
+        }
+         //   $("#date-save").hide();
+         //   $("#aktiv-input-post input").attr("class","btn btn-default");
   }
-         ); 
-   });
+        );   
+   };
+
+    var sostEdit = new Button({class:"sostEdit",QjObject:$("#postEditModerazij input.sostEdit"), Fn:FnSostEdit}); 
+}
+
 $("form#postEdit").on("change", "#aktiv-input-post input", function(){
     $(this).attr("class","btn btn-default red");
     $("#date-save").show(400); 
@@ -899,13 +918,34 @@ var AnnoucementPostAdmin = function(){
                             {IdArray: JSON.stringify(IdArray)},
                             function(data){
                                  data = JSON.parse(data);
+                                 console.log(data);
+                                  var idPost   = '';
+                                 if(data["shoot"]["defeat"]["numer"] !== 0){
+                                   idPost = data["shoot"]["defeat"]["idPost"].reduce(function(sum, current, index, arr) {
+                                       // return sum + current + ', ' ? index != arr.length-1 : '';
+                                       return sum +", "+ current;
+                                        });
+                                 }
+                                 var textOcht = {};
+                                 textOcht.bodyHtml = "<p>"+data["shoot"]["success"]+" объявления были снято, "+data["shoot"]["defeat"]["numer"]+"("+idPost+") - При снятии произошла ошибка!</p>";
+                                 idPost   = '';
+                                 if(data["delet"]["defeat"]["numer"] !== 0){
+                                   idPost = data["delet"]["defeat"]["idPost"].reduce(function(sum, current, index, arr) {
+                                       return sum +", "+ current;
+                                        });
+                                 }
+                                 textOcht.bodyHtml += "<p>"+data["delet"]["success"]+" объявления были удалены, "+data["delet"]["defeat"]["numer"]+"("+idPost+") - При снятии удаление ошибка!</p>";
                                  Parameter.myModal.Hide();
                                  var myModalOtcet = new myModal({
                                  title:"Внимание!",
-                                 bodyHtml:data["success"]+" объявления было снято, "+data["defeat"]+" - было помечена на удаление!"
+                                bodyHtml: textOcht.bodyHtml
                                  });
+                                 
                                  myModalOtcet.ButtonOk.QjObject.hide();
                                  myModalOtcet.ButtonNone.QjObject.text("Ok");
+                                 myModalOtcet.myModal.on("hidden.bs.modal",function(e){
+                                     location.reload();
+                                 });
                                  myModalOtcet.ButtonCloseHide();
                                  myModalOtcet.Show();
                             })
@@ -916,19 +956,19 @@ var AnnoucementPostAdmin = function(){
                         +'<table class="table table-bordered">'
                         +'<tr><td>#</td><td>title</td><td>автор</td><td>Дата создания</td></tr>'; 
                         for(i = 0; i < Parameter.snjtPostCount; i++){
-                         str1+="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+Parameter.snjtPost[i]['id']+"'>"+Parameter.snjtPost[i]['title']+"</a></td><td>"+Parameter.snjtPost[i]['email']+"</td><td>"+DateParsePrint(Parameter.snjtPost[i]['created_at'].date)+"</td></tr>";
+                         str1 +="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+Parameter.snjtPost[i]['id']+"'>"+Parameter.snjtPost[i]['title']+"</a></td><td>"+Parameter.snjtPost[i]['email']+"</td><td>"+DateParsePrint(Parameter.snjtPost[i]['created_at'].date)+"</td></tr>";
                         }
-                        if(i == Parameter.deletPostCount){
-                          str2 += "<tr><td colspan='4' align='center'>Объявлений Нет!!!</td></tr>";
+                        if((i == Parameter.snjtPostCount) && (i === 0)){ 
+                          str1 += "<tr><td colspan='4' align='center'>Объявлений Нет!!!</td></tr>";
                           }
                         str1+="</table>";
                 var str2 ="<h3>Объявленния подляжат удаления</h3>"
                            +'<table class="table table-bordered">'
-                           +'<tr><td>#</td><td>title</td><td>автор</td><td>Дата создания</td></tr>';
+                           +'<tr><td>#</td><td>title</td><td>автор</td><td>Дата создания</td></tr>'; console.log(Parameter);
                     for(i = 0; i < Parameter.deletPostCount; i++){
-                       str2+="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+Parameter.deletPost[i]['id']+"'>"+Parameter.deletPost[i]['title']+"</a></td><td>"+Parameter.deletPost[i]['email']+"</td><td>"+Parameter.deletPost[i]['created_at']+"</td><td>"+DateParsePrint(Parameter.snjtPost[i]['created_at'].date)+"</td></tr>";
+                       str2+="<tr><td>"+(i+1)+"</td><td><a class='windOpen' href='/fyurer/post/windopen/"+Parameter.deletPost[i]['id']+"'>"+Parameter.deletPost[i]['title']+"</a></td><td>"+Parameter.deletPost[i]['email']+"</td><td>"+DateParsePrint(Parameter.deletPost[i]['created_at'].date)+"</td></tr>";
                     }
-                    if(i == Parameter.deletPostCount){
+                    if((i == Parameter.deletPostCount) && (i === 0)){
                         str2 += "<tr><td colspan='4' align='center'>Объявлений Нет!!!</td></tr>";
                     }
                         str2+="</table>";

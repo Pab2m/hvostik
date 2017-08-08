@@ -28,7 +28,9 @@
 	<link rel="stylesheet" href="/css/media.css" />  
          
 @yield('head')
-<title>@yield('title') - бесплатная доска объявлений о животных</title>
+
+<title>@yield('title','РукиДобра') - бесплатная доска объявлений о животных</title>
+
 </head>  
     
 <body>

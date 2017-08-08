@@ -362,7 +362,6 @@ function Button(ObjectP){
        } else {
            this.QjObject = ObjectP.QjObject;
        };
-      
       this.QjObjectUpdatingHtml = function(){
          if(this.html != null){
            this.QjObject = $(this.html);  
@@ -382,12 +381,12 @@ function Button(ObjectP){
             * @param object element jQuery элемент
             * @returns object|false
             */
-        var eventsList = function(zhis) {
+             var eventsList = function(zhis) { ;
             //В разных версиях jQuery список событий получается по-разному
            var events = $._data(zhis.QjObject.get(0), 'events');
             if (events !== undefined) return events;
               return events;
-        }
+            }
             var events, ret = false;
             events = eventsList(zhis);
             if (events!==false) {
@@ -407,7 +406,7 @@ function Button(ObjectP){
       
       if((Function !== undefined) ||(Function !== null)){  
           
-       var zhis = this;
+       var zhis = this; 
        if(!checkEvent(zhis)){
        if((this.delegirovanie) && (this.parentDiv !== false)){
         $("#"+this.parentDiv).on("click","."+this.class, function(){ 
@@ -508,26 +507,44 @@ function Button(ObjectP){
 }
 
 var myModal = function(ObjectP){
-    this.myModal = $($("#myModal").clone().attr({id:"myModal-clone"}));
-    this.myModal.appendTo("body")
+    var date = new Date();
+    var id = 'myModal-'+ date.getTime();
+    var htmLmyModal = '<div class="modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
+                       +'<div class="modal-dialog">'
+                       +'<div class="modal-content">'
+                       +'<div class="modal-header">'
+                       +'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
+                       +'<h4 class="modal-title" id="myModalLabel">Название модали</h4>'
+                       +'</div>'
+                       +'<div class="modal-body">'
+                       +'</div>'
+                       +'<div class="modal-footer">'
+                       +'<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>'
+                       +'<button type="button" class="btn btn-primary">Сохранить изменения</button>'
+                       +' </div>'
+                       +'</div>'
+                       + '</div>'
+                       +'</div>'; 
+    $("body").append(htmLmyModal);           
+    this.myModal =  $("body #"+id);
+  
+   this.myModal.appendTo("body")
     this.title = ObjectP.title || '',
     this.bodyHtml ='<div class="row"><div class="col-md-11 col-sm-11">' + ObjectP.bodyHtml || '' + '</div></div>',
 
     this.Hide = function(){  
-       myModalActive = false; 
        this.ButtonOk.QjObject.unbind('click'); 
        this.myModal.modal('hide');
-       this.myModal.on('hidden', function(){
-           this.myModal.remove();
-           $("div.modal-backdrop").remove();
-       });
-       
-    },
+       };
+     this.myModal.on('hidden.bs.modal', function(e){
+         myModalActive = false;  
+        $("body #"+id).remove();
+     });
     this.Show = function(){    
-      if(myModalActive){this.Hide();}
-      this.myModal.modal('show');
-      myModalActive = true; 
-    },
+       if(myModalActive){this.Hide();}
+       this.myModal.modal('show');
+       myModalActive = true; 
+    };
     this.TitleEdit = function(title){
          this.title = title;
          this.myModal.find('h4').text(this.title);

@@ -165,5 +165,13 @@ public function register(){
      }
      
         }
+    public static function UserAccess($id_user_controler = false){
+        if (!Auth::check()) {
+           return View::make('errors.message', array('message'=>'Вы не авторизованы!!!','redirect'=>'/vhod')); 
+        } if ($id_user_controler  !== false){
+        if(!(($id_user_controler === Auth::user()->id)||(Auth::user()->pravo===88))){ 
+           return View::make('errors.message', array('message'=>'У Вас недостаточно прав!!!','redirect'=>false));
+        } } 
+    }
     
 }

@@ -51,6 +51,7 @@
           <a class="navbar-brand" href="/fyurer/posts/0">Объявления на модерации (<span id="sost0">{{Post::PostCount(0)}}</span>)</a>
           <a class="navbar-brand" href="/fyurer/posts/1">Обубликованные (<span id="sost1">{{Post::PostCount(1)}}</span>)</a>
           <a class="navbar-brand" href="/fyurer/posts/2">Снятые объявления (<span id="sost2">{{Post::PostCount(2)}}</span>)</a>
+          <a class="navbar-brand" href="/fyurer/posts/3">Объявления на удаление(<span id="sost3">{{Post::PostCount(3)}}</span>)</a>
           <a class="navbar-brand" href="/fyurer/users/">Пользователи ({{User::UserCount(3)}})</a>
         </div>
 <!--        <div class="navbar-collapse collapse">

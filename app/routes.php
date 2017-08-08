@@ -85,15 +85,19 @@ Route::get('/ajax/sity_search/{id}','AjaxController@getSitySearch');
 Route::get('/ajax/id_region_sity/{id}','AjaxController@idRegionSity_Region');
 Route::get('/ajax/region/{id}/{pole?}','AjaxController@idRegion');
 Route::post('/ajax/user/message','AjaxController@UserMessage');
-Route::post('/ajax/admin/postsost','AjaxController@AdminPostSost');
-Route::get('/ajax/admin/schetpost','AjaxController@AdminPostCount');
+Route::post('/ajax/admin/postsost','AdminController@AdminPostSost');
+Route::get('/ajax/admin/schetpost','AdminController@AdminPostCount');
 Route::post('/ajax/admin/datepost','AjaxController@AdminPostEditDate');
 Route::get('/ajax/admin/annoucement/number','AdminController@adminControlPost');
 Route::post('/ajax/admin/apdeitpost','AdminController@adminControlAbdeitPostSost');
 Route::post('/ajax/admin/json/update','AdminController@JsonUpdate');
 Route::get('/ajax/json/update','AdminController@JsonUpdate');
 Route::get('/ajax/json/bd/{bd}','AjaxController@TableBdJsonTab');
-Route::post("/ajax/admin/annoucement/shoot","AdminController@AnnoucementShoot");
+Route::post("/ajax/admin/annoucement/shoot","AdminController@AnnoucementShootDelet");
 
 
-//Route::get('/test', "PostController@AnnoucementShoot");
+Route::get('/test', function(){
+    //return View::make('errors.message', array('message'=>'Страница не найдина','redirect'=>false));
+    return UserController::UserAccess();
+         
+});

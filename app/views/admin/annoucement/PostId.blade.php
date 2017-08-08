@@ -90,7 +90,7 @@
  </div>
 
     
-<script type="text/javascript">
+<!--<script type="text/javascript">
 	    $(function() {
 	$('.image').on('click', function(event) {
                 event.preventDefault();
@@ -107,11 +107,11 @@
 		return false;	
 	});
 });
-</script>    
+</script>    -->
 </div>
 <div id="postID-form" class="col-md-3">
  <div class="border-form-bottop">   
-  {{Form::open(array('action' => 'PostController@EditPost','id'=>'postEdit','files' =>true,'class'=>"form-horizontal", 'role'=>"form"))}}
+  {{Form::open(array('action' => 'PostController@EditPost','id'=>'postEditModerazij','files' =>true,'class'=>"form-horizontal", 'role'=>"form"))}}
   <input id="PostId"  name="postId" type="hidden" value="{{$post->id}}"/>
   <input id="PostUser"  name="postUser" type="hidden" value="{{$post->id_user}}"/>
   @if($post->sostoynia==0)
@@ -119,41 +119,41 @@
       На модерации
   </div>
   <div id="panelInput">
-  <input id="" class="PostTrue sost btn btn-default" data-id-so="1" type="button" value="Обубликовать объявлении"/>
-  <input id="" class="PostDelete sost btn btn-default" data-id-so="2" type="button" value="Снять обьявление"/>
+  <input id="" class="PostTrue sostEdit btn btn-default" data-id-so="1" type="button" value="Обубликовать"/>
+  <input id="" class="PostDelete sostEdit btn btn-default" data-id-so="2" type="button" value="Снять обьявление"/>
   </div>
   @else 
   @if($post->sostoynia==1)
   <div id="sostPost" class="postPublik col-md-12">
-  Обубликованно
+       Обубликованно
   </div>
   <div id="panelInput">
-  <input  class="PostFalse sost btn btn-default" data-id-so="0" type="button" value="На модерацию"/>
-  <input  class="PostDelete sost btn btn-default" data-id-so="2" type="button" value="Снять обьявление"/>
+  <input  class="PostFalse sostEdit btn btn-default" data-id-so="0" type="button" value="На модерацию"/>
+  <input  class="PostDelete sostEdit btn btn-default" data-id-so="2" type="button" value="Снять обьявление"/>
   </div>
   @else
   @if($post->sostoynia==2)
    <div id="sostPost" class="DeletPublik col-md-12">
-  Снятое обьявление
+       Снятое обьявление
   </div>
   <div id="panelInput">
   <input class="PostFalse sost btn btn-default" type="button" data-id-so="0"  value="На модерацию"/>
-  <input  class="PostTrue sost btn btn-default" type="button" data-id-so="1"  value="Обубликовать объявлении"/>
+  <input  class="PostTrue sost btn btn-default" type="button" data-id-so="1"  value="Обубликовать"/>
   </div>
   @endif
   @endif
   @endif
 @if($post->sostoynia == 1)
 <div class="col-md-12" id="aktiv-input-post">
-    Активно до:<br>
-    <input type="date" id="datepicker" class="btn btn-default" placeholder="dd-mm-yyyy"  value="{{$teme_ch}}"  /> 
+    Активно до (предворительно):<br>
+    <input type="date" id="delet_post_time" class="btn btn-default" placeholder="dd-mm-yyyy"  value="{{$post-> chtaem_at}}"  /> <!--$teme_ch-->
     <button id="date-save" class="btn btn-default" type="button">Сохранить</button>
 </div>  
 @else
 @if($post->sostoynia == 2)
 <div class="col-md-12"  id="aktiv-input-post">
-    Удалится после:</br>
-    <input type="date" id="delet_post_time" class="btn btn-default" placeholder="dd-mm-yyyy"  value="{{$delete_time_ch}}"  />
+    Удалится после (предворительно):</br>
+    <input type="date" id="delet_post_time" class="btn btn-default" placeholder="dd-mm-yyyy"  value=""  /><!--$delete_time_ch-->
     <button id="date-save" class="btn btn-default" type="button">Сохранить</button>
 </div>  
 @else

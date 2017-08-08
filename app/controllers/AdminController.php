@@ -31,7 +31,7 @@ return  $post->getMessage('Упс ошибка!!!','/private_office');}
 
    public function adminEditId($id){
          
-      if((Auth::check())&& (Auth::user()->pravo===88)){
+      if((Auth::check()) && (Auth::user()->pravo===88)){
           $post=Post::IdPost($id); 
     if(!$post instanceof Post){
     $post=new Post;   }
@@ -57,36 +57,38 @@ public function announcement_admin_goot($id){
                                             }
                                             
    public function adminPostID($id, $blade = "admin.annoucement.PostId"){
-       if((Auth::check())&& (Auth::user()->pravo===88)){
-   $post=Post::IdPost($id);
+    AdminController::UserControlAdmin();
+    $post=Post::IdPost($id);
+    $chtaem_at =  0; $deletetaem_at = 0;
+    $Date = new DateTime();
+      if($post->sostoynia === 1){
+       }
+       if(!Cache::has('deletetaem_at')) {
+          $deletetaem_at_config = TableBd::TableId("config", 2, "config"); 
+       } else{
+          $deletetaem_at = Cache::get('deletetaem_at');
+       }
+     
     if($post instanceof Post){
     if($post->img_url){
         $post->img_url=unserialize($post->img_url);
     }         
-    if($post->chtaem_at===NULL){
-        $teme_ch = date('Y-m-d', strtotime(date('Y-m-d').'+7 day'));
-    }else{
-        $teme_ch = $post->chtaem_at;
-    }
-    if($post->sostoynia==2){
-        if($post->deletetaem_at==NULL){
-         $delete_time_ch = date('Y-m-d', strtotime(date('Y-m-d').'+7 day'));   
-        }else{
-        $delete_time_ch = $post->deletetaem_at; 
-        }
-    }else{ $delete_time_ch = false;}
-    
-    if($post->sostoynia!=1){
-        $disabled="disabled=true";
-    } else{
-        $disabled='';
-    }
-    return View::make($blade, array('post'=>$post, 'teme_ch'=>$teme_ch, "disabled"=>$disabled, "delete_time_ch"=>$delete_time_ch));}
+    return View::make($blade, array('post'=>$post, 'chtaem_at'=> $post-> chtaem_at, 'deletetaem_at'=>$post-> deletetaem_at,  "sostoynia" => $post->sostoynia));}
     else{
         return $this->getMessage('Страница ненайдина!!!');
     }    
-       }else{return View::make('errors.message', array('message'=>'Страница не найдина','redirect'=>false));}       
+   
    }
+   
+ public function AdminPostSost() {
+  AdminController::UserControlAdmin();
+        $data=Input::all();
+        foreach($data as &$value){
+             $value=strip_tags($value);
+        }
+      $post = Post::IdPost((int)$data["idPost"]);  
+      return json_encode($post-> EdetSostPost($data["sost"]));   
+ }
    
    public function adminPostIdWinOpen($id){
     return  $this->adminPostID($id, "admin.annoucement.PostIdWindOpen");  
@@ -94,12 +96,16 @@ public function announcement_admin_goot($id){
    
 public function adminPosts($id){
     if((Auth::check())&& (Auth::user()->pravo===88)){ 
-        if($id==1){
+        if($id == 1){
            $title="<div class='postPublik'>Обубликованные объявления!</div>"; 
-        } elseif($id==0){
+        } elseif($id == 0){
            $title="<div class='postModer'>Объявления на модерации!</div>"; 
-        }elseif($id==2){
+        }elseif($id == 2){
           $title="<div class='DeletPublik'>Объявления завершенные!</div>"; 
+        }elseif($id == 3){
+          $title="<div class='DeletPublik'>Объявления завершенные!</div>"; 
+        } else {
+          $title="<div class='DeletPublik'>Ошибочка!</div>"; 
         }
         
     return View::make('admin.annoucement.Posts',array('post_all'=>Post::AllPost($id),"title"=>$title));
@@ -131,7 +137,7 @@ public static function OtchetPostSostajnijCount(){
         $snjt_array[$i]["email"] = $post->email;
         $snjt_array[$i]["created_at"] = $post->created_at; 
         $i++; 
-    }} else { $snjt_array = 0; }
+    }} else { $snjt_array = array(); }
     $snjt_post = Post::listDeletetaem_at();
      $value[0] = $snjt_array;
       unset($snjt_array);       
@@ -144,7 +150,7 @@ public static function OtchetPostSostajnijCount(){
         $snjt_array[$i]["email"] = $post->email;
         $snjt_array[$i]["created_at"] = $post->created_at;
     $i++; 
-    }} else { $snjt_array = 0; }
+    }} else { $snjt_array = array(); }
     
      $value[1] = $snjt_array;
       
@@ -520,27 +526,46 @@ public function adminSelectSityEdit(){
                   )); 
   
     }
+    public function AdminPostCount(){
+     AdminController::UserControlAdmin();   
+     $val[0]=Post::PostCount(0);
+     $val[1]=Post::PostCount(1);
+     $val[2]=Post::PostCount(2);
+   return json_encode($val);
+}  
     public function ConfigSistem(){
-    if((Auth::check())&& (Auth::user()->pravo===88)){ 
+    AdminController::UserControlAdmin();
        $confiBd = TableBd::TableAll("config");
     return View::make('admin.config.index', array('confiBd'=> $confiBd));   
-      } else {
-     return View::make('errors.message', array('message'=>'Страница не найдина','redirect'=>false));
-    } }
+       }
     
-    public function AnnoucementShoot(){
+    public function AnnoucementShootDelet(){
      AdminController::UserControlAdmin();
-     $date_shoot = TableBd::TableId("config", 1, "config"); 
+
+     $MainSuccessShoot = 0; $MaindefeatShoot = 0; $idPosShoot = array();
      $Annoucement_shoot = Post::listChtaem_at();
-     $MainSuccess = 0; $Maindefeat = 0; 
-     $Annoucement_shoot -> each(function($item) use (&$MainSuccess, &$Maindefeat) {
-        if(true){//$item -> PostNaDelet()
-            $MainSuccess++;
+    
+     $Annoucement_shoot -> each(function($item) use (&$MainSuccessShoot, &$MaindefeatShoot, &$idPostShoot) {
+        if($item -> PostNaDelet()){ 
+            $MainSuccessShoot++;
         } else {
-            $Maindefeat++;
-        } 
+            $MaindefeatShoot++;
+            array_push($idPostShoot, $item -> id);
+        }
      });
-     return json_encode(array("success"=> $MainSuccess, "defeat"=>$Maindefeat));
+     $MainSuccessDelet = 0; $MaindefeatDelet = 0; $idPostDelet = array();
+     $Annoucement_delete = Post::listDeletetaem_at();
+          $Annoucement_delete -> each(function($item) use (&$MainSuccessDelet, &$MaindefeatDelet, &$idPostDelet) {
+        if($item -> announcementDelet()){
+            $MainSuccessDelet++;
+        } else {
+            $MaindefeatDelet++;
+            array_push($idPostDelet, $item -> id);
+        }
+     });
+     return json_encode(array("shoot"  => array("success"=> $MainSuccessShoot, "defeat" => array("numer" => $MaindefeatShoot, "idPost" => $idPostShoot)),
+                               "delet" =>  array("success"=> $MainSuccessDelet, "defeat" => array("numer" => $MaindefeatDelet, "idPost" => $idPostDelet))));
 }
   
+
     }

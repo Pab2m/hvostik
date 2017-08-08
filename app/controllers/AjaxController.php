@@ -173,24 +173,7 @@ class AjaxController extends AdminController {
       
         return User::UserMessage($ArrauValue);
     }
-    
-    public function AdminPostSost() {
-  if((Auth::check())&& (Auth::user()->pravo===88)){
-        $data=Input::all();
-        foreach($data as &$value){
-             $value=strip_tags($value);
-        }
-      $post = Post::IdPost((int)$data["idPost"]);  
-      return $post->EdetSostPost($data["sost"]);   
-      }
-        }
-    
-public function AdminPostCount(){
-     $val[0]=Post::PostCount(0);
-     $val[1]=Post::PostCount(1);
-     $val[2]=Post::PostCount(2);
-   return json_encode($val);
-}        
+         
  
 public function AdminPostEditDate(){
  if((Auth::check())&& (Auth::user()->pravo===88)){   
