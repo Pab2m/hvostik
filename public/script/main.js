@@ -596,16 +596,16 @@ var myModal = function(ObjectP){
              JQ.fadeIn(200);
              }}
     });
-    Object.defineProperty(this, "bodyHtmlEdit", {
-        set: function(value) {
-             this.bodyHtml = '<div class="row"><div class="col-md-11 col-sm-11">' + value + '</div></div>';
-             if(myModalActive){
-             var JQ = this.myModal.find('div.modal-body');
-             JQ.fadeOut(200);
-             JQ.html(this.bodyHtml);
-             JQ.fadeIn(200);
-            }}
-    });
+//    Object.defineProperty(this, "bodyHtmlEdit", {
+//        set: function(value) {
+//             this.bodyHtml = '<div class="row"><div class="col-md-11 col-sm-11">' + value + '</div></div>';
+//             if(myModalActive){
+//             var JQ = this.myModal.find('div.modal-body');
+//             JQ.fadeOut(200);
+//             JQ.html(this.bodyHtml);
+//             JQ.fadeIn(200);
+//            }}
+//    });
 };
 //Для регистрации
 //ObjectP.Password, ObjectP.PasswordRepeat  -  inputUl

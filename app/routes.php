@@ -40,6 +40,7 @@ Route::post('/fyurer/select/delete',  'AdminController@selectDelete');
 Route::post('/fyurer/select/delete/site/table','AdminController@adminSelectSity');
 Route::post('/fyurer/select/site/edit',  'AdminController@adminSelectSityEdit');
 Route::get('/fyurer/config',  'AdminController@ConfigSistem');
+Route::post('/fyurer/annoucement/edit/date', array('uses'=>'PostController@AnnoucementEditDate'));
 
 Route::post('/registration','UserController@register');
 Route::get('/registration/{id}/{activation_code}','UserController@getActivate');
@@ -85,7 +86,7 @@ Route::get('/ajax/sity_search/{id}','AjaxController@getSitySearch');
 Route::get('/ajax/id_region_sity/{id}','AjaxController@idRegionSity_Region');
 Route::get('/ajax/region/{id}/{pole?}','AjaxController@idRegion');
 Route::post('/ajax/user/message','AjaxController@UserMessage');
-Route::post('/ajax/admin/postsost','AdminController@AdminPostSost');
+Route::post('/ajax/admin/edit/annoucementsost','AdminController@AdminAnnoucemenSost');
 Route::get('/ajax/admin/schetpost','AdminController@AdminPostCount');
 Route::post('/ajax/admin/datepost','AjaxController@AdminPostEditDate');
 Route::get('/ajax/admin/annoucement/number','AdminController@adminControlPost');

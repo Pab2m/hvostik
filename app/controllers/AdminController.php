@@ -61,8 +61,11 @@ public function announcement_admin_goot($id){
     $post=Post::IdPost($id);
     $chtaem_at =  0; $deletetaem_at = 0;
     $Date = new DateTime();
-      if($post->sostoynia === 1){
-       }
+      if($post->sostoynia === 0){
+          $chtaem_at = $post -> chtaemAtmMaybe();
+          } else {
+              $chtaem_at = $post-> chtaem_at;
+          }
        if(!Cache::has('deletetaem_at')) {
           $deletetaem_at_config = TableBd::TableId("config", 2, "config"); 
        } else{
@@ -72,15 +75,15 @@ public function announcement_admin_goot($id){
     if($post instanceof Post){
     if($post->img_url){
         $post->img_url=unserialize($post->img_url);
-    }         
-    return View::make($blade, array('post'=>$post, 'chtaem_at'=> $post-> chtaem_at, 'deletetaem_at'=>$post-> deletetaem_at,  "sostoynia" => $post->sostoynia));}
-    else{
+    }
+   return View::make($blade, array('post'=>$post, 'chtaem_at'=> $chtaem_at, 'deletetaem_at'=>$post-> deletetaem_at,  "sostoynia" => $post->sostoynia));
+    }else{
         return $this->getMessage('Страница ненайдина!!!');
     }    
    
    }
    
- public function AdminPostSost() {
+ public function AdminAnnoucemenSost() {
   AdminController::UserControlAdmin();
         $data=Input::all();
         foreach($data as &$value){
@@ -541,7 +544,6 @@ public function adminSelectSityEdit(){
     
     public function AnnoucementShootDelet(){
      AdminController::UserControlAdmin();
-
      $MainSuccessShoot = 0; $MaindefeatShoot = 0; $idPosShoot = array();
      $Annoucement_shoot = Post::listChtaem_at();
     
@@ -566,6 +568,5 @@ public function adminSelectSityEdit(){
      return json_encode(array("shoot"  => array("success"=> $MainSuccessShoot, "defeat" => array("numer" => $MaindefeatShoot, "idPost" => $idPostShoot)),
                                "delet" =>  array("success"=> $MainSuccessDelet, "defeat" => array("numer" => $MaindefeatDelet, "idPost" => $idPostDelet))));
 }
-  
 
     }

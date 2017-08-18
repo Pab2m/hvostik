@@ -89,31 +89,13 @@
 </div>  
  </div>
 
-    
-<!--<script type="text/javascript">
-	    $(function() {
-	$('.image').on('click', function(event) {
-                event.preventDefault();
-		var image = $('#image');
-                var StImageW = image.outerWidth(); 
-                var StImageH = image.outerHeight();
-            var imageRel = $(this).attr('href');
-            var ImgOriginal=$(this).data('fooBar')
-		image.fadeIn('slow');//.hide()
-		image.html('<a class="img"  rel="group" href="'+ImgOriginal+'"><img src="' + imageRel + '" class="image img-responsive" ></a>');
-                image.outerWidth(StImageW);
-                image.outerHeight(StImageH);
-                $("a.img").fancybox();
-		return false;	
-	});
-});
-</script>    -->
 </div>
 <div id="postID-form" class="col-md-3">
- <div class="border-form-bottop">   
-  {{Form::open(array('action' => 'PostController@EditPost','id'=>'postEditModerazij','files' =>true,'class'=>"form-horizontal", 'role'=>"form"))}}
+ <div class="border-form-bottop"> 
+     <form id='postEditModerazij' class='form-horizontal' role='form'>
   <input id="PostId"  name="postId" type="hidden" value="{{$post->id}}"/>
   <input id="PostUser"  name="postUser" type="hidden" value="{{$post->id_user}}"/>
+  <input id="PostSostoynia"  name="PostSostoynia" type="hidden" value="{{$post->sostoynia}}"/>
   @if($post->sostoynia==0)
   <div id="sostPost" class="postModer col-md-12">
       На модерации
@@ -134,31 +116,43 @@
   @else
   @if($post->sostoynia==2)
    <div id="sostPost" class="DeletPublik col-md-12">
-       Снятое обьявление
+       Снятое обьявление 
   </div>
   <div id="panelInput">
-  <input class="PostFalse sost btn btn-default" type="button" data-id-so="0"  value="На модерацию"/>
-  <input  class="PostTrue sost btn btn-default" type="button" data-id-so="1"  value="Обубликовать"/>
+  <input class="PostFalse sostEdit btn btn-default" type="button" data-id-so="0"  value="На модерацию"/>
+  <input  class="PostTrue sostEdit btn btn-default" type="button" data-id-so="1"  value="Обубликовать"/>
   </div>
   @endif
   @endif
   @endif
 @if($post->sostoynia == 1)
-<div class="col-md-12" id="aktiv-input-post">
-    Активно до (предворительно):<br>
-    <input type="date" id="delet_post_time" class="btn btn-default" placeholder="dd-mm-yyyy"  value="{{$post-> chtaem_at}}"  /> <!--$teme_ch-->
+<div class="col-md-12" id="aktiv-date-post">
+    <div id="chtaem-at-text">Активно до:</div>
+    <input type="date" id="chtaem-at" class="btn btn-default" placeholder="dd-mm-yyyy"  value="{{$post-> chtaem_at}}"  /> <!--$teme_ch-->
     <button id="date-save" class="btn btn-default" type="button">Сохранить</button>
+    <button id="date-сancel" class="btn btn-default" type="button"><span style="color:red" class="glyphicon glyphicon-remove"></span></button>
 </div>  
 @else
 @if($post->sostoynia == 2)
-<div class="col-md-12"  id="aktiv-input-post">
-    Удалится после (предворительно):</br>
-    <input type="date" id="delet_post_time" class="btn btn-default" placeholder="dd-mm-yyyy"  value=""  /><!--$delete_time_ch-->
-    <button id="date-save" class="btn btn-default" type="button">Сохранить</button>
+<div class="col-md-12"  id="aktiv-date-post">
+    <div id="chtaem-at-text">Удалится посли:</div>
+    <div id="chtaem-at-maybe">
+    </div> 
+    <input type="date"  id="chtaem-at" class="btn btn-default" placeholder="dd-mm-yyyy"  value="{{$deletetaem_at}}"  /> 
+    <button id="date-save" style="display: none" class="btn btn-default" type="button">Сохранить</button>
+    <button id="date-сancel" style="display: none" class="btn btn-default" type="button"><span style="color:red" class="glyphicon glyphicon-remove"></span></button>
+
 </div>  
 @else
 @if($post->sostoynia == 0)
-<div class="col-md-12"  id="aktiv-input-post">
+<div class="col-md-12"  id="aktiv-date-post">
+      <div id="chtaem-at-text">Активно до (предворительно):</div>
+    <div id="chtaem-at-maybe">
+       {{$chtaem_at}}
+    </div> 
+    <input type="date" style="display: none" id="chtaem-at" class="btn btn-default" placeholder="dd-mm-yyyy"  value="{{$chtaem_at}}"  /> <!--$teme_ch-->
+    <button id="date-save" style="display: none" class="btn btn-default" type="button">Сохранить</button>
+    <button id="date-сancel" style="display: none" class="btn btn-default" type="button"><span style="color:red" class="glyphicon glyphicon-remove"></span></button>
 </div>  
 @endif
 @endif
@@ -168,7 +162,7 @@
   <input id="PostIdUser" class="btn btn-default" type="button" value="Написать автору"/>
   <input id="PostIdVip" class="btn btn-default" type="button" value="Сделать vip"/><br>
   <input id="PostIdDelet" class="btn btn-default" type="button" value="Удалить"/>
-  {{Form::close()}}
+     </form>
 </div>
 </div>
    

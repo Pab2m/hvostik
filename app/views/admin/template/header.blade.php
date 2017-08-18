@@ -20,16 +20,16 @@
 	<link rel="stylesheet" href="/css/fonts.css" />
          <link rel="stylesheet" href="/css/bootstrap.css" />
 	<link rel="stylesheet" href="/css/main.css" />
-        <link rel="stylesheet" href="/css/a-pikaday.css" />
          <link rel="stylesheet" href="/css/a-main.css" />
 	<link rel="stylesheet" href="/css/bootstrap_skin.css" />
 	<link rel="stylesheet" href="/css/media.css" />  
+        <link rel="stylesheet" href="/css/pikaday.css" /> 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="/js/chosen.jquery.min.js"></script>
-        {{HTML::script('/script/a-moment.js');}}
-        {{HTML::script('/script/a-pikaday.jquery.js');}}
-        {{HTML::script('/script/pikaday.js');}}
         <script src="/script/yepnope.js"></script>
+        <script src="/script/moment.js"></script>
+        <script src="/script/pikaday.min.js"></script>
+        <script src="/script/moment.js"></script>
         {{HTML::script('/script/main.js');}}
           
 @yield('head')

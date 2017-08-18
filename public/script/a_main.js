@@ -754,87 +754,248 @@ ButtonsFn.Cancelling = function(Object){
       };
 TableTdWidthMax({ButtonsFn:ButtonsFn, ButtonHide:"Delete"}); 
    }
+   
 if($("form").is("#postEditModerazij")){
     
-    
-    function Sost0(date){ //на модерации
-    $("#sostPost").attr("class","postModer col-md-12").html("На модерации");
-    $("input[data-id-so='0']").attr({"data-id-so":1,value:"Обубликовать"});
-    $("input[data-id-so='2']").hide(300); 
-    $("#aktiv-input-post").hide(300);             
+    (function(){
+       var containerjQ = $("#postID-form");
+       var announcementConstant = {
+           postId:containerjQ.find("#PostId").val(),
+           postUser:containerjQ.find("#PostUser").val()
+           };
+        var Tablo = containerjQ.find("#sostPost");   
+        var TabloChange = function(text, color){
+                     Tablo.text(text);
+                     Tablo.css({background:color});
+            }
+
+        var InputChtaemAt = null,DateSave = null,DateCancel = null, datePicker, timeOld,
+        AktivDatePost = containerjQ.find("#aktiv-date-post");
+        this.announcementSostoynia = Number(containerjQ.find("#PostSostoynia").val());
+         var sostEditButton = {
+                               Fn:function(Parameter,elem, zhis){
+                               this.announcementSostoynia = elem.attr("data-id-so");
+                               },
+                               Parameter:{}
+                               }
+        var sostEditButton = new Button({class:"sostEdit", Fn:sostEditButton});    
+        var PostRequest = function(calbek, value){
+                  $.post("/ajax/admin/edit/annoucementsost",
+                    {
+                     idPost:announcementConstant.postId,
+                     sost:  value
+                    },
+                    function(data){
+                      if(data){
+                          calbek(data);
+                      }
+                    }
+                   );
+        };
+             InputChtaemAt = new inputUl({id:"#chtaem-at",QjObject:containerjQ.find("input#chtaem-at")});
+               if((this.announcementSostoynia == 0) ||(this.announcementSostoynia ==1)){
+               InputChtaemAt.use = "chtaem_at";
+               } else if(this.announcementSostoynia == 2){
+                   InputChtaemAt.use = "deletetaem_at";
+               }
+               datePicker = new Pikaday({
+                	field: InputChtaemAt.QjObject[0],
+                        format: 'YYYY-MM-DD',
+                        onSelect:function(date){
+                            InputChtaemAt.value = date;
+                            DateSave.QjObject.show(300); DateCancel.QjObject.show(300);
+                        }
+                   });  
+                InputChtaemAt.value = new Date(InputChtaemAt.value);  
+                timeOld = InputChtaemAt.value;
+                var InputChtaemAtTime = InputChtaemAt.value.toLocaleTimeString();
+                DateCancel = new Button({id:"date-сancel",Fn:{
+                  Parameter:{},
+                  Fn:function(Parameter,elem, zhis){          
+                      InputChtaemAt.val(timeOld);
+                      datePicker.setDate(timeOld);
+                      DateSave.QjObject.hide(300); DateCancel.QjObject.hide(300);
+                  }                      
+                 }
+                });  
+                DateSave = new Button({id:"date-save",Fn:{
+                  Parameter:{InputChtaemAtValue:InputChtaemAt.value},
+                  Fn:function(Parameter,elem, zhis){
+                       $.post("/fyurer/annoucement/edit/date",
+                            {
+                             id:  announcementConstant.postId,
+                             date:  InputChtaemAt.value,
+                             use: InputChtaemAt.use
+                            },
+                        function(data){
+                                if(data){
+                                   DateSave.QjObject.hide(300); DateCancel.QjObject.hide(300); 
+                                }
+                        });  
+                  }                      
+                 }
+                });
                 
-}
-function Sost1(data){ //обубликованное
-    $("#sostPost").attr("class","postPublik col-md-12").html("Обубликованно");
-//    $("#panelInput").html('<input id="" class="PostFalse sostEdit btn btn-default" data-id-so="0" type="button" value="На модерацию"/>'
-//                           +'<input id="" class="PostDelete sostEdit btn btn-default" data-id-so="2" type="button" value="Снять обьявление"/>');
-//     $("#aktiv-input-post").html('Активно до:<br>'+
-//                                 '<input type="date" id="datepicker" class="input-time" placeholder="dd-mm-yyyy"  value="'+date+'"/>'+
-//                                 '<button id="date-save" class="btn btn-default" type="button">Сохранить</button>'); 
-    $("input[data-id-so='1']").attr({"data-id-so":0,value:"На модерацию"});
-    $("input[data-id-so='2']").show(300) 
-    $("#aktiv-input-post").show(300); 
-    var inputDate = $("#delet_post_time");
-    inputDate.val(data.date);
-    InputDate();
-}
+                DateSave.QjObject.hide(); DateCancel.QjObject.hide();
+        switch (this.announcementSostoynia) {
+            case 0: 
+                   sostEditButton.QjObject.last().hide(); 
+                   break;
+            case 1: 
 
-function Sost2(date){// Снятое 
-    $("#sostPost").attr("class","DeletPublik col-md-12").html("Снятое обьявление");
-    $("#panelInput").html('<input id="" class="PostFalse sostEdit btn btn-default" type="button" value="На модерацию"/>'
-                          +'<input id="" class="PostTrue sostEdit btn btn-default" type="button" value="Обубликовать"/>');
-    $("#aktiv-input-post").html('Удалится после:<br>'+
-                           '<input type="date" id="delet_post_time" class="input-time" placeholder="dd-mm-yyyy"  value="'+date+'"  />'+
-                           '<button id="date-save" class="btn btn-default" type="button">Сохранить</button>');              
-}
+                break;
+            case 2:
+              
+                 break;
+            }
 
-function SostPost(date){ 
-    switch (date.sost) {
-    case 0: 
-        Sost0(date);
-        break;
-    case 1:
-         Sost1(date);
-         break;
-    case 2:
-         Sost2(date);
-         break;
-    }
-}
-function InputDate(){
+      Object.defineProperty(this, "announcementSostoynia", {
+        set: function(value) {
+          value = Number(value);
+          switch (value) {
+            case 0: 
+                   PostRequest(function(data){
+                        data = JSON.parse(data);
+                        sostEditButton.QjObject.first().attr("data-id-so", 1).val("Опубликовать");
+                        sostEditButton.QjObject.last().hide(300);
+                        TabloChange("На модерации", "red");
+                        AktivDatePost.find("#chtaem-at-maybe").remove();
+                        AktivDatePost.append("<div id='chtaem-at-maybe'>"+data.date+"</div>");
+                        AktivDatePost.find("#chtaem-at-text").text("Активно до (предворительно):");
+                        InputChtaemAt.QjObject.hide(300);
+                        DateSave.QjObject.hide(); DateCancel.QjObject.hide();
+                   }, value);
+                   break;
+              case 1:
+                     PostRequest(function(data){
+                        data = JSON.parse(data);
+                        sostEditButton.QjObject.first().attr("data-id-so", 0).val("На модерацию");
+                        sostEditButton.QjObject.last().attr("data-id-so", 2).val("На удаление").show(300);
+                        TabloChange("Обубликованно", "greenyellow");
+                        AktivDatePost.show(300);
+                        AktivDatePost.find("#chtaem-at-maybe").remove();
+                        AktivDatePost.find("#chtaem-at-text").text("Активно до:");
+                        InputChtaemAt.QjObject.show(300);
+                        InputChtaemAt.val(data.date);
+                        InputChtaemAt.use = "chtaem_at";
+                        datePicker.setDate(data.date);
+                        DateSave.QjObject.hide(); DateCancel.QjObject.hide();
+                     }, value);
+                       break;
+              case 2:
+                    PostRequest(function(data){
+                     data = JSON.parse(data);
+                     sostEditButton.QjObject.first().attr("data-id-so", 1).val("Опубликовать");
+                     sostEditButton.QjObject.last().attr("data-id-so", 1).val("На модерацию");
+                     TabloChange("На удалении", "yellow");
+                     InputChtaemAt.use = "deletetaem_at";
+                     AktivDatePost.find("#chtaem-at-text").text("Удалится посли:");
+                     InputChtaemAt.val(data.date);  
+                     datePicker.setDate(data.date);
+                     DateSave.QjObject.hide(); DateCancel.QjObject.hide();
+                     },value);
+                     break;
+           }
+             }});   
+
+(function() {
+	$('.image').on('click', function(event) {
+                event.preventDefault();
+		var image = $('#image');
+                var StImageW = image.outerWidth(); 
+                var StImageH = image.outerHeight();
+            var imageRel = $(this).attr('href');
+            var ImgOriginal=$(this).data('fooBar')
+		image.fadeIn('slow');//.hide()
+		image.html('<a class="img"  rel="group" href="'+ImgOriginal+'"><img src="' + imageRel + '" class="image img-responsive" ></a>');
+                image.outerWidth(StImageW);
+                image.outerHeight(StImageH);
+                $("a.img").fancybox();
+		return false;	
+	});
+})();
+    })();
+ // postEditModerazij();
+ //  var EditModerazij  = new postEditModerazij();
    
-  var input1=$("#aktiv-input-post  input");
-    var picker1 = new Pikaday({
-        field: input1[0],
-        format: 'YYYY.MM.DD',     
-    });
-    
-     }
-    
-    var FnSostEdit = {};
-    FnSostEdit.Parameter = {};
-    FnSostEdit.Fn = function(Parameter,elem,zhis){
-      var sostoynia = elem.attr("data-id-so");
-     $.post("/ajax/admin/postsost",
-        {
-         idPost: $("input#PostId").val(),
-         sost:   sostoynia
-        },
-     function(data){
-     data = JSON.parse(data);
-      console.log(data);
-            SostPost(data);
-        //    SchetPost();
-       if(data.date !== null){ 
-          InputDate();
-        }
-         //   $("#date-save").hide();
-         //   $("#aktiv-input-post input").attr("class","btn btn-default");
-  }
-        );   
-   };
-
-    var sostEdit = new Button({class:"sostEdit",QjObject:$("#postEditModerazij input.sostEdit"), Fn:FnSostEdit}); 
+//function Sost0(date){ //на модерации
+//    $("#sostPost").attr("class","postModer col-md-12").html("На модерации");
+//    $("input[data-id-so='0']").attr({"data-id-so":1,value:"Обубликовать"});
+//    $("input[data-id-so='2']").hide(300); 
+//    $("#aktiv-input-post").hide(300);             
+//                
+//}
+//function Sost1(data){ //обубликованное
+//    $("#sostPost").attr("class","postPublik col-md-12").html("Обубликованно");
+////    $("#panelInput").html('<input id="" class="PostFalse sostEdit btn btn-default" data-id-so="0" type="button" value="На модерацию"/>'
+////                           +'<input id="" class="PostDelete sostEdit btn btn-default" data-id-so="2" type="button" value="Снять обьявление"/>');
+////     $("#aktiv-input-post").html('Активно до:<br>'+
+////                                 '<input type="date" id="datepicker" class="input-time" placeholder="dd-mm-yyyy"  value="'+date+'"/>'+
+////                                 '<button id="date-save" class="btn btn-default" type="button">Сохранить</button>'); 
+//    $("input[data-id-so='1']").attr({"data-id-so":0,value:"На модерацию"});
+//    $("input[data-id-so='2']").show(300) 
+//    $("#aktiv-input-post").show(300); 
+//    var inputDate = $("#delet_post_time");
+//    inputDate.val(data.date);
+//    InputDate();
+//}
+//
+//function Sost2(date){// Снятое 
+//    $("#sostPost").attr("class","DeletPublik col-md-12").html("Снятое обьявление");
+//    $("#panelInput").html('<input id="" class="PostFalse sostEdit btn btn-default" type="button" value="На модерацию"/>'
+//                          +'<input id="" class="PostTrue sostEdit btn btn-default" type="button" value="Обубликовать"/>');
+//    $("#aktiv-input-post").html('Удалится после:<br>'+
+//                           '<input type="date" id="delet_post_time" class="input-time" placeholder="dd-mm-yyyy"  value="'+date+'"  />'+
+//                           '<button id="date-save" class="btn btn-default" type="button">Сохранить</button>');              
+//}
+//
+//function SostPost(date){ 
+//    switch (date.sost) {
+//    case 0: 
+//        Sost0(date);
+//        break;
+//    case 1:
+//         Sost1(date);
+//         break;
+//    case 2:
+//         Sost2(date);
+//         break;
+//    }
+//}
+//function InputDate(){
+//   
+//  var input1=$("#aktiv-input-post  input");
+//    var picker1 = new Pikaday({
+//        field: input1[0],
+//        format: 'YYYY.MM.DD',     
+//    });
+//    
+//     }
+//    
+//    var FnSostEdit = {};
+//    FnSostEdit.Parameter = {};
+//    FnSostEdit.Fn = function(Parameter,elem,zhis){
+//      var sostoynia = elem.attr("data-id-so");
+//     $.post("/ajax/admin/annoucementsost",
+//        {
+//         idPost: $("input#PostId").val(),
+//         sost:   sostoynia
+//        },
+//     function(data){
+//     data = JSON.parse(data);
+//      console.log(data);
+//            SostPost(data);
+//        //    SchetPost();
+//       if(data.date !== null){ 
+//          InputDate();
+//        }
+//         //   $("#date-save").hide();
+//         //   $("#aktiv-input-post input").attr("class","btn btn-default");
+//  }
+//        );   
+//   };
+//
+//    var sostEdit = new Button({class:"sostEdit",QjObject:$("#postEditModerazij input.sostEdit"), Fn:FnSostEdit}); 
 }
 
 $("form#postEdit").on("change", "#aktiv-input-post input", function(){

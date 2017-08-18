@@ -81,9 +81,7 @@ margin-top: 30px;
 #aktiv-input-post input{
     width: 100px;
 }
-#date-save{
-    display: none;
-}
+
 .red{
     background-color: #E48C8C;
 }
@@ -168,4 +166,8 @@ tr.add td{
 }
 #ButtonsWrap button{
     margin: 0 3px 0 3px; 
+}
+#chtaem-at{
+    width: 100px;
+    height: 40px;
 }

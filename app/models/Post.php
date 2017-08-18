@@ -6,7 +6,7 @@ class Post extends Eloquent {
     protected $guarded = array('id','id_user','vip_type','sostoynia','prosmotry'); // которое содержит список запрещённых к заполнению полей:
 //  protected $fillable  = array('region_select', 'sity_select', 'category_select', 'poroda_koshek', 'poroda_sobak', 'pol', 'vozrast', 'tip_select', 'uslugi_select', 'tovari_select', 'cena', 'title', 'post', 'name', 'email', 'phone', 'priv_img', 'img_url', 'privat_email'); 
     public  $fillableUser = array('region_select', 'sity_select', 'category_select', 'poroda_koshek', 'poroda_sobak', 'pol', 'vozrast', 'tip_select', 'uslugi_select', 'tovari_select'); 
-
+    private $dateColumns = array ('chtaem_at','deletetaem_at');
 
     public static function str_size($str,$length){
         $str=iconv("UTF-8","windows-1251", $str); 
@@ -400,22 +400,28 @@ public function MailPostAdd(){
  
   
  return ;}
+public  function chtaemAtmMaybe(){
+       if(!Cache::has('chtaem_at')) {
+          $chtaem_at = TableBd::TableId("config", 1, "config"); 
+       } else{
+          $chtaem_at = Cache::get('chtaem_at');
+       }
+       $Date = new DateTime();
+       $Date -> add(new DateInterval('P'.$chtaem_at.'D'));
+       return $Date->format('Y-m-d H:i:s');
+}
 
 public function EdetSostPost($sost = 0){
     if($sost==0){ // на модерации
        $this->deletetaem_at = NULL; 
        $this->chtaem_at = NULL; 
-       $date = null;
+       $this -> save();
+       $date = $this -> chtaemAtmMaybe();
     } elseif($sost==1) {// обубликованно
-    if(!Cache::has('chtaem_at')) {
-          $chtaem_at = TableBd::TableId("config", 1, "config"); 
-       } else{
-          $chtaem_at = Cache::get('chtaem_at');
-       }
-    $Date = new DateTime();
-    $Date -> add(new DateInterval('P'.$chtaem_at.'D'));
-    $this -> chtaem_at = $Date->format('Y-m-d H:i:s');  
-    $this -> deletetaem_at = NULL;  
+
+    $this -> chtaem_at = $this -> chtaemAtmMaybe(); 
+    $this -> deletetaem_at = NULL; 
+    $this -> save();
     $date = $this -> chtaem_at;
     
     }elseif($sost==2){ //снятое 
@@ -501,6 +507,24 @@ public static function adminAbdeitPostSost(){
           $this -> $value = NULL;
       }
      return   $this -> save();
+  }
+  public function AnnoucementEditDate($date, $use){ 
+         $useError = false;
+         foreach ($this -> dateColumns as $value){
+                  $value == $use;
+                  $useError = true;
+                  break;
+         }
+         if(($useError) || ($this -> sostoynia !== 0)){
+             if((($this -> sostoynia == 1) && ($use == "chtaem_at")) || (($this -> sostoynia == 2) && ($use == "deletetaem_at"))){
+                 $date = new DateTime($date);
+                 $date->format('Y-m-d H:i:s');
+                 $this -> $use = $date;
+                 $this -> save();
+                 return true;
+             }
+         }
+       return false;  
   }
     
     
