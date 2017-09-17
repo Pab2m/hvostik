@@ -1,4 +1,4 @@
-var UrlImg, post=new Object();
+//var UrlImg, post=new Object();
 
 function Cshtora(){
    var htmlHtora = '<div id="htora"><div id="proces"><img  width="64" height="64" src="/img/loading-spinning-bubbles.svg"></div></div>';
@@ -41,16 +41,27 @@ function Form(Object){
          this.length --;
      };       
             
-    this.Validacij = function(Objekt){    
-        var validate = true;
+    this.Validacij = function(Objekt){
+        var validateForma = true, validatePole = true;
+        var Validate = function(Objekt){
+            Objekt.ValidateNo();
+            validatePole = false;
+           return false; 
+        };        
         var ObjektA = Objekt || this; 
       for(var key in ObjektA.arryForm){
-        if(((!ObjektA.arryForm[key].value)||(ObjektA.arryForm[key].value==''))&&(ObjektA.arryForm[key].surely)){
-        ObjektA.arryForm[key].ValidateNo();
-        validate = false;
-        }    
+        if(((!ObjektA.arryForm[key].value)||(ObjektA.arryForm[key].value==''))&&(ObjektA.arryForm[key].surely)){ 
+      validateForma = Validate(ObjektA.arryForm[key]);
+        }
+        if((validatePole) && (ObjektA.arryForm[key] instanceof inputUl) && (ObjektA.arryForm[key].type === "email")){
+          var reMail = /^(?!.*@.*@.*$)(?!.*@.*\-\-.*\..*$)(?!.*@.*\-\..*$)(?!.*@.*\-$)(.*@.+(\..{1,11})?)$/;
+             if(!reMail.test(ObjektA.arryForm[key].value)){ 
+               validateForma = Validate(ObjektA.arryForm[key]);
+               }      
+        }
+         validatePole = true;
     } 
-    return validate;}
+    return validateForma;}
      
     this.submit = function(){
        this.QjObject.submit();
@@ -549,6 +560,10 @@ var myModal = function(ObjectP){
          this.title = title;
          this.myModal.find('h4').text(this.title);
     },
+//    this.bodyHtmlEdit = function(bodyHtml){
+//         this.bodyHtml = '<div class="row"><div class="col-md-11 col-sm-11">' + bodyHtml || '' + '</div></div>';
+//         this.myModal.find('div.modal-body').html(this.bodyHtml);
+//    },       
             
     this.ButtonCloseHide = function(){
         this.myModal.find("button.close").hide();
@@ -573,8 +588,6 @@ var myModal = function(ObjectP){
     ObjectP.ButtonOk.Parameter = ObjectP.ButtonOk.Parameter || {};
     ObjectP.ButtonOk.Parameter.myModal = this;
 
-     
-     
     this.ButtonNone = new Button({QjObject:this.myModal.find("button.btn-default"),Fn:btnDefault, id:ObjectP.ButtonNone.id || null, class:"btn-default btn "+ObjectP.ButtonNone.class, text:ObjectP.ButtonNone.text || "Отмена"});
     this.ButtonOk = new Button({QjObject:this.myModal.find("button.btn-primary"), Fn:ObjectP.ButtonOk || null, id:ObjectP.ButtonOk.id || null, class:"btn-default btn "+ObjectP.ButtonOk.class, text:ObjectP.ButtonOk.text || "Ок"});
 
@@ -585,7 +598,7 @@ var myModal = function(ObjectP){
     this.myModal.parent("button.close").on("click", function(){
         this.Hide();
     });
-    
+
      Object.defineProperty(this, "titleEdit", {
         set: function(value) {
              this.title = value;
@@ -596,17 +609,19 @@ var myModal = function(ObjectP){
              JQ.fadeIn(200);
              }}
     });
-//    Object.defineProperty(this, "bodyHtmlEdit", {
-//        set: function(value) {
-//             this.bodyHtml = '<div class="row"><div class="col-md-11 col-sm-11">' + value + '</div></div>';
-//             if(myModalActive){
-//             var JQ = this.myModal.find('div.modal-body');
-//             JQ.fadeOut(200);
-//             JQ.html(this.bodyHtml);
-//             JQ.fadeIn(200);
-//            }}
-//    });
+        Object.defineProperty(this, "bodyHtmlEdit", {
+        set: function(value) {
+             this.bodyHtml = '<div class="row"><div class="col-md-11 col-sm-11">' + value + '</div></div>';
+             if(myModalActive){
+             var JQ = this.myModal.find('div.modal-body');
+             JQ.fadeOut(300);
+             JQ.html(this.bodyHtml);
+             JQ.fadeIn(100);
+            }
+        }
+    });
 };
+
 //Для регистрации
 //ObjectP.Password, ObjectP.PasswordRepeat  -  inputUl
 var inputPasswordRegist = function(ObjectP){
@@ -872,49 +887,6 @@ if($("div").is("#announcement")){
    
 }      
         
-//Формирует списак для удаления 
-//  $('span.post-delete').on('click',function(){ 
-//  var postDelSize = $('form#delete-posts input[name="delet[]"]').length;
-//  var postId=$(this).data('postId');
-//
-//   post[postId]=$('div.post'+postId);
-//  var title=post[postId].find('.title_zag');
-//   post[postId].css('padding-bottom','8px');
-//  $('div.post'+postId).find('.row').css('display','none');
-//  $('div.post'+postId).append('<div class="row row-2"><div class="delete-post col-md-9">'+title.html()+'</div><div class="col-md-1"> <button type="button" value="'+postId+'" class="button-delet-post btn btn-default">Отмена</button></div></div></div>');
-//  var panelAnnoucement=$('#panel-annoucement');
-//  panelAnnoucement.css('display','block');
-//  panelAnnoucement.find('span#post-del-size').text(postDelSize+1);
-//  panelAnnoucement.find('form#delete-posts').append('<input name="delet[]" type="hidden" value="'+postId+'">');
-//  
-//});
-
-//
-
-//$('button.allNone').on('click',function(){
-//    $('form#delete-posts input[name="delet[]"]').remove();
-//    $('div.post_lk').find('.row-1').css('display','block');
-//    $('div.post_lk').find('.row-2').remove();
-//   var panelAnnoucement=$('#panel-annoucement');
-//   panelAnnoucement.css('display','none');
-//   panelAnnoucement.find('span#post-del-size').text(postDelSize);
-//   postDelSize=0;
-//});
-
-// $('button.allDelet').on('click', function(){ 
-//var myModal = $('#myModal');  
-//    myModal.find('h4').text('Удалить данные объявления?');
-//    myModal.find('div.modal-body').html('');
-//    myModal.find('button.btn-primary').text("Удалить все выбранные");
-//    myModal.find('button.btn-default').text("Отменить");    
-//    var deletePosts='';
-//    for (var post_S in post) {   
-//    deletePosts+='<div class="row row-'+post_S+'"><div class="col-md-11 col-sm-11">'+post[post_S].find('.title_zag a').text()+'</div><div class="col-md-1 col-sm-1"><span class="glyphicon glyphicon-remove del-none color-red" data-post-id="'+post_S+'" title="Отменить"></span></div></div>';    
-//     }
-//    myModal.find('div.modal-body').html(deletePosts);
-//    myModal.modal('show');
-//    
-//});
 $('#myModal').on("click","button.btn-primary",function(){;
     var formDeletePost=$("#delete-posts");
     if(formDeletePost.find("input[name='delet[]']").length>0){

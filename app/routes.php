@@ -63,7 +63,8 @@ Route::get('/post/edit/{id}',array('as'=>'EditPostMake','uses'=>'PostController@
 Route::post('/post/edit/',array('as'=>'EditPostMake','uses'=>'PostController@EditPost','before'=>'csrf'));
 Route::post('/post/delet/{id}',array('as'=>'EditPostDelet','uses'=>'PostController@DeletPosts','before'=>'csrf'));
 Route::get('/post/{id}',array('as=>PostId','uses'=>'PostController@PostId'));
-Route::get('/page/{url}',  'PostController@StaticPage');
+Route::post('/post/email-secret','PostController@EmailNoSecret');
+Route::get('/page/{url}','PostController@StaticPage');
 
 Route::get('/search','SearchController@search');
 Route::get('/search/data/{ajax}','SearchController@searchData');

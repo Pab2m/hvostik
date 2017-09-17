@@ -337,7 +337,12 @@ div.tex{
 #min_foto img{
    margin-bottom: 5px; 
 }
-
+div.min_foto{
+    margin-top: 5px;
+}
+.displaynone{
+    display: none;
+}
 .post-a-h3{
      float: left; 
      width: 90%; 
@@ -447,3 +452,4 @@ height: 16px;
 #myTab{
     margin-bottom: 10px;
 }
+

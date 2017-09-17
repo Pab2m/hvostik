@@ -159,20 +159,19 @@ class AjaxController extends AdminController {
     }
 
         public function UserMessage(){
-        $data=Input::all();
+        $data=Input::all(); 
         foreach($data as &$value){
              $value=strip_tags($value);
-        }
+        } 
           $rules=['email'=>'required|email|min:6'];
-   $val = Validator::make($data, $rules);
+          $val = Validator::make($data, $rules);
          if($val->fails()){
-           return false;           }
-   $emailPost = Post::IdPost(71)->email;//Post::IdPost((int)$data['idPost']);
-      //      dd($emailPost);
+           return 0;
+         }
+   $emailPost = Post::IdPost((int)$data['idPost'])->email;
    $ArrauValue =  array('title' => $data['title'], 'idPost'=>$data['idPost'], 'text'=>$data['text'], 'emailPost' =>$emailPost,'UserEmail'=>$data["email"]);
-      
-        return User::UserMessage($ArrauValue);
-    }
+   return User::UserMessage($ArrauValue);
+}
          
  
 public function AdminPostEditDate(){

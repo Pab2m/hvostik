@@ -224,7 +224,9 @@ public function PostId($id){
     if($post->img_url){
         $post->img_url=unserialize($post->img_url);
     }         
-    return View::make('announcement.PostId',array('post'=>$post));}
+    return View::make('announcement.PostId',array('post'=>$post));
+   }
+    
     else{
         return $this->getMessage('Страница ненайдина!!!');
     }
@@ -250,9 +252,14 @@ public function AnnoucementEditDate(){
       $date = strip_tags($data['date']);
       $use = strip_tags($data['use']);
       $Annoucement = Post::IdPost($id); 
-      return dd($Annoucement -> AnnoucementEditDate($date, $use));
-     // return 1;
+      return $Annoucement -> AnnoucementEditDate($date, $use);
 }
+public static function EmailNoSecret(){
+    $data = Input::all();
+    $emailSecret = strip_tags($data['email-secret']);
+    return  Crypt::decrypt($emailSecret);
+}
+
   
 }
 

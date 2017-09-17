@@ -327,10 +327,13 @@ return $query->limit(5)->get();}
 public function PrintFoto(){
     $html='';
     if(count($this->img_url)>1){
+        $style = "displaynone";
        foreach ($this->img_url as $img_url){
-        $html.='<div id="min_foto" class="col-md-12 col-sm-4 col-xs-4">'
-        .'<a  href="/'.$img_url[640].'" class="image img-responsive"  data-foo-bar="/'.$img_url[0].'" rel="nofollow"><img class="img-responsive" src="/'.$img_url[240].'" width="145"  class="thumbnail" /></a>';           
-    $html.='</div>';} } else {$html.='';}                           
+    $html.='<div class="min_foto col-md-12 col-sm-3 col-xs-3 '.$style.'" >'
+        .'<a  href="/'.$img_url[640].'" class="image img-responsive"  data-foo-bar="/'.$img_url[0].'" rel="nofollow"><img class="img-responsive" src="/'.$img_url[240].'"   class="thumbnail" /></a>';     //width="145"      
+    $html.='</div>';
+    $style = '';
+       } } else {$html.='';}                           
 return $html;}
 
 public function Kroshki($strelka=" <span class='glyphicon glyphicon-play ob'></span> "){ $html='';
