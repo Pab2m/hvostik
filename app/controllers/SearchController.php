@@ -79,7 +79,6 @@ return View::make('announcement.search', array('optionHtmlRegions'=>$this->optio
 public function searchData($ajax){
 
         $data = SearchController::ValidateDate(Input::all());
- 
         if(isset($data['post'])){
         $post = $data['post'];
         unset($data['post']);

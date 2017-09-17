@@ -6,7 +6,7 @@ class Post extends Eloquent {
     protected $guarded = array('id','id_user','vip_type','sostoynia','prosmotry'); // которое содержит список запрещённых к заполнению полей:
 //  protected $fillable  = array('region_select', 'sity_select', 'category_select', 'poroda_koshek', 'poroda_sobak', 'pol', 'vozrast', 'tip_select', 'uslugi_select', 'tovari_select', 'cena', 'title', 'post', 'name', 'email', 'phone', 'priv_img', 'img_url', 'privat_email'); 
     public  $fillableUser = array('region_select', 'sity_select', 'category_select', 'poroda_koshek', 'poroda_sobak', 'pol', 'vozrast', 'tip_select', 'uslugi_select', 'tovari_select'); 
-
+    private $dateColumns = array ('chtaem_at','deletetaem_at');
 
     public static function str_size($str,$length){
         $str=iconv("UTF-8","windows-1251", $str); 
@@ -43,19 +43,30 @@ public static function AllPost($sostoynia=1){
 public static function IdPost($id){
     $id=(int)$id;
     $post=Post::where('id', '=', $id)->get()->first(); 
-    //print_r($post);
 return $post;}
 
 public static function PostsUser($id){
     return Post::where('id_user', '=', Auth::user()->id)->where('sostoynia','=',$id)->orderBy("created_at","DESC")->paginate(10);
 }
-
+public function announcementDelet(){
+        UserController::UserAccess($this->id);
+            if($this->img_url!==''){
+                   $this->DeletImg(unserialize($this->img_url));     
+            }
+            if(file_exists($this->phone)){
+               unlink($this->phone);   
+            }
+            if(($this->priv_img!=='images_post/hvostuk240x200.png')&&(file_exists($this->priv_img))){
+                    unlink($this->priv_img);   
+            }
+           return $this->delete();
+}
 public static function deletePost($id){
     if(gettype($id)==='array'){
         $i=0;
         foreach($id as $ids){
             $post=Post::IdPost((int)$ids);
-            if(($post->id_user===Auth::user()->id)||(Auth::user()->pravo===88)){
+            if(($post->id_user === Auth::user()->id)||(Auth::user()->pravo===88)){
                 if($post->img_url!==''){
                    $post->DeletImg(unserialize($post->img_url));     
                 }
@@ -316,10 +327,13 @@ return $query->limit(5)->get();}
 public function PrintFoto(){
     $html='';
     if(count($this->img_url)>1){
+        $style = "displaynone";
        foreach ($this->img_url as $img_url){
-        $html.='<div id="min_foto" class="col-md-12 col-sm-4 col-xs-4">'
-        .'<a  href="/'.$img_url[640].'" class="image img-responsive"  data-foo-bar="/'.$img_url[0].'" rel="nofollow"><img class="img-responsive" src="/'.$img_url[240].'" width="145"  class="thumbnail" /></a>';           
-    $html.='</div>';} } else {$html.='';}                           
+    $html.='<div class="min_foto col-md-12 col-sm-3 col-xs-3 '.$style.'" >'
+        .'<a  href="/'.$img_url[640].'" class="image img-responsive"  data-foo-bar="/'.$img_url[0].'" rel="nofollow"><img class="img-responsive" src="/'.$img_url[240].'"   class="thumbnail" /></a>';     //width="145"      
+    $html.='</div>';
+    $style = '';
+       } } else {$html.='';}                           
 return $html;}
 
 public function Kroshki($strelka=" <span class='glyphicon glyphicon-play ob'></span> "){ $html='';
@@ -372,7 +386,6 @@ public function CoutImgUrl(){
 public static function PostCount($sost=0){
     $query=Post::where('sostoynia','=',(int)$sost)->count(); 
     return $query;
-    
 }
 public function MailPostAdd(){
    Mail::send('emails.post.postAdd',
@@ -390,26 +403,47 @@ public function MailPostAdd(){
  
   
  return ;}
+public  function chtaemAtmMaybe(){
+       if(!Cache::has('chtaem_at')) {
+          $chtaem_at = TableBd::TableId("config", 1, "config"); 
+       } else{
+          $chtaem_at = Cache::get('chtaem_at');
+       }
+       $Date = new DateTime();
+       $Date -> add(new DateInterval('P'.$chtaem_at.'D'));
+       return $Date->format('Y-m-d H:i:s');
+}
 
-public function EdetSostPost($sost=0){
+public function EdetSostPost($sost = 0){
     if($sost==0){ // на модерации
-     $this->chtaem_at = NULL; 
-     $this->deletetaem_at = NULL; 
-     $date=false;
+       $this->deletetaem_at = NULL; 
+       $this->chtaem_at = NULL; 
+       $this -> save();
+       $date = $this -> chtaemAtmMaybe();
     } elseif($sost==1) {// обубликованно
-        $this->chtaem_at = date('Y-m-d', strtotime(date('Y-m-d').'+7 day'));
-        $date=$this->chtaem_at;
-        $this->deletetaem_at = NULL;          
+
+    $this -> chtaem_at = $this -> chtaemAtmMaybe(); 
+    $this -> deletetaem_at = NULL; 
+    $this -> save();
+    $date = $this -> chtaem_at;
+    
     }elseif($sost==2){ //снятое 
-     $this->chtaem_at = NULL; 
-     $this->deletetaem_at = date('Y-m-d', strtotime(date('Y-m-d').'+7 day')); 
-     $date = $this->deletetaem_at;
+      if(!Cache::has('deletetaem_at')) {
+        $deletetaem_at= TableBd::TableId("config", 2, "config"); 
+      } else{
+          $deletetaem_at = Cache::get('deletetaem_at');
+       }
+    $Date = new DateTime();
+    $Date -> add(new DateInterval('P'.$deletetaem_at.'D'));
+    $this -> deletetaem_at = $Date->format('Y-m-d H:i:s');  
+    $date = $this -> deletetaem_at;
+    $this->chtaem_at = NULL; 
     }
     $this->sostoynia=(int)$sost;
     $this->save();
-    return json_encode(array("sost"=>$this->sostoynia,"date"=>$date)); 
+    return array("sost"=>$this->sostoynia,"date"=>$date); 
     
-    }
+}
   // Обубликованое до   
  public function EditChtaem_at($date){
       $date=str_replace('.','-',$date);
@@ -425,42 +459,30 @@ public function EdetSostPost($sost=0){
      $this->chtaem_at = NULL;
      $this->save();
      return 1;}      
-     
- public static function OtchetPostSostajnijCount(){
-  if((Auth::check())&& (Auth::user()->pravo===88)){ 
-    $snjt_post = Post::where('sostoynia','=',1)->where('chtaem_at','<',date("y.m.d"))->get();
-   
-    $i = 0;
-    if($snjt_post->count()!=0){
-    foreach ($snjt_post as $post){
-    $snjt_array[$i]["id"] = $post->id;
-    $snjt_array[$i]["title"] = $post->title;
-    $snjt_array[$i]["email"] = $post->email;
-    $i++; 
-    }} else { $snjt_array = 0; }
-    $snjt_post = Post::where('sostoynia','=',2)->where('deletetaem_at','<',date("y.m.d"))->get();
-     $value[0] = $snjt_array;
-      unset($snjt_array);       
-    if($snjt_post->count()!=0){
-    $i = 0;
+public static  function listChtaem_at(){
+    return Post::where('sostoynia','=',1)->where('chtaem_at','<',date("y.m.d"))->get();
+}
 
-    foreach ($snjt_post as $post){
-    $snjt_array[$i]["id"] = $post->id;
-    $snjt_array[$i]["title"] = $post->title;
-    $snjt_array[$i]["email"] = $post->email;
-    $i++; 
-    }} else { $snjt_array = 0; }
-    
-     $value[1] = $snjt_array;
-      
-    return  $value; 
- }else{return ;}
- 
+public static function listDeletetaem_at(){
+    return Post::where('sostoynia','=',2)->where('deletetaem_at','<',date("y.m.d"))->get();
+}
+
+public function PostNaDelet(){
+       if(!Cache::has('deletetaem_at')) {
+          $deletetaem_at = TableBd::TableId("config", 2, "config"); 
+       } else{
+          $deletetaem_at = Cache::get('deletetaem_at');
+       }
+        $this -> sostoynia = 2;
+        $Date = new DateTime($this -> chtaem_at);
+        $Date -> add(new DateInterval('P'.$deletetaem_at.'D'));
+        $this -> deletetaem_at = $Date->format('Y-m-d H:i:s');
+        return $this->save();
     }
-     
+
 public static function adminAbdeitPostSost(){
  if((Auth::check())&& (Auth::user()->pravo===88)){ 
-        $data = Post::OtchetPostSostajnijCount();
+     $data = Post::OtchetPostSostajnijCount();
   if($data[0]!==0){  
     foreach ($data[0] as $value){
      $post = Post::find($value['id']);
@@ -488,6 +510,24 @@ public static function adminAbdeitPostSost(){
           $this -> $value = NULL;
       }
      return   $this -> save();
+  }
+  public function AnnoucementEditDate($date, $use){ 
+         $useError = false;
+         foreach ($this -> dateColumns as $value){
+                  $value == $use;
+                  $useError = true;
+                  break;
+         }
+         if(($useError) || ($this -> sostoynia !== 0)){
+             if((($this -> sostoynia == 1) && ($use == "chtaem_at")) || (($this -> sostoynia == 2) && ($use == "deletetaem_at"))){
+                 $date = new DateTime($date);
+                 $date->format('Y-m-d H:i:s');
+                 $this -> $use = $date;
+                 $this -> save();
+                 return true;
+             }
+         }
+       return false;  
   }
     
     

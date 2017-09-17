@@ -20,16 +20,16 @@
 	<link rel="stylesheet" href="/css/fonts.css" />
          <link rel="stylesheet" href="/css/bootstrap.css" />
 	<link rel="stylesheet" href="/css/main.css" />
-        <link rel="stylesheet" href="/css/a-pikaday.css" />
          <link rel="stylesheet" href="/css/a-main.css" />
 	<link rel="stylesheet" href="/css/bootstrap_skin.css" />
 	<link rel="stylesheet" href="/css/media.css" />  
+        <link rel="stylesheet" href="/css/pikaday.css" /> 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="/js/chosen.jquery.min.js"></script>
-        {{HTML::script('/script/a-moment.js');}}
-        {{HTML::script('/script/a-pikaday.jquery.js');}}
-        {{HTML::script('/script/pikaday.js');}}
         <script src="/script/yepnope.js"></script>
+        <script src="/script/moment.js"></script>
+        <script src="/script/pikaday.min.js"></script>
+        <script src="/script/moment.js"></script>
         {{HTML::script('/script/main.js');}}
           
 @yield('head')
@@ -51,6 +51,7 @@
           <a class="navbar-brand" href="/fyurer/posts/0">Объявления на модерации (<span id="sost0">{{Post::PostCount(0)}}</span>)</a>
           <a class="navbar-brand" href="/fyurer/posts/1">Обубликованные (<span id="sost1">{{Post::PostCount(1)}}</span>)</a>
           <a class="navbar-brand" href="/fyurer/posts/2">Снятые объявления (<span id="sost2">{{Post::PostCount(2)}}</span>)</a>
+          <a class="navbar-brand" href="/fyurer/posts/3">Объявления на удаление(<span id="sost3">{{Post::PostCount(3)}}</span>)</a>
           <a class="navbar-brand" href="/fyurer/users/">Пользователи ({{User::UserCount(3)}})</a>
         </div>
 <!--        <div class="navbar-collapse collapse">

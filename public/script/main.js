@@ -1,4 +1,4 @@
-var UrlImg, post=new Object();
+//var UrlImg, post=new Object();
 
 function Cshtora(){
    var htmlHtora = '<div id="htora"><div id="proces"><img  width="64" height="64" src="/img/loading-spinning-bubbles.svg"></div></div>';
@@ -41,16 +41,27 @@ function Form(Object){
          this.length --;
      };       
             
-    this.Validacij = function(Objekt){    
-        var validate = true;
+    this.Validacij = function(Objekt){
+        var validateForma = true, validatePole = true;
+        var Validate = function(Objekt){
+            Objekt.ValidateNo();
+            validatePole = false;
+           return false; 
+        };        
         var ObjektA = Objekt || this; 
       for(var key in ObjektA.arryForm){
-        if(((!ObjektA.arryForm[key].value)||(ObjektA.arryForm[key].value==''))&&(ObjektA.arryForm[key].surely)){
-        ObjektA.arryForm[key].ValidateNo();
-        validate = false;
-        }    
+        if(((!ObjektA.arryForm[key].value)||(ObjektA.arryForm[key].value==''))&&(ObjektA.arryForm[key].surely)){ 
+      validateForma = Validate(ObjektA.arryForm[key]);
+        }
+        if((validatePole) && (ObjektA.arryForm[key] instanceof inputUl) && (ObjektA.arryForm[key].type === "email")){
+          var reMail = /^(?!.*@.*@.*$)(?!.*@.*\-\-.*\..*$)(?!.*@.*\-\..*$)(?!.*@.*\-$)(.*@.+(\..{1,11})?)$/;
+             if(!reMail.test(ObjektA.arryForm[key].value)){ 
+               validateForma = Validate(ObjektA.arryForm[key]);
+               }      
+        }
+         validatePole = true;
     } 
-    return validate;}
+    return validateForma;}
      
     this.submit = function(){
        this.QjObject.submit();
@@ -341,8 +352,8 @@ function Button(ObjectP){
        this.html = ObjectP.html || null,
        this.ObjectForm = ObjectP.ObjectForm,
        this.Fn = ObjectP.Fn || null; 
-       this.delegirovanie = ObjectP.delegirovanie || false; 
-        
+       this.delegirovanie = ObjectP.delegirovanie || false;
+
        this.QjObjectUpdating = function(){
            if(this.id !== null){
               this.QjObject = $("#"+this.id);
@@ -362,7 +373,6 @@ function Button(ObjectP){
        } else {
            this.QjObject = ObjectP.QjObject;
        };
-      
       this.QjObjectUpdatingHtml = function(){
          if(this.html != null){
            this.QjObject = $(this.html);  
@@ -370,26 +380,59 @@ function Button(ObjectP){
             this.QjObject = null; 
          }  
        }; 
-       
+        /**
+         * Проверить есть ли событие eventname на элементе element
+         * @param object element jQuery-элемент
+         * @param string eventname название события
+         * @returns bool
+         */
+        var checkEvent = function(zhis) {
+            /**
+            * Получить список событий, которые висят на элементе
+            * @param object element jQuery элемент
+            * @returns object|false
+            */
+             var eventsList = function(zhis) { ;
+            //В разных версиях jQuery список событий получается по-разному
+           var events = $._data(zhis.QjObject.get(0), 'events');
+            if (events !== undefined) return events;
+              return events;
+            }
+            var events, ret = false;
+            events = eventsList(zhis);
+            if (events!==false) {
+                for (var key in events) {
+                    if (key == 'click') {
+                        ret = true;
+                    }
+                }
+            }
+            return ret;
+        }
+
+          
      if(this.Fn != null){
       var Parameter = ObjectP.Fn.Parameter || {};
       var Function = ObjectP.Fn.Fn || ObjectP.Fn || null; 
       
       if((Function !== undefined) ||(Function !== null)){  
           
-           var zhis = this;
+       var zhis = this; 
+       if(!checkEvent(zhis)){
        if((this.delegirovanie) && (this.parentDiv !== false)){
         $("#"+this.parentDiv).on("click","."+this.class, function(){ 
             var elem = $(this); 
-            Function(Parameter,elem,zhis);   
+            Function(Parameter,elem,zhis);  
           });    
        } else {
            this.QjObject.on("click", function(){
                var elem = $(this);
                Function(Parameter,elem, zhis); 
+
            });
        }  
-   }
+   }}
+
     }
    Object.defineProperty(this, "textEdit", {
         set: function(value) {
@@ -475,30 +518,56 @@ function Button(ObjectP){
 }
 
 var myModal = function(ObjectP){
-    this.myModal = $($("#myModal").clone().attr({id:"myModal-clone"}));
-    this.myModal.appendTo("body")
+    var date = new Date();
+    var id = 'myModal-'+ date.getTime();
+    var htmLmyModal = '<div class="modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
+                       +'<div class="modal-dialog">'
+                       +'<div class="modal-content">'
+                       +'<div class="modal-header">'
+                       +'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
+                       +'<h4 class="modal-title" id="myModalLabel">Название модали</h4>'
+                       +'</div>'
+                       +'<div class="modal-body">'
+                       +'</div>'
+                       +'<div class="modal-footer">'
+                       +'<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>'
+                       +'<button type="button" class="btn btn-primary">Сохранить изменения</button>'
+                       +' </div>'
+                       +'</div>'
+                       + '</div>'
+                       +'</div>'; 
+    $("body").append(htmLmyModal);           
+    this.myModal =  $("body #"+id);
+  
+   this.myModal.appendTo("body")
     this.title = ObjectP.title || '',
     this.bodyHtml ='<div class="row"><div class="col-md-11 col-sm-11">' + ObjectP.bodyHtml || '' + '</div></div>',
-    
+
     this.Hide = function(){  
-       myModalActive = false; 
        this.ButtonOk.QjObject.unbind('click'); 
        this.myModal.modal('hide');
-       this.myModal.on('hidden', function(){
-           this.myModal.remove();
-           $("div.modal-backdrop").remove();
-       });
-       
-    },
+       };
+     this.myModal.on('hidden.bs.modal', function(e){
+         myModalActive = false;  
+        $("body #"+id).remove();
+     });
     this.Show = function(){    
-      if(myModalActive){this.Hide();}
-      this.myModal.modal('show');
-      myModalActive = true; 
-    },
+       if(myModalActive){this.Hide();}
+       this.myModal.modal('show');
+       myModalActive = true; 
+    };
     this.TitleEdit = function(title){
          this.title = title;
          this.myModal.find('h4').text(this.title);
-    };
+    },
+//    this.bodyHtmlEdit = function(bodyHtml){
+//         this.bodyHtml = '<div class="row"><div class="col-md-11 col-sm-11">' + bodyHtml || '' + '</div></div>';
+//         this.myModal.find('div.modal-body').html(this.bodyHtml);
+//    },       
+            
+    this.ButtonCloseHide = function(){
+        this.myModal.find("button.close").hide();
+    };        
     var myModalActive = false;       
     var htmlModal = this.myModal.html();
     if(ObjectP.btnDefault == undefined){
@@ -515,10 +584,10 @@ var myModal = function(ObjectP){
 //    if(ObjectP.ButtonOk.Parameter == undefined){
 //      ObjectP.ButtonOk.Parameter = {};  
 //    }
+    ObjectP.ButtonOk =  ObjectP.ButtonOk || {};
+    ObjectP.ButtonOk.Parameter = ObjectP.ButtonOk.Parameter || {};
     ObjectP.ButtonOk.Parameter.myModal = this;
 
-     ObjectP.ButtonOk =  ObjectP.ButtonOk || {}; 
-     
     this.ButtonNone = new Button({QjObject:this.myModal.find("button.btn-default"),Fn:btnDefault, id:ObjectP.ButtonNone.id || null, class:"btn-default btn "+ObjectP.ButtonNone.class, text:ObjectP.ButtonNone.text || "Отмена"});
     this.ButtonOk = new Button({QjObject:this.myModal.find("button.btn-primary"), Fn:ObjectP.ButtonOk || null, id:ObjectP.ButtonOk.id || null, class:"btn-default btn "+ObjectP.ButtonOk.class, text:ObjectP.ButtonOk.text || "Ок"});
 
@@ -529,7 +598,7 @@ var myModal = function(ObjectP){
     this.myModal.parent("button.close").on("click", function(){
         this.Hide();
     });
-    
+
      Object.defineProperty(this, "titleEdit", {
         set: function(value) {
              this.title = value;
@@ -540,17 +609,19 @@ var myModal = function(ObjectP){
              JQ.fadeIn(200);
              }}
     });
-    Object.defineProperty(this, "bodyHtmlEdit", {
+        Object.defineProperty(this, "bodyHtmlEdit", {
         set: function(value) {
              this.bodyHtml = '<div class="row"><div class="col-md-11 col-sm-11">' + value + '</div></div>';
              if(myModalActive){
              var JQ = this.myModal.find('div.modal-body');
-             JQ.fadeOut(200);
+             JQ.fadeOut(300);
              JQ.html(this.bodyHtml);
-             JQ.fadeIn(200);
-            }}
+             JQ.fadeIn(100);
+            }
+        }
     });
 };
+
 //Для регистрации
 //ObjectP.Password, ObjectP.PasswordRepeat  -  inputUl
 var inputPasswordRegist = function(ObjectP){
@@ -645,9 +716,9 @@ if($("div").is("#add_post")){
 if($("div").is("#edit_post")){
     yepnope("/script/editPost.js");
 }
-
-yepnope("/script/search.js");  
-
+if($("form").is("#formSearch")){
+    yepnope("/script/search.js");  
+}
 if($("form").is("#form-registr")){
    var registracionButton = new Button({id:"registracion"});
    var registracionForm = new Form({id:"#form-registr",button:registracionButton});
@@ -794,8 +865,6 @@ if($("div").is("#announcement")){
              Parameter.Announcement[postId].post = $('div.post'+postId);
              var title = Announcement[postId].post.find('.title-annoucement div.post-a-h3');
              var textPost = Announcement[postId].post.find('.title_zag');
-             console.log(title);
-            // Parameter.Announcement[postId].post.css('padding-bottom','8px');
              Parameter.Announcement[postId].post.find('.row').hide(300);
              Parameter.Announcement[postId].post.append('<div class="row row-2 post-dell"><div class="delete-post col-md-10">'+title.html()+textPost.html()+'</div><div class="col-md-2"><button type="button" value="'+postId+'" class="button-delet-post btn btn-default">Отменить</button></div></div></div>');
              Parameter.Announcement[postId].delete = Parameter.Announcement[postId].post.find(".delete-post").parent("div.row");
@@ -809,9 +878,7 @@ if($("div").is("#announcement")){
                 Parameter.Announcement[postId].delete.hide(300);
                 Parameter.Announcement[postId].delete.remove();
                 Parameter.Announcement[postId].post.find('.row').show(300);
-                
              };
- 
              FspanPostDelete.Parameter.ArrayButtonPost[postId] = new Button({QjObject:Parameter.Announcement[postId].post.find("button"), Fn:ArrayButtonPostFn});
              AnnoucementPanel.AddInput(postId, "delet[]");
              AnnoucementPanel.Show();
@@ -820,49 +887,6 @@ if($("div").is("#announcement")){
    
 }      
         
-//Формирует списак для удаления 
-//  $('span.post-delete').on('click',function(){ 
-//  var postDelSize = $('form#delete-posts input[name="delet[]"]').length;
-//  var postId=$(this).data('postId');
-//
-//   post[postId]=$('div.post'+postId);
-//  var title=post[postId].find('.title_zag');
-//   post[postId].css('padding-bottom','8px');
-//  $('div.post'+postId).find('.row').css('display','none');
-//  $('div.post'+postId).append('<div class="row row-2"><div class="delete-post col-md-9">'+title.html()+'</div><div class="col-md-1"> <button type="button" value="'+postId+'" class="button-delet-post btn btn-default">Отмена</button></div></div></div>');
-//  var panelAnnoucement=$('#panel-annoucement');
-//  panelAnnoucement.css('display','block');
-//  panelAnnoucement.find('span#post-del-size').text(postDelSize+1);
-//  panelAnnoucement.find('form#delete-posts').append('<input name="delet[]" type="hidden" value="'+postId+'">');
-//  
-//});
-
-//
-
-//$('button.allNone').on('click',function(){
-//    $('form#delete-posts input[name="delet[]"]').remove();
-//    $('div.post_lk').find('.row-1').css('display','block');
-//    $('div.post_lk').find('.row-2').remove();
-//   var panelAnnoucement=$('#panel-annoucement');
-//   panelAnnoucement.css('display','none');
-//   panelAnnoucement.find('span#post-del-size').text(postDelSize);
-//   postDelSize=0;
-//});
-
-// $('button.allDelet').on('click', function(){ 
-//var myModal = $('#myModal');  
-//    myModal.find('h4').text('Удалить данные объявления?');
-//    myModal.find('div.modal-body').html('');
-//    myModal.find('button.btn-primary').text("Удалить все выбранные");
-//    myModal.find('button.btn-default').text("Отменить");    
-//    var deletePosts='';
-//    for (var post_S in post) {   
-//    deletePosts+='<div class="row row-'+post_S+'"><div class="col-md-11 col-sm-11">'+post[post_S].find('.title_zag a').text()+'</div><div class="col-md-1 col-sm-1"><span class="glyphicon glyphicon-remove del-none color-red" data-post-id="'+post_S+'" title="Отменить"></span></div></div>';    
-//     }
-//    myModal.find('div.modal-body').html(deletePosts);
-//    myModal.modal('show');
-//    
-//});
 $('#myModal').on("click","button.btn-primary",function(){;
     var formDeletePost=$("#delete-posts");
     if(formDeletePost.find("input[name='delet[]']").length>0){

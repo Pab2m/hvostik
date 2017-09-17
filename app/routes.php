@@ -39,6 +39,8 @@ Route::post('/fyurer/select/detail/addnotdubal',  'AdminController@selectDetailA
 Route::post('/fyurer/select/delete',  'AdminController@selectDelete');
 Route::post('/fyurer/select/delete/site/table','AdminController@adminSelectSity');
 Route::post('/fyurer/select/site/edit',  'AdminController@adminSelectSityEdit');
+Route::get('/fyurer/config',  'AdminController@ConfigSistem');
+Route::post('/fyurer/annoucement/edit/date', array('uses'=>'PostController@AnnoucementEditDate'));
 
 Route::post('/registration','UserController@register');
 Route::get('/registration/{id}/{activation_code}','UserController@getActivate');
@@ -61,7 +63,8 @@ Route::get('/post/edit/{id}',array('as'=>'EditPostMake','uses'=>'PostController@
 Route::post('/post/edit/',array('as'=>'EditPostMake','uses'=>'PostController@EditPost','before'=>'csrf'));
 Route::post('/post/delet/{id}',array('as'=>'EditPostDelet','uses'=>'PostController@DeletPosts','before'=>'csrf'));
 Route::get('/post/{id}',array('as=>PostId','uses'=>'PostController@PostId'));
-Route::get('/page/{url}',  'PostController@StaticPage');
+Route::post('/post/email-secret','PostController@EmailNoSecret');
+Route::get('/page/{url}','PostController@StaticPage');
 
 Route::get('/search','SearchController@search');
 Route::get('/search/data/{ajax}','SearchController@searchData');
@@ -69,6 +72,8 @@ Route::get('/search/data/{ajax}','SearchController@searchData');
 Route::get('/test/',function(){
 return View::make('password.reset');
 });
+
+
 Route::get('/test/form/' ,function(){ return View::make('form');});
 
 //----------------------------------------
@@ -82,14 +87,19 @@ Route::get('/ajax/sity_search/{id}','AjaxController@getSitySearch');
 Route::get('/ajax/id_region_sity/{id}','AjaxController@idRegionSity_Region');
 Route::get('/ajax/region/{id}/{pole?}','AjaxController@idRegion');
 Route::post('/ajax/user/message','AjaxController@UserMessage');
-Route::post('/ajax/admin/postsost','AjaxController@AdminPostSost');
-Route::get('/ajax/admin/schetpost','AjaxController@AdminPostCount');
+Route::post('/ajax/admin/edit/annoucementsost','AdminController@AdminAnnoucemenSost');
+Route::get('/ajax/admin/schetpost','AdminController@AdminPostCount');
 Route::post('/ajax/admin/datepost','AjaxController@AdminPostEditDate');
-Route::get('/ajax/admin/postsost/control','AdminController@adminControlPost');
+Route::get('/ajax/admin/annoucement/number','AdminController@adminControlPost');
 Route::post('/ajax/admin/apdeitpost','AdminController@adminControlAbdeitPostSost');
 Route::post('/ajax/admin/json/update','AdminController@JsonUpdate');
 Route::get('/ajax/json/update','AdminController@JsonUpdate');
 Route::get('/ajax/json/bd/{bd}','AjaxController@TableBdJsonTab');
+Route::post("/ajax/admin/annoucement/shoot","AdminController@AnnoucementShootDelet");
 
 
-Route::get('/bd', "AdminController@adminSelectSity2");
+Route::get('/test', function(){
+    //return View::make('errors.message', array('message'=>'Страница не найдина','redirect'=>false));
+    return UserController::UserAccess();
+         
+});

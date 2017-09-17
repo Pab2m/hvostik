@@ -1,0 +1,101 @@
+[33mcommit 07cff78445ea5a04dd0a99fc31420799ef657adb[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m)[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Thu Jul 6 23:17:21 2017 +0500
+
+    смена статуса объявлений (недоделано)
+
+[33mcommit d6e9903f44ca15f6ef7a195c58d1a2d3bb382d57[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Wed May 31 21:58:53 2017 +0500
+
+    Баг в городах, не записывает изменения в базу
+
+[33mcommit 96fcb534b21112716dcea0018dc0020f6d0276e7[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Fri May 19 21:33:55 2017 +0500
+
+    Ошибка
+
+[33mcommit 26f334dd4d32378882b2b37787783ced617e644c[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Sun May 14 21:34:21 2017 +0500
+
+    14.05.2017 Добавлин админ config (недоделан)
+
+[33mcommit 44c42e0427d3cb41cbff475a98dc5cfe309a8ce8[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Sun May 14 21:33:25 2017 +0500
+
+    14.05.2017 Добавлин админ config (недоделан)
+
+[33mcommit 0621392c7e39e913cfce18682ae869254298717e[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Sat Apr 22 18:25:43 2017 +0500
+
+    Удаление объявления доделана. Главная, Личный кабенет
+
+[33mcommit 32fc2caa4cc3b25032e4d902f5f71e8151923511[m[33m ([m[1;31morigin/develop[m[33m)[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Thu Mar 30 21:58:05 2017 +0500
+
+    Панель удаления, поправка верски объявления (на главной)
+
+[33mcommit 56011b3125e002b58fb6e36f5381c5665936d498[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Wed Mar 22 19:38:52 2017 +0500
+
+    Удаления объявлений (главная)
+
+[33mcommit 9c8a54cdc3638ac26b9971731d43ec2949f9155a[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Wed Mar 8 22:16:27 2017 +0500
+
+    Формирования списка удаляймых объявлений (недоделано)
+
+[33mcommit 84a045391e0d2114727b0866a20d34809479bb67[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Sun Mar 5 13:38:45 2017 +0500
+
+    Немного удалил старого  Js
+
+[33mcommit ad90e8d7fac73724f2619f8fbf8777654614bd0c[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Sun Mar 5 12:09:23 2017 +0500
+
+    05032017 2017
+
+[33mcommit 545566555f31fb405d52055a7990063c4d99bd20[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Sat Mar 4 20:49:15 2017 +0500
+
+    04032017 2009
+
+[33mcommit 02d38b11aef52109189fcb16a33fe94fda974781[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Fri Mar 3 21:05:09 2017 +0500
+
+    03.03.2016
+
+[33mcommit 62f2e2e3bf9ecb1c99a8c0cedc8852beaf7a6ed3[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Tue Feb 28 22:13:20 2017 +0500
+
+    28022007 2204
+
+[33mcommit d037b4dc796624d17511ef5219e7317a6c3f32d1[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Tue Feb 28 22:04:36 2017 +0500
+
+    28022007 2204
+
+[33mcommit 844bcfd4777d1ef8685bbb2b45964f63762b6d4e[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Sat Feb 25 21:06:18 2017 +0500
+
+    25.02.2017
+
+[33mcommit 892b07a813b57b05282f2878b4418dacda70f70f[m
+Author: Pab2m <Za.ra.thus.tra@yandex.ru>
+Date:   Sat Feb 25 20:51:27 2017 +0500
+
+    Просто тест

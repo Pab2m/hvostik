@@ -22,8 +22,17 @@
     <div style="margin: 15px">
         <button type="button" class="btn btn-default" id="postControl"> Снять, удалить объявления завершённые по времени</button> 
         <div class="container">
-            <div id="div-sost-posts" class="col-md-12">
-                
+            <div id="div-sost-posts" class="col-md-12"  style="display: none">
+                <div class='row'>
+                  <div class='col-mg-12'>
+                   Объявлений на снятия: <b id="snjtPostCount"></b> шт.<br>
+                   Объявлений на удаление: <b id ="deletPostCount"></b> шт.<br>
+                  </div>
+                 </div>
+                 <div class='row'>
+                 <div class='col-md-12'>
+                 <button id='otchet-sostpost' class='btn btn-default'>Удалить/Снять объявленния</button>
+                 </div></div>
             </div>
         </div>
    

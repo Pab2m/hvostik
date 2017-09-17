@@ -86,7 +86,6 @@ class PostController extends BaseController {
           if(isset($data['img'])&&($data['img']!==0)){  
           $data['img_url']=Post::PostImgSeve($data['img'], $data['id_user']);
           unset($data['img']);
-         // $data['priv_img']=$data['img_url'][0][240];
           $data['priv_img']=Post::PriveiFoto($data['img_url'][0][0], $data['id_user']);
           $data['img_url']=serialize($data['img_url']);
           }else{$data['priv_img']='images_post/hvostuk240x200.png';}
@@ -101,10 +100,11 @@ class PostController extends BaseController {
         if($e){
         $data['phone']=$e;}else{unset($data['phone']);}
         $Post=Post::create($data);
-  //     dd($Post);
         $Post->MailPostAdd();
         if(Auth::user()->pravo===88){
-        $Post->sostoynia=1;  }
+        $Post->sostoynia=1;  
+        $Post -> chtaem_at = $Post -> chtaemAtmMaybe();
+        }
         $Post-> id_user = Auth::user()->id;
         $Post->save();
         $redirect = Redirect::route('announcement_goot',array('title'=>$data['title']));
@@ -224,7 +224,9 @@ public function PostId($id){
     if($post->img_url){
         $post->img_url=unserialize($post->img_url);
     }         
-    return View::make('announcement.PostId',array('post'=>$post));}
+    return View::make('announcement.PostId',array('post'=>$post));
+   }
+    
     else{
         return $this->getMessage('Страница ненайдина!!!');
     }
@@ -243,7 +245,21 @@ public function StaticPage($url){
         return $this->getMessage('Страница ненайдина!!!');;
     }
 }
+public function AnnoucementEditDate(){
+      AdminController::UserControlAdmin();
+      $data = Input::all();
+      $id = strip_tags($data['id']);
+      $date = strip_tags($data['date']);
+      $use = strip_tags($data['use']);
+      $Annoucement = Post::IdPost($id); 
+      return $Annoucement -> AnnoucementEditDate($date, $use);
+}
+public static function EmailNoSecret(){
+    $data = Input::all();
+    $emailSecret = strip_tags($data['email-secret']);
+    return  Crypt::decrypt($emailSecret);
+}
 
-    
+  
 }
 

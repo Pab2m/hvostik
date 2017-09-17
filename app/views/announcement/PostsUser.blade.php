@@ -18,10 +18,9 @@
 <div id='content-left' class='col-md-12'>
 
   <div class="bs-example bs-example-tabs">
-    <ul id="myTab" class="nav nav-tabs">
-        
+    <ul id="myTab" class="nav nav-tabs">       
       <li class=" {{ (count($posts_true) != 0) || (count($posts_false) == 0) ? "active" : '' }}"><a href="#home" data-toggle="tab">Обубликованные объявления ({{count($posts_true);}})</a></li>
-      <li class=" {{ count($posts_false) != 0 ? "active" : '' }}"><a href="#profile" data-toggle="tab">На модерации ({{count($posts_false);}})</a></li>
+      <li class=" {{ (count($posts_false) != 0) && (count($posts_true) == 0) ? "active" : '' }}"><a href="#profile" data-toggle="tab">На модерации ({{count($posts_false);}})</a></li>
     </ul>
     <div id="announcement" class="tab-content">
       <div class="tab-pane fade  {{ (count($posts_true) != 0) || (count($posts_false) == 0) ? "in active" : '' }}" id="home">
@@ -34,7 +33,7 @@
     У вас нет обубликованных обьявлений! 
     @endif
      </div>
-      <div class="tab-pane fade {{ count($posts_false) != 0 ? "in active" : '' }}" id="profile">
+      <div class="tab-pane fade {{((count($posts_false) != 0) && (count($posts_true) == 0)) ? "in active" : '' }}" id="profile">
  @if($posts_false instanceof Illuminate\Pagination\Paginator)          
    @foreach($posts_false as $post) 
          @include('announcement.annoucement-short')      
@@ -49,10 +48,10 @@
 @section('footer-script')
 <script src="/libs/bootstrap/tab.js"></script>
 <script>
-$('#myTab a').click(function (e) {
-  e.preventDefault()
-  $(this).tab('show')
-})
+//$('#myTab a').click(function (e) {
+//  e.preventDefault()
+//  $(this).tab('show')
+//})
 </script>
 @stop
 

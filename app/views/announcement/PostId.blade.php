@@ -1,17 +1,7 @@
 @extends('template.main')
 @section('head')
-<!--{{HTML::script('script/jquery.fancybox/jquery.fancybox-1.2.1.js');}}
-{{HTML::script('script/jquery.fancybox/jquery.fancybox-1.2.1.pack.js');}}
- {{HTML::style('script/jquery.fancybox/jquery.fancybox.css');}}-->
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("a.img").fancybox();
-                        $('button#phone_b').on('click',function(){
-                           var phone='<img src="/{{$post->phone}}">';  
-                         $('span#phone_s').html(phone);   
-                        });
-		});
-	</script>
+ <script src="\libs\jquery.mousewheel.min.js"></script>
+ <script src="\script\ad-script.js"></script>
 @stop
 @section('title')
 {{$post->title}}
@@ -34,13 +24,18 @@
   <div id="slou-2" class="row">
       <div id="post-left" class="col-md-9 col-xs-12 img-responsive">
           <div id="image">
-           <?php $img_url=$post->img_url;    ?>                   
-                <a class="img"  rel="group"  href="/{{current($img_url)[0]}}">
-                    <img class="img-responsive"  src="/{{current($img_url)[640]}}"/>
+           <?php $i=0; ?>    
+              @foreach ($post->img_url as $value)
+                <a 
+                   @if ($i === 0) {{'rel="gallery1" class="img show"'}} @else {{'class="img"  rel="gallery1" style="display:none"'}} @endif 
+                   href="/{{$value[0]}}">
+                    <img class="img-responsive"  src="/{{$value[640]}}"/>
                 </a>
+              <?php $i++;?>
+              @endforeach
           </div>
       </div>
-      <div id="post-rigth" class="col-md-3 img-responsive">
+      <div id="post-rigth" class="col-md-3 col-sm-3 img-responsive">
            {{$post->PrintFoto()}}
       </div>
   </div>
@@ -53,24 +48,24 @@
        </div>    
        @endif
 <div class="row tex">
-        <div class="col-md-3 div-li tex">
+        <div class="col-md-3 col-sm-3 col-xs-7 div-li tex">
          Контактное лицо:
         </div> 
-        <div class="col-md-9 tex">
+        <div class="col-md-9 col-sm-9 col-xs-5 tex">
          {{$post->name}}
         </div> 
  </div>  
  @if($post->privat_email==1)
   <div class="row tex">
-        <div class="col-md-3 div-li tex">
+        <div class="col-md-3 col-sm-3 col-xs-5 div-li tex">
          Email:
         </div> 
-        <div class="col-md-2 tex">
-        <button id="email" type="submit" class="btn btn-default">Показать Email</button>     
+        <div class="col-md-2 col-sm-9 col-xs-7 tex">
+        <button id="show-email" type="submit" class="btn btn-default" email-secret="{{Crypt::encrypt($post->email)}}">Показать Email</button>     
         </div> 
      
         <div class="col-md-3 tex">
-        <button id="email_pusk" type="submit" class="btn btn-default">Отправить Email</button>     
+        <button id="email-pusk-post" type="submit" class="btn btn-default">Отправить Email</button>     
         </div>   
   </div>
  @else
@@ -80,7 +75,7 @@
         </div> 
      
         <div class="col-md-3 tex">
-        <button id="email_pusk" type="submit" class="btn btn-default">Отправить Email</button>     
+        <button id="email-pusk-post" type="submit" class="btn btn-default">Отправить Email</button>     
         </div>   
   </div>
  
@@ -91,11 +86,12 @@
          <div class="col-md-3 div-li tex">
         </div> 
         <div class="col-md-9 ">
-        <button id="fone" type="submit" class="btn btn-default">Показать номер</button> 
+        <button id="show-fone" type="submit" class="btn btn-default">Показать номер</button> 
+        <img id="post-img-phone" class="img-responsive" src="/{{$post->phone}}" style="display: none"/>
         </div>
        </div>   
 @endif  
-<div class="row">
+<div class="row" style="height: 34px">
      <div class="col-md-3 div-li tex">
         Город
      </div> 
@@ -118,34 +114,7 @@
  </div>
    <input id="PostId"  name="postId" type="hidden" value="{{$post->id}}"/>
     
-<script type="text/javascript">
-	    $(function() {
-	$('.image').on('click', function(event) {
-                event.preventDefault();
-		var image = $('#image');
-                var StImageW = image.outerWidth(); 
-                var StImageH = image.outerHeight();
-
-               // console.log('image= ');
-                //console.log(image);
-            var imageRel = $(this).attr('href');
-                console.log(imageRel);
-            var ImgOriginal=$(this).data('fooBar')
-		image.fadeIn('slow');//.hide()
-		image.html('<a class="img"  rel="group" href="'+ImgOriginal+'"><img src="' + imageRel + '" class="image img-responsive" ></a>');
-                image.outerWidth(StImageW);
-                image.outerHeight(StImageH);
-                $("a.img").fancybox();
-		return false;	
-	});
-        $('#fone').on('click',function(){
-           $(this).parent().html('<img src="/{{$post->phone}}"/>');
-        });
-        $('#email').on('click',function(){
-           $(this).parent().html('{{$post->email}}');
-        });
-});
-        </script>    
+ 
 </div>
 
 @stop
