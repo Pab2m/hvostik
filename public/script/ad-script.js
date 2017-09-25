@@ -1,19 +1,21 @@
 $(function() {
         var img = $(".img");
         var image = $('#image');
-	$('.image').on('click', function(event) {
+	$('.image').on('click', function(event) { 
                 event.preventDefault();
                 var imageRel = $(this).attr('href');
                 var zhis = $(this);
-                $(".min_foto.displaynone").fadeOut(200,
-                    function(){                   
-                        zhis.parent(".min_foto").fadeIn(400).addClass("displaynone");
-                    }).removeClass("displaynone");
-                image.find("a.show").fadeOut(200, 
-                    function(){
-                        $(image.find("img[src='"+imageRel+"']")).parent("a").fadeIn(400).addClass("show");
-                    }
-                ).removeClass("show");
+        zhis.parent(".min_foto").fadeIn(0, function(){
+                                     $(".min_foto.displaynone").fadeOut(0, function(){
+                                        var showImg = image.find(".show");
+                                        showImg.fadeOut(100, function(){
+                                        showImg.removeClass("show").addClass("hide");
+                                        image.find("img[src='"+imageRel+"']").parent("a").removeClass("hide").fadeIn(200, function(){
+                                        image.find("img[src='"+imageRel+"']").parent("a").addClass("show");
+                                           });             
+                                        });
+                                     }).removeClass("displaynone");
+            }).addClass("displaynone");
 	});
 
          img.fancybox({

@@ -27,7 +27,7 @@
            <?php $i=0; ?>    
               @foreach ($post->img_url as $value)
                 <a 
-                   @if ($i === 0) {{'rel="gallery1" class="img show"'}} @else {{'class="img"  rel="gallery1" style="display:none"'}} @endif 
+                   @if ($i === 0) {{'rel="gallery1" class="img show"'}} @else {{'class="img hide"  rel="gallery1"'}} @endif 
                    href="/{{$value[0]}}">
                     <img class="img-responsive"  src="/{{$value[640]}}"/>
                 </a>
