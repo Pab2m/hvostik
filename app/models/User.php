@@ -148,7 +148,7 @@ public static function UserMessage($ArrauValue){
         Mail::send('emails.user.UserMessage',
         array('title' => $ArrauValue['title'], 'id'=>$ArrauValue['idPost'],'text'=>$ArrauValue['text'],'UserEmail'=>$ArrauValue['emailPost'],'emailPost'=>$ArrauValue['UserEmail']),
         function ($message) use ($ArrauValue) {
-            $message->to($ArrauValue['emailPost'])->subject('Новое сообщения с сайта RukiDobra.ru');
+            $message->to($ArrauValue['emailPost'])->subject('Новое сообщение с сайта RukiDobra.ru');
         }
     );    
 return  1;}

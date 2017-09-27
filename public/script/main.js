@@ -314,9 +314,6 @@ var inputUl = function(ObjectA){
     }
         });
  }}
- 
-
- 
  }
         
 inputUl.inputUlSet = function(Object){
@@ -589,7 +586,7 @@ var myModal = function(ObjectP){
     ObjectP.ButtonOk.Parameter.myModal = this;
 
     this.ButtonNone = new Button({QjObject:this.myModal.find("button.btn-default"),Fn:btnDefault, id:ObjectP.ButtonNone.id || null, class:"btn-default btn "+ObjectP.ButtonNone.class, text:ObjectP.ButtonNone.text || "Отмена"});
-    this.ButtonOk = new Button({QjObject:this.myModal.find("button.btn-primary"), Fn:ObjectP.ButtonOk || null, id:ObjectP.ButtonOk.id || null, class:"btn-default btn "+ObjectP.ButtonOk.class, text:ObjectP.ButtonOk.text || "Ок"});
+    this.ButtonOk = new Button({QjObject:this.myModal.find("button.btn-primary"), Fn:ObjectP.ButtonOk.Fn|| null, id:ObjectP.ButtonOk.id || null, class:"btn-default btn "+ObjectP.ButtonOk.class, text:ObjectP.ButtonOk.text || "Ок"});
 
     this.ButtonNone.QjObject.text(ObjectP.ButtonNone.text);
     this.ButtonOk.QjObject.text(ObjectP.ButtonOk.text);

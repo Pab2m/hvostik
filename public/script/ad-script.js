@@ -1,7 +1,7 @@
 $(function() {
         var img = $(".img");
         var image = $('#image');
-	$('.image').on('click', function(event) { 
+	$('.image').on('click', function(event) {
                 event.preventDefault();
                 var imageRel = $(this).attr('href');
                 var zhis = $(this);
@@ -87,7 +87,7 @@ var bodyHtml = '<form id="formEmail" class="form-horizontal" enctype="multipart/
                         },
                         function(data){
                                  if(data){
-                                     Parameter.myModal.titleEdit = "Ваше сообщение отправлена!";
+                                     Parameter.myModal.titleEdit = "Ваше сообщение отправлено!";
                                      Parameter.myModal.ButtonOk.QjObject.fadeOut(200, function(){
                                      Parameter.myModal.bodyHtmlEdit = "";
                                      });
@@ -100,6 +100,7 @@ var bodyHtml = '<form id="formEmail" class="form-horizontal" enctype="multipart/
                           });
                };  
 };
+    ButtonOk.text = "Отправить";
     var ModalWin = new myModal({title:"Отправить сообщение", bodyHtml:bodyHtml,ButtonOk:ButtonOk});
     ModalWin.Show();
 };
