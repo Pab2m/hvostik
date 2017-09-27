@@ -98,14 +98,16 @@ root.vozrastId = {{$post->vozrast}};
 @endif
 @if($post->category_select == 11)
 <script> 
- root.tipId = {{$post->tip_select}};
+ root.tipId = {{$post->uslugi_select}};
 </script> 
-@endif
-@if(($post->category_select == 11) || ($post->category_select == 14))
+@else
+@if($post->category_select == 14)
 <script> 
  root.tipId = {{$post->tovari_select}};
 </script> 
 @endif
+@endif
+
 
     <div id="input_title" class="col-sm-10 form-group  has-feedback" >
 {{Form::text('title',$post->title, ['placeholder'=>'Названия объявления','id'=>'title','class'=>'form-control'])}}
