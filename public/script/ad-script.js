@@ -71,7 +71,9 @@ var bodyHtml = '<form id="formEmail" class="form-horizontal" enctype="multipart/
               +'<textarea cols="50" name="text" rows="8" class="form-control" id="post-email" placeholder="Текст письма"></textarea>'
               +'</div></div>'
               +'</form>';
-      var ButtonOk = function(Parameter,elem,zhis){
+      var ButtonOk = {};
+      ButtonOk.Parameter = {};
+      ButtonOk.Fn = function(Parameter){ 
       var FormEmailPul = new Form({id:"#formEmail"}); 
       var emailOt = new inputUl({QjObject:$("input#vasEmail"),id:"vasEmail",name:"email",teg:"input",surely:true,ObjectForm:FormEmailPul}); 
           emailOt.QjObject.tooltip('show')        
