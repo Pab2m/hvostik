@@ -144,7 +144,7 @@ function SeletUl(Object){// #id,oberka,divContener - обязательны
              $(thisObject.parent.childEdit().oberka).after(thisObject.html);
              thisObject.HtmlGet();
           
-             $(thisObject.oberka).hide().show(300);
+             $(thisObject.oberka).hide().fadeIn(300);
              thisObject.choneSelect();
         } else {
             thisObject.Delete();
