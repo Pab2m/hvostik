@@ -702,8 +702,6 @@ var inputPasswordRegist = function(ObjectP){
 
 };
 
-
- 
 $(document).ready(function(){
 
      
@@ -717,8 +715,16 @@ if($("form").is("#formSearch")){
     yepnope("/script/search.js");  
 }
 if($("form").is("#form-registr")){
-   var registracionButton = new Button({id:"registracion"});
+   var Sumbit = {};
+   Sumbit.Parameter = {};
+   Sumbit.Fn = function(){
+       if(registracionForm.Validacij()){
+          registracionForm.submit(); 
+       }
+   }; 
+   var registracionButton = new Button({id:"registracion", Fn:Sumbit});
    var registracionForm = new Form({id:"#form-registr",button:registracionButton});
+
    var email = new inputUl({teg:"input", id:"#inputEmail3",name:"email",type:"text",ObjectForm:registracionForm,surely:true});
    var reMail = /^(?!.*@.*@.*$)(?!.*@.*\-\-.*\..*$)(?!.*@.*\-\..*$)(?!.*@.*\-$)(.*@.+(\..{1,11})?)$/;
        email.QjObject.focusout(function(){
@@ -728,24 +734,12 @@ if($("form").is("#form-registr")){
                } 
        });
    
-   var password = new inputUl({teg:"input", id:"#inputPassword3", name:""}); 
-   var passwordRegist =  new inputUl({teg:"input", id:"#repeat_inputPassword3", name:""});
-   var inputPassword = new inputPasswordRegist({Password:password, PasswordRepeat:passwordRegist, ObjectForm:registracionForm});
-    
+   var password = new inputUl({teg:"input", id:"#inputPassword3", name:"",ObjectForm:registracionForm}); 
+   var passwordRegist =  new inputUl({teg:"input", id:"#repeat_inputPassword3", name:"",ObjectForm:registracionForm});
+   var inputPassword = new inputPasswordRegist({Password:password, PasswordRepeat:passwordRegist});
+ 
 } 
-// Слайдор в полном объевлении
-var SpanUtch=$('#post_podr span.utch');
-var MaxWidthSpanUtch=$(SpanUtch[0]).width();    
-   
-     for(var i=1; i<SpanUtch.length; i++){
-       if($(SpanUtch[i]).width()>MaxWidthSpanUtch){
-         MaxWidthSpanUtch=$(SpanUtch[i]).width();
-       }
-     } 
-    var str="'"+MaxWidthSpanUtch+"px'";
-     $('#post_podr span.utch').css('width',str);
-//         
-      
+         
       
 //Редактирование         
    $('li.li_delet').on('click','div.deletImg_ser',function(){
@@ -908,15 +902,6 @@ $('div.modal-body').on('click','.del-none',function(){
        $('#panel-annoucement').find('span#post-del-size').text(postDelSize);
 });    
       
-//$("button#button_post_delet").on("click",function(){
-//    var myModal = $('#myModal');  
-//    myModal.find('h4').text('Удалить данные объявления?');
-//    myModal.find('button.btn-primary').attr("class","btn-primary btn post-delet").attr("id","DeletPost").text("Удалить данное объявления?");
-//    myModal.find('button.btn-default').attr("class","btn-default btn post-NoDelet").text("Отменить"); 
-//    myModal.find('div.modal-body').html('<div class="row"><div class="col-md-11 col-sm-11">'+$("span.titlePost").text()+'</div></div>');
-//    myModal.modal('show');
-//});      
-//  
  $("#myModal").on("click","#DeletPost",function(){
      $("form#post-delete").submit();
  }); 
@@ -998,7 +983,6 @@ $('div.modal-body').on('click','.del-none',function(){
           $('#myModal button.btn-primary').hide();
           $('#myModal button.btn-default').text("Закрыть");
       }
-console.log(data);
   }
          ); 
   }
@@ -1008,16 +992,4 @@ console.log(data);
       
    });
    
-$(window).load(function (){
-        var divImg=$('.img'); 
-        var max=$(divImg[0]).innerHeight() 
-       divImg.each(function(index,element){
-           if(max<$(element).innerHeight()){
-              max=$(element).innerHeight(); 
-           }
-        });
-        divImg.height(max);
-        
-        
-}); 
 

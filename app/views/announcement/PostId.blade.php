@@ -40,7 +40,7 @@
       </div>
   </div>
 @endif
- <div id="slou-post" class="container tex">  
+ <div id="slou-post" class="tex">  
        @if(isset($post->cena))
        <div class="container tex">  
         <div class="col-md-3 div-li">Цена</div> 
@@ -108,7 +108,7 @@
   </div>      
 </div> 
 
-<div id="post" class="container" >
+<div id="post" class="" >
     {{$post->post}}
 </div>  
  </div>

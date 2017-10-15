@@ -230,7 +230,7 @@ padding: 0;
 
 #footer{
     height:250px;
-    background-image: url(../img/doc_kot1.png);
+    background-image: url(/img/doc_kot1.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     margin: auto; 
@@ -452,4 +452,9 @@ height: 16px;
 #myTab{
     margin-bottom: 10px;
 }
-
+#versiya{
+    text-align: right;
+    font-size: 6pt;
+    font-size: #D8D8D8;
+   
+}

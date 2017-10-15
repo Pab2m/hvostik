@@ -441,7 +441,7 @@ public function EdetSostPost($sost = 0){
     }
     $this->sostoynia=(int)$sost;
     $this->save();
-    return array("sost"=>$this->sostoynia,"date"=>$date); 
+    return array("sost"=>$this->sostoynia,"date"=>date("Y-m-d",strtotime($date)));
     
 }
   // Обубликованое до   

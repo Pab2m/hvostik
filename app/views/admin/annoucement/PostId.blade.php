@@ -79,7 +79,7 @@
  <div class="col-md-3 div-li tex">
      Вид объявления: 
  </div> 
- <div class="col-md-9 tex">
+ <div class="col-md-5 tex">
     {{$post->Kroshki()}}
   </div>      
 </div> 
@@ -128,7 +128,7 @@
 @if($post->sostoynia == 1)
 <div class="col-md-12" id="aktiv-date-post">
     <div id="chtaem-at-text">Активно до:</div>
-    <input type="date" id="chtaem-at" class="btn btn-default" placeholder="dd-mm-yyyy"  value="{{$post-> chtaem_at}}"  /> <!--$teme_ch-->
+    <input type="date" id="chtaem-at" class="btn btn-default" value="{{date("Y-m-d",strtotime($post-> chtaem_at))}}"  /> <!--$teme_ch-->
     <button id="date-save" class="btn btn-default" type="button">Сохранить</button>
     <button id="date-сancel" class="btn btn-default" type="button"><span style="color:red" class="glyphicon glyphicon-remove"></span></button>
 </div>  
@@ -148,9 +148,9 @@
 <div class="col-md-12"  id="aktiv-date-post">
       <div id="chtaem-at-text">Активно до (предворительно):</div>
     <div id="chtaem-at-maybe">
-       {{$chtaem_at}}
+       {{date("Y-m-d",strtotime($chtaem_at))}}
     </div> 
-    <input type="date" style="display: none" id="chtaem-at" class="btn btn-default" placeholder="dd-mm-yyyy"  value="{{$chtaem_at}}"  /> <!--$teme_ch-->
+      <input autocomplete="on" type="date" style="display: none" id="chtaem-at" class="btn btn-default"  value="{{$chtaem_at}}"  /> <!--chtaem_at-->
     <button id="date-save" style="display: none" class="btn btn-default" type="button">Сохранить</button>
     <button id="date-сancel" style="display: none" class="btn btn-default" type="button"><span style="color:red" class="glyphicon glyphicon-remove"></span></button>
 </div>  
