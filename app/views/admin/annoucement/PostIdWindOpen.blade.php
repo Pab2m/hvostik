@@ -87,26 +87,7 @@
     {{$post->post}}
 </div>  
  </div>
-
-    
-<script type="text/javascript">
-	    $(function() {
-	$('.image').on('click', function(event) {
-                event.preventDefault();
-		var image = $('#image');
-                var StImageW = image.outerWidth(); 
-                var StImageH = image.outerHeight();
-            var imageRel = $(this).attr('href');
-            var ImgOriginal=$(this).data('fooBar')
-		image.fadeIn('slow');//.hide()
-		image.html('<a class="img"  rel="group" href="'+ImgOriginal+'"><img src="' + imageRel + '" class="image img-responsive" ></a>');
-                image.outerWidth(StImageW);
-                image.outerHeight(StImageH);
-                $("a.img").fancybox();
-		return false;	
-	});
-});
-</script>    
+ 
 </div>
 <div id="postID-form" class="col-md-2">
   {{Form::open(array('action' => 'PostController@EditPost','id'=>'postEdit','files' =>true,'class'=>"form-horizontal", 'role'=>"form"))}}
@@ -144,7 +125,7 @@
 @if($post->sostoynia == 1)
 <div class="col-md-12" id="aktiv-input-post">
     Активно до:<br>
-    <input type="date" id="datepicker" class="btn btn-default" placeholder="dd-mm-yyyy"  value="{{$teme_ch}}"  /> 
+    <input type="date" id="datepicker" class="btn btn-default" placeholder="dd-mm-yyyy"  value="{{$chtaem_at}}"  /> 
     <button id="date-save" class="btn btn-default" type="button">Сохранить</button>
 </div>  
 @else

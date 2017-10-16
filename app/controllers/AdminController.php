@@ -75,7 +75,7 @@ public function announcement_admin_goot($id){
     if($post instanceof Post){
     if($post->img_url){
         $post->img_url=unserialize($post->img_url);
-    }
+    } 
    return View::make($blade, array('post'=>$post, 'chtaem_at'=> $chtaem_at, 'deletetaem_at'=>$post-> deletetaem_at,  "sostoynia" => $post->sostoynia));
     }else{
         return $this->getMessage('Страница ненайдина!!!');

@@ -1,5 +1,11 @@
 <div id="footer" class="container-fluid">
-        <div id="prova">Все прова защищены<br>2015</div>
+
+        <div id="prova">Все прова защищены<br>2015
+        <div id="versiya">
+            Версия:0.0.4.2.1510
+        </div>    
+        </div>
+   
  </div>
 
 	<!--[if lt IE 9]>

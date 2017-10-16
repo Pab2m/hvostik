@@ -757,7 +757,7 @@ TableTdWidthMax({ButtonsFn:ButtonsFn, ButtonHide:"Delete"});
    
 if($("form").is("#postEditModerazij")){
     
-    (function(){
+    (function(){ 
        var containerjQ = $("#postID-form");
        var announcementConstant = {
            postId:containerjQ.find("#PostId").val(),
@@ -797,23 +797,19 @@ if($("form").is("#postEditModerazij")){
                InputChtaemAt.use = "chtaem_at";
                } else if(this.announcementSostoynia == 2){
                    InputChtaemAt.use = "deletetaem_at";
-               }
-               datePicker = new Pikaday({
-                	field: InputChtaemAt.QjObject[0],
-                        format: 'YYYY-MM-DD',
-                        onSelect:function(date){
-                            InputChtaemAt.value = date;
-                            DateSave.QjObject.show(300); DateCancel.QjObject.show(300);
-                        }
-                   });  
-                InputChtaemAt.value = new Date(InputChtaemAt.value);  
-                timeOld = InputChtaemAt.value;
-                var InputChtaemAtTime = InputChtaemAt.value.toLocaleTimeString();
+               } 
+
+                InputChtaemAt.QjObject.on("change",function(){
+                                  DateSave.QjObject.show(300); 
+                                  DateCancel.QjObject.show(300);
+                });
+               timeOld = InputChtaemAt.value;
+                 var InputChtaemAtTime = InputChtaemAt.value;
                 DateCancel = new Button({id:"date-сancel",Fn:{
                   Parameter:{},
-                  Fn:function(Parameter,elem, zhis){          
-                      InputChtaemAt.val(timeOld);
-                      datePicker.setDate(timeOld);
+                  Fn:function(Parameter,elem, zhis){    
+                      InputChtaemAt.QjObject.val(timeOld);
+                     // datePicker.setDate(timeOld);
                       DateSave.QjObject.hide(300); DateCancel.QjObject.hide(300);
                   }                      
                  }
@@ -829,7 +825,8 @@ if($("form").is("#postEditModerazij")){
                             },
                         function(data){
                                 if(data){
-                                   DateSave.QjObject.hide(300); DateCancel.QjObject.hide(300); 
+                                   DateSave.QjObject.hide(300);
+                                   DateCancel.QjObject.hide(300); 
                                 }
                         });  
                   }                      
@@ -854,7 +851,7 @@ if($("form").is("#postEditModerazij")){
           value = Number(value);
           switch (value) {
             case 0: 
-                   PostRequest(function(data){
+                   PostRequest(function(data){ 
                         data = JSON.parse(data);
                         sostEditButton.QjObject.first().attr("data-id-so", 1).val("Опубликовать");
                         sostEditButton.QjObject.last().hide(300);
@@ -878,7 +875,7 @@ if($("form").is("#postEditModerazij")){
                         InputChtaemAt.QjObject.show(300);
                         InputChtaemAt.val(data.date);
                         InputChtaemAt.use = "chtaem_at";
-                        datePicker.setDate(data.date);
+                    //    datePicker.setDate(data.date);
                         DateSave.QjObject.hide(); DateCancel.QjObject.hide();
                      }, value);
                        break;

@@ -168,6 +168,8 @@ tr.add td{
     margin: 0 3px 0 3px; 
 }
 #chtaem-at{
-    width: 100px;
-    height: 40px;
+    width: 140px;
+}
+#date-сancel.btn{
+    padding: 6px 6px;
 }

@@ -39,9 +39,9 @@
         
     </div>
   </div>
-  <div class="form-group container">
+<div class="form-group container">
     <div class="g-recaptcha" data-sitekey="6LcQUxgTAAAAAIPKtxdvQpU6khJph9w3s80swrpi"></div>
-  </div>  
+  </div> 
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       {{Form::button('Зарегистрироваться',["type"=>"button", "class"=>"btn btn-default", "id"=>"registracion"])}}      
