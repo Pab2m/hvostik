@@ -37,7 +37,7 @@
 <title>@yield('title') - hvostyk.ru</title>
 </head>  
  <body>
-    <div id="navebar_id" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ <!--   <div id="navebar" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -54,16 +54,31 @@
           <a class="navbar-brand" href="/fyurer/posts/3">Объявления на удаление(<span id="sost3">{{Post::PostCount(3)}}</span>)</a>
           <a class="navbar-brand" href="/fyurer/users/">Пользователи ({{User::UserCount(3)}})</a>
         </div>
-<!--        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li>
+      </div>
+    </div>
+     -->
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button  type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Админ панель</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a id="gormon-menu" class="navbar-brand" href="#">Админ панель</a> 
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul  class="nav navbar-nav">
+            <li class=""> <a class="navbar-brand" href="/fyurer/">Админ панель</a></li>
+             <li><a class="navbar-brand" href="/">Главная</a></li>
+             <li><a class="navbar-brand" href="/fyurer/posts/0">Объявления на модерации (<span id="sost0">{{Post::PostCount(0)}}</span>)</a></li>
+             <li><a class="navbar-brand" href="/fyurer/posts/1">Обубликованные (<span id="sost1">{{Post::PostCount(1)}}</span>)</a></li>
+             <li><a class="navbar-brand" href="/fyurer/posts/2">Снятые объявления (<span id="sost2">{{Post::PostCount(2)}}</span>)</a></li>
+             <li><a class="navbar-brand" href="/fyurer/posts/3">Объявления на удаление(<span id="sost3">{{Post::PostCount(3)}}</span>)</a></li>
+             <li><a class="navbar-brand" href="/fyurer/users/">Пользователи ({{User::UserCount(3)}})</a></li>
+            
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-        </div>-->
+        </div><!--/.nav-collapse -->
       </div>
     </div>

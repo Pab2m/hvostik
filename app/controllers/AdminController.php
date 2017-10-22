@@ -12,8 +12,8 @@ class AdminController  extends BaseController{
 
         public function adminPanel(){
         if((Auth::check())&& (Auth::user()->pravo===88)){
-          $post_all=Post::AllPost();
-      return View::make('admin.admin',array('post_all'=>$post_all));  
+         // $post_all=Post::AllPost();
+      return View::make('admin.annoucement.Posts',array('post_all'=>Post::AllPost(2),"title"=>"<div class='postModer'>Объявления на модерации!</div>"));  
     } return View::make('errors.message', array('message'=>'Страница не найдина','redirect'=>false));
         }
         

@@ -1,4 +1,5 @@
 var addPost = (function(){
+    
    var deleteSelekt = function(Catalog){
                        var SeletUlTrue = false; 
                        Catalog.child.forEach(function(item, i){
@@ -25,7 +26,6 @@ var addPost = (function(){
                                 Tip.parent = CatalogAdd;
                                 CatalogAdd.child.push(Tip); //function(url, json, option,bd,Fn
                                 Poroda.QjObject.parent().attr("style","clear: both;");
-
                                 Tip.childSeletSQL("/ajax/json/bd", SeletUlTrue, false, "tip", function(){
                                 Tip.QjObject.parent().attr("style","clear: both;");
                                 Tip.ObjectChange(function(){ });  
@@ -45,10 +45,10 @@ var addPost = (function(){
   }
     var Sumbit = {};
     Sumbit.Parameter = {};
-    Sumbit.Fn = function(){
+    Sumbit.Fn = function(){ 
      if(FormAdd.Validacij()){ 
-     Cshtora.True();
-     Fails(FormAdd.QjObject ,function(){
+       Cshtora.True();
+       Fails(FormAdd.QjObject ,function(){
        FormAdd.submit();  
      });
      }
@@ -136,19 +136,19 @@ var addPost = (function(){
                   });
                    break;}
          case '3':{
-                var  PorodaAdd = new SeletUl({ObjectForm:FormAdd,id:"#"+CatalogAdd.valueArray[CatalogAdd.value],oberka:"div#poroda",oberkaClass:"col-md-6 form-group has-feedback", placeholder:"Порода собак"});
+                var  PorodaAdd = new SeletUl({ObjectForm:FormAdd,id:"#"+CatalogAdd.valueArray[CatalogAdd.value],oberka:"div#poroda",oberkaClass:"col-md-6 form-group has-feedback", placeholder:"Порода собак",surely:true});
                 PorodaSelert(PorodaAdd,  function(){
                 var Pol = new inputUl({name:"pol",ObjectForm:FormAdd,teg:"input",oberka:"div#input_pol"});
                 CatalogAdd.child.push(Pol);
                 Pol.parent = CatalogAdd;
                 Pol.QjObject = $(htmlRadioInput1);
-                Pol.QjObject.css({"clear":"both"});
+                Pol.QjObject.css({clear:"both"});
                 Pol.htmlSet();
                  var Vozrast = new inputUl({name:"vozrast",ObjectForm:FormAdd,teg:"input",oberka:"div#input_vozrast"});
                 CatalogAdd.child.push(Vozrast);
                 Vozrast.parent = CatalogAdd;
                 Vozrast.QjObject = $(htmlRadioInput2);
-                Vozrast.QjObject.css({"clear":"both"});
+                Vozrast.QjObject.css({clear:"both"});
                 Vozrast.htmlSet();
               });                                  
               break;}        
