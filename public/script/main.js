@@ -1,5 +1,4 @@
 //var UrlImg, post=new Object();
-
 function Cshtora(){
    var htmlHtora = '<div id="htora"><div id="proces"><img  width="64" height="64" src="/img/loading-spinning-bubbles.svg"></div></div>';
    var JqHtora = null;  
@@ -49,9 +48,9 @@ function Form(Object){
            return false; 
         };        
         var ObjektA = Objekt || this; 
-      for(var key in ObjektA.arryForm){
+      for(var key in ObjektA.arryForm){ 
         if(((!ObjektA.arryForm[key].value)||(ObjektA.arryForm[key].value==''))&&(ObjektA.arryForm[key].surely)){ 
-      validateForma = Validate(ObjektA.arryForm[key]);
+           validateForma = Validate(ObjektA.arryForm[key]);
         }
         if((validatePole) && (ObjektA.arryForm[key] instanceof inputUl) && (ObjektA.arryForm[key].type === "email")){
           var reMail = /^(?!.*@.*@.*$)(?!.*@.*\-\-.*\..*$)(?!.*@.*\-\..*$)(?!.*@.*\-$)(.*@.+(\..{1,11})?)$/;
@@ -100,6 +99,7 @@ function SeletUl(Object){// #id,oberka,divContener - обязательны
           if((this.id!==false)){
           this.name = this.name === false ? this.id.split('#')[1]+"_name":this.name;  
           this.QjObject = $(this.id); 
+          this.oberkaJq  = $(this.oberka);
           if(!this.placeholder){
           this.placeholder = this.QjObject.attr("data-placeholder");}
          }
@@ -212,7 +212,7 @@ function SeletUl(Object){// #id,oberka,divContener - обязательны
   };
 }
  
- SeletUl.prototype.ValidateNo = function(){
+ SeletUl.prototype.ValidateNo = function(){ 
    this.oberkaJq.find('.chosen-single').css({border:"2px solid red"});
   var Object = this;
   var Fn = function(Object){

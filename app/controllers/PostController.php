@@ -10,7 +10,7 @@ class PostController extends BaseController {
             }
   }
     
-  private static function ValidatePost($data){
+  private static function ValidatePost($data){ 
         $rules = array('name' => 'required',
                        'email'=>'required|email',
                        'title'=>'required',
@@ -23,35 +23,36 @@ class PostController extends BaseController {
                                                         );
          $validator=Validator::make($data, $rules, $messages); 
          $False['name']=$False['email']=$False['region_select']=$False['sity_select']= $False['category_select']=false;
-         if(isset($data['name'])){
+         if((isset($data['name'])) && ($data['name'] != "")){
              $False['name']=true;
          }
-         if(isset($data['email'])){
+         if((isset($data['email'])) && ($data['email'] != "")){
              $False['email']=true;
          }
-         if(isset($data['phone'])){
+         if((isset($data['phone'])) && ($data['phone']!="")){
              $False['phone']=true;
          }
-         if(isset($data['region_select'])){
+         if((isset($data['region_select'])) && ($data['region_select'] != "")){
              $False['region_select']=true;
          }
-         if(isset($data['sity_select'])){
+         if((isset($data['sity_select'])) && ($data['sity_select'] != "")){
              $False['sity_select']=true;
          }
-          if(isset($data['category_select'])){
+          if((isset($data['category_select'])) && ($data['category_select'] !="")){
           $False['category_select']=true;
           
           if((isset($data['poroda_koshek'])) && ($data['category_select']==1)){
-          $False['poroda_koshek']=$False['tip_select']=false;  
-              if(isset($data['poroda_koshek'])){
+          $False['poroda_koshek'] = $False['tip_select'] = false;  
+              if((isset($data['poroda_koshek'])) && ($data['poroda_koshek'] != "")){
               $False['poroda_koshek']=true;}
               if(isset($data['tip_select'])){
               $False['tip_select']=true;}
           }elseif((isset($data['poroda_sobak']))&&($data['category_select']==3)){
-              if(isset($data['poroda_sobak'])){
+              $False['poroda_koshek'] = $False['tip_select'] = false;
+              if((isset($data['poroda_sobak'])) && ($data['poroda_sobak'] != "")){
               $False['poroda_sobak']=true;}
 
-              if(isset($data['tip_select'])){
+              if((isset($data['tip_select'])) && ($data['tip_select'] != "")){
               $False['tip_select']=true;}
           }elseif($data['category_select']===11){
                $False['uslugi_select']=false;
@@ -66,8 +67,8 @@ class PostController extends BaseController {
               }
           }
           foreach ($False as $value){
-              if($value == false){
-               return $this->getMessage('Ошибка!!! Возможно одно из полей незаполнино');   
+              if($value == false){   
+                         return  false;
               }
           }
         return true;  
@@ -81,7 +82,9 @@ class PostController extends BaseController {
             unset($data['file']);
             $data['id_user']=Auth::user()->id;
           
-          PostController::ValidatePost($data);
+          if(!PostController::ValidatePost($data)){
+               return $this->getMessage('Ошибка!!! Возможно одно из полей незаполнино!!!');
+          }
           
           if(isset($data['img'])&&($data['img']!==0)){  
           $data['img_url']=Post::PostImgSeve($data['img'], $data['id_user']);

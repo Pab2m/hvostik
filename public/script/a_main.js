@@ -1,4 +1,3 @@
-
 function translit(text){
         text = text.toLowerCase();
 	var space = '-'; 	
