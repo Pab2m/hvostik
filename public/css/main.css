@@ -54,9 +54,11 @@ body {
     top: 0; left: 0; bottom: 0; right: 0;   
 }
 #head-100{
-	background-image:url('../img/bg.png');
+	/*background-image:url('../img/bg.png');*/
 }
-
+#header-left h1{
+    text-align: left;
+}
 
 .nav-1{
     min-height:45px;}
@@ -102,7 +104,6 @@ a.a-add span{
 #rukidobra{
     width:auto;
     height: auto;
-    text-align: center;
     margin: 0 auto;
 }
 

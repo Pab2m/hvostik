@@ -14,7 +14,7 @@
                  </div>
                  </div> 
               <div class="foto_priv col-xs-3 col-md-3">
-                      {{'<img class="img-responsive" src="/'.$post->priv_img.'"/>'}}
+                  <a href="/post/{{$post->id}}"> {{'<img class="img-responsive" src="/'.$post->priv_img.'"/>'}}</a>
               </div>
               <div class="text_priv  col-sm-9 col-md-9 col-xs-12">
                  <div class="title_zag">

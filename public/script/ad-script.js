@@ -1,12 +1,4 @@
-$(function() {
-    var WindowHeight = $(window).height();
-    var AdTitle = $("#post_podr h1"); 
-    var TitleY = AdTitle.offset().top;
-    if(WindowHeight <= TitleY){
-        jQuery.scrollTo('#post_podr h1');
-    }
-    
-    
+$(function() { 
         var img = $(".img");
         var image = $('#image');
 	$('.image').on('click', function(event) {

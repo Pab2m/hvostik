@@ -703,7 +703,13 @@ var inputPasswordRegist = function(ObjectP){
 };
 
 $(document).ready(function(){
-
+    $(function() { 
+        var WindowHeight = $(window).height(); 
+        var TitleY = $("#content-left").offset().top;
+        if(WindowHeight <= TitleY){
+            setTimeout(function(){ window.scrollTo( 0, TitleY)});
+    }});
+     
      
 if($("div").is("#add_post")){
     yepnope("/script/addPost.js");
